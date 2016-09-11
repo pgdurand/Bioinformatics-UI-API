@@ -86,7 +86,7 @@ public class HSPSequenceViewer {
       return so.getIteration(0).getHit(2).getHsp(0);
     }
     // Create a sequence viewer. Only displays the sequence, i.e. letters.
-    private DSequenceListViewer createViewer(String str){
+    private DSequenceListViewer createViewer(String str, int startpos){
       DSequenceListViewer viewer;
       DSequenceModel      model;
       DSequence           seq;
@@ -97,7 +97,7 @@ public class HSPSequenceViewer {
           DViewerSystem.getIUPAC_Protein_Alphabet());
       // by default, a DSequence is never associated to a coordinate system. So, we
       // specifically creates a coordinate system starting at one.
-      seq.createRulerModel(1,1);
+      seq.createRulerModel(startpos,1);
 
       // In turn, the DSequence is embedded within a DSequenceModel which is a
       // ListModel...
@@ -156,7 +156,7 @@ public class HSPSequenceViewer {
       // A Sequence viewer is made of two parts:
       // 1. the Sequence Viewer itself which is a derivative of a JList. So this viewer only
       //    displays the sequence itself, i.e. the letters.
-      qViewer = createViewer (hsp.getQuery().getSequence()); 
+      qViewer = createViewer (hsp.getQuery().getSequence(), hsp.getQuery().getFrom()); 
       // 2. a Ruler Viewer which aims at displaying the sequence coordinate system (called a 'ruler') .
       rulerViewer = createRuler(qViewer, true);
 
@@ -174,7 +174,7 @@ public class HSPSequenceViewer {
       viewerWrapper.add(viewer);
       
       //create a viewer for the hit
-      hViewer = createViewer (hsp.getHit().getSequence()); 
+      hViewer = createViewer (hsp.getHit().getSequence(), hsp.getHit().getFrom()); 
       rulerViewer = createRuler(hViewer, false);
       viewer = new DSequenceViewer(hViewer, rulerViewer, true);
       viewer.setAlignmentX(0); //don't let Swing controls the vertical alignment of the component
