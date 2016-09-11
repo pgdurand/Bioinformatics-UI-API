@@ -14,7 +14,7 @@ In other words, this library is the appropriate friend of the [Bioinformatics Co
 
 Here is an example of use:
 
-![DNA Sequence Viewer](https://github.com/pgdurand/Bioinformatics-UI-API/doc/bioinformatics-ui-viewer.png)
+![DNA Sequence Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/bioinformatics-ui-viewer.png)
 
 ##Requirements
 
@@ -35,7 +35,13 @@ Since this package is a library, its primary purpose targets a use within other 
 7. CombinedSequenceViewerExt: combine viewers 2, 3, 4 and 5 into a single one
 8. CombinedAnnotatedSequenceViewer: everything in a single full-featured viewer (above picture)
 
-You can see how to use the library by having a look at the "example" source package: it contains sample source codes to illustrate the use of these components.
+You can see how to use the library by having a look at the "example" source package. It contains sample source codes to illustrate the use of these components:
+
+* BasicSequenceViewer: see how to create a simple sequence viewer
+* HSPSequenceViewer: see how to load and display BLAST pairwise sequence alignments
+* CartoViewerPanelApp: see how to create a graphic representation of a sequence
+* CombinedSequenceViewerApp: see to create a combined sequence viewer
+* HCAViewerApplet: see how to create a HCA view of a protein sequence
 
 ##License and dependencies
 
