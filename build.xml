@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- ============================================================= -->
+<project name="Plealog-bionfo-ui" default="help" basedir=".">
+
+	<property name="pbc.libName"    value="pb-ui" />
+	<property name="pbc.LibVersion" value="5.0.0" />
+
+	<property name="compile.optimize" value="on" />
+	<property name="compile.debug"    value="off" />
+
+	<property name="src"     value="${basedir}/src" />
+	<property name="jar"     value="${basedir}/jar" />
+
+	<property name="distrib"  value="${basedir}/distrib" />
+	<property name="Dlib"     value="${distrib}/lib" />
+	<property name="Dsrc"     value="${distrib}/src" />
+	<property name="Ddoc"     value="${distrib}/doc" />
+	<property name="Ddoc.api" value="${Ddoc}/api" />
+
+	<property name="pbc.libJar"  value="${distrib}/${pbc.libName}-${pbc.LibVersion}.jar"/>
+
+	<path id="class.path">
+		<pathelement path="${classpath}"/>
+		<fileset dir="${jar}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<pathelement location="${Dlib}"/>
+	</path>
+
+	<!-- ============================================================= -->
+	<target name="help">
+		<echo>Ant task to handle UI project.</echo>
+		<echo/>
+		<echo>      compile: compile the code.</echo>
+		<echo>         jdoc: compile the Javadoc.</echo>
+		<echo>  makedistrib: compile and make JAR of the PB-UI system.</echo>
+	</target>
+
+	<!-- ============================================================= -->
+	<target name="prepare">
+		<delete dir="${distrib}"/>
+		<mkdir  dir="${Dlib}"/>
+		<mkdir  dir="${Dsrc}"/>
+		<mkdir  dir="${Ddoc.api}"/>
+	</target>
+
+	<!-- ============================================================= -->
+	<target name="compile" depends="prepare">
+		<copy todir="${Dsrc}">
+			<fileset dir="${src}">
+				<!-- configuration API -->
+				<include name="bzh/plealog/bioinfo/ui/config/**"/>
+
+				<!-- the cartographic viewer -->
+				<include name="bzh/plealog/bioinfo/ui/carto/**"/>
+
+        <!-- the Feature viewer -->
+        <include name="bzh/plealog/bioinfo/ui/feature/**"/>
+
+        <!-- the HCA viewer -->
+        <include name="bzh/plealog/bioinfo/ui/hca/**"/>
+
+        <!-- the SequenceInfo viewer -->
+        <include name="bzh/plealog/bioinfo/ui/seqinfo/**"/>
+
+				<!-- the many Sequence viewers -->
+        <include name="bzh/plealog/bioinfo/ui/sequence/**"/>
+
+        <!-- utilities -->
+        <include name="bzh/plealog/bioinfo/ui/util/**"/>
+        
+				<!-- resources -->
+        <include name="bzh/plealog/bioinfo/ui/resources/**"/>
+			</fileset>
+		</copy>
+		<javac srcdir="${Dsrc}"
+          destdir="${Dlib}"
+	        classpathref="class.path"
+          debug="${compile.debug}"
+          optimize="${compile.optimize}"
+          >
+		</javac>
+		<copy todir="${Dlib}/bzh/plealog/bioinfo/ui">
+			<fileset dir="${Dsrc}/bzh/plealog/bioinfo/ui">
+				<include name="**/*gif"/>
+				<include name="**/*png"/>
+				<include name="**/*txt"/>
+				<include name="**/*cfg"/>
+        <include name="**/*properties"/>
+        <include name="**/*conf"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- ============================================================= -->
+	<target name="makedistrib" depends="compile" >
+		<jar destfile="${pbc.libJar}">
+			<fileset dir="${Dlib}">
+				<include name="bzh/plealog/bioinfo/**"/>
+			</fileset>
+			<fileset file="${basedir}/LICENSE.TXT" />
+			<fileset file="${basedir}/NOTICE.TXT" />
+			<manifest>
+				<attribute name="Built-By" value="Patrick G. Durand"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- target to create JavaDoc                                     -->
+	<!-- =================================================================== -->
+	<target name="jdoc">
+		<delete dir="${Ddoc.api}" />
+		<mkdir dir="${Ddoc.api}" />
+		<javadoc
+    packagenames="bzh.plealog.bioinfo.ui.config,bzh.plealog.bioinfo.ui.carto.*,bzh.plealog.bioinfo.ui.feature.*,bzh.plealog.bioinfo.ui.hca.*,bzh.plealog.bioinfo.ui.resources.*,bzh.plealog.bioinfo.ui.seqinfo.*,bzh.plealog.bioinfo.ui.sequence.*,,bzh.plealog.bioinfo.ui.util.*"
+    excludepackagenames="test"
+    Overview="${src}/overview.html" 
+  	Private="false" 
+    Splitindex="true" 
+    Windowtitle="Plealog Bioinformatics UI API" 
+    author="true" 
+    classpathref="class.path" 
+    destdir="${Ddoc.api}" 
+    maxmemory="256M" 
+    sourcepath="${src}" 
+    version="true">
+			<bottom>
+				<![CDATA[(c) Patrick G. Durand - 2004-2016]]>
+			</bottom>
+			<header>
+				<![CDATA[Plealog Bioinformatics UI API]]>
+			</header>
+			<link href="https://docs.oracle.com/javase/6/docs/api/"/>
+			<!-- arg value="-Xdoclint:reference"/ -->
+		</javadoc>
+	</target>
+</project>

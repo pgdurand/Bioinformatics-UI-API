@@ -1,0 +1,111 @@
+/*
+From NCBI feature table document :
+http://www.ncbi.nlm.nih.gov/collab/FT/
+
+Feature Key           attenuator
+*Feature Key           C_region
+*Feature Key           CAAT_signal
+*Feature Key           CDS
+Feature Key           D-loop
+Feature Key           D_segment
+Feature Key           enhancer
+*Feature Key           exon
+Feature Key           gap
+*Feature Key           GC_signal
+*Feature Key           gene
+Feature Key           iDNA
+*Feature Key           intron
+Feature Key           J_segment
+Feature Key           LTR
+*Feature Key           mat_peptide
+Feature Key           misc_binding
+Feature Key           misc_difference
+Feature Key           misc_feature
+Feature Key           misc_recomb
+*Feature Key           misc_RNA
+*Feature Key           misc_signal
+Feature Key           misc_structure
+Feature Key           mobile_element
+Feature Key           modified_base
+*Feature Key           mRNA
+*Feature Key           ncRNA
+*Feature Key           N_region
+Feature Key           old_sequence
+Feature Key           operon
+Feature Key           oriT
+Feature Key           polyA_signal
+Feature Key           polyA_site
+*Feature Key           precursor_RNA
+Feature Key           prim_transcript
+Feature Key           primer_bind
+*Feature Key           promoter
+Feature Key           protein_bind
+Feature Key           RBS
+*Feature Key           repeat_region
+Feature Key           rep_origin
+*Feature Key           rRNA
+*Feature Key           S_region
+*Feature Key           sig_peptide
+*Feature Key           source
+Feature Key           stem_loop
+*Feature Key           STS
+*Feature Key           TATA_signal
+Feature Key           terminator
+*Feature Key           tmRNA
+*Feature Key           transit_peptide
+*Feature Key           tRNA
+Feature Key           unsure
+*Feature Key           V_region
+*Feature Key           V_segment
+*Feature Key           variation
+Feature Key           3'UTR
+Feature Key           5'UTR
+*Feature Key           -10_signal
+*Feature Key           -35_signal
+
+
+
+----------------------------------
+From Swissprot :
+http://web.expasy.org/docs/userman.html#FT_keys
+INIT_MET
+SIGNAL
+PROPEP
+TRANSIT
+CHAIN
+PEPTIDE
+TOPO_DOM
+TRANSMEM
+INTRAMEM
+DOMAIN
+REPEAT
+CA_BIND
+ZN_FING
+DNA_BIND
+NP_BIND
+REGION
+COILED
+MOTIF
+COMPBIAS
+*ACT_SITE
+METAL
+BINDING
+SITE
+NON_STD
+MOD_RES
+LIPID
+*CARBOHYD
+DISULFID
+CROSSLNK
+VAR_SEQ
+*VARIANT
+MUTAGEN
+UNSURE
+CONFLICT
+NON_TER
+NON_CONS
+*HELIX
+*STRAND
+*TURN
+
+
