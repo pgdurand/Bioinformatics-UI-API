@@ -51,7 +51,7 @@ You can see how to use the library by having a look at the "example" source pack
 
 ![Combined Viewer](doc/CombinedSequenceViewer.png)
 
-![CombinedSequenceViewerApp](src/example/HCAViewerApplet.java): see how to create a HCA view of a protein sequence
+![HCAViewerApplet](src/example/HCAViewerApplet.java): see how to create a HCA view of a protein sequence
 
 ![HCA Viewer](doc/HCAView.png)
 
