@@ -39,7 +39,7 @@ You can see how to use the library by having a look at the "example" source pack
 
 * **BasicSequenceViewer**: see how to create a simple sequence viewer
 
-* [HSPSequenceViewer](/src/example/HSPSequenceViewer.java): see how to load and display BLAST pairwise sequence alignments
+![HSPSequenceViewer](src/example/HSPSequenceViewer.java): see how to load and display BLAST pairwise sequence alignments
 
 ![HSP Viewer](doc/HSPSequenceViewer.png)
 
