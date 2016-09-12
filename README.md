@@ -39,12 +39,19 @@ You can see how to use the library by having a look at the "example" source pack
 
 * **BasicSequenceViewer**: see how to create a simple sequence viewer
 * **HSPSequenceViewer**: see how to load and display BLAST pairwise sequence alignments
+
 ![HSP Viewer](doc/HSPSequenceViewer.png)
+
 * **CartoViewerPanelApp**: see how to create a graphic representation of a sequence
+
 ![Cartographic Viewer](doc/CartoViewer.png)
+
 * **CombinedSequenceViewerApp**: see to create a combined sequence viewer
+
 ![Combined Viewer](doc/CombinedSequenceViewer.png)
+
 * **HCAViewerApplet**: see how to create a HCA view of a protein sequence
+
 ![HCA Viewer](doc/HCAView.png)
 
 ##License and dependencies
