@@ -14,7 +14,7 @@ In other words, this library is the appropriate friend of the [Bioinformatics Co
 
 Here is an example of use:
 
-![DNA Sequence Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/bioinformatics-ui-viewer.png)
+![DNA Sequence Viewer](doc/bioinformatics-ui-viewer.png)
 
 ##Requirements
 
