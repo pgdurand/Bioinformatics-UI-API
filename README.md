@@ -37,21 +37,21 @@ Since this package is a library, its primary purpose targets a use within other 
 
 You can see how to use the library by having a look at the "example" source package. It contains sample source codes to illustrate the use of these components:
 
-* **BasicSequenceViewer**: see how to create a simple sequence viewer
+![BasicSequenceViewer](src/example/BasicSequenceViewer.java): see how to create a simple sequence viewer
 
 ![HSPSequenceViewer](src/example/HSPSequenceViewer.java): see how to load and display BLAST pairwise sequence alignments
 
 ![HSP Viewer](doc/HSPSequenceViewer.png)
 
-* **CartoViewerPanelApp**: see how to create a graphic representation of a sequence
+![CartoViewerPanelApp](src/example/CartoViewerPanelApp.java): see how to create a graphic representation of a sequence
 
 ![Cartographic Viewer](doc/CartoViewer.png)
 
-* **CombinedSequenceViewerApp**: see to create a combined sequence viewer
+![CombinedSequenceViewerApp](src/example/CombinedSequenceViewerApp.java): see to create a combined sequence viewer
 
 ![Combined Viewer](doc/CombinedSequenceViewer.png)
 
-* **HCAViewerApplet**: see how to create a HCA view of a protein sequence
+![CombinedSequenceViewerApp](src/example/HCAViewerApplet.java): see how to create a HCA view of a protein sequence
 
 ![HCA Viewer](doc/HCAView.png)
 
