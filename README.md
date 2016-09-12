@@ -39,13 +39,13 @@ You can see how to use the library by having a look at the "example" source pack
 
 * **BasicSequenceViewer**: see how to create a simple sequence viewer
 * **HSPSequenceViewer**: see how to load and display BLAST pairwise sequence alignments
-![HSP Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/HSPSequenceViewer.png)
+![HSP Viewer](doc/HSPSequenceViewer.png)
 * **CartoViewerPanelApp**: see how to create a graphic representation of a sequence
-![Cartographic Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/CartoViewer.png)
+![Cartographic Viewer](doc/CartoViewer.png)
 * **CombinedSequenceViewerApp**: see to create a combined sequence viewer
-![Combined Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/CombinedSequenceViewer.png)
+![Combined Viewer](doc/CombinedSequenceViewer.png)
 * **HCAViewerApplet**: see how to create a HCA view of a protein sequence
-![HCA Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/HCAView.png)
+![HCA Viewer](doc/HCAView.png)
 
 ##License and dependencies
 
