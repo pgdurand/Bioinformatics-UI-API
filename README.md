@@ -38,7 +38,7 @@ Since this package is a library, its primary purpose targets a use within other 
 You can see how to use the library by having a look at the "example" source package. It contains sample source codes to illustrate the use of these components:
 
 * **BasicSequenceViewer**: see how to create a simple sequence viewer
-* **HSPSequenceViewer**: see how to load and display BLAST pairwise sequence alignments
+* [HSPSequenceViewer](src/example/HSPSequenceViewer.java): see how to load and display BLAST pairwise sequence alignments
 
 ![HSP Viewer](doc/HSPSequenceViewer.png)
 
