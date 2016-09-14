@@ -55,15 +55,15 @@ You can see how to use the library by having a look at the "example" source pack
 
 ![HCA Viewer](doc/HCAView.png)
 
+##Link with BioJava
+
+Have in mind that this library can be a nice friend to [Biojava](http://biojava.org): Sequence objects from Biojava can be converted quite easily to Sequence objects from [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API) for the purpose of using this [Bioinformatics UI library](https://github.com/pgdurand/Bioinformatics-UI-API). See [Biojava Convertor Project](https://github.com/pgdurand/BiojavaConvertor) to review how to do that.
+
 ##License and dependencies
 
 Bioinformatics UI API itself is released under the GNU Affero General Public License, Version 3.0. [AGPL](https://www.gnu.org/licenses/agpl-3.0.txt)
 
 It depends on several thrid-party libraries as stated in the NOTICE.txt file provided with this project.
-
-##Link with BioJava
-
-Have in mind that this library can be a nice friend to [Biojava](http://biojava.org): Sequence objects from Biojava can be converted quite easily to Sequence objects from [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API) for the purpose of using this [Bioinformatics UI library](https://github.com/pgdurand/Bioinformatics-UI-API). See [Biojava Convertor Project](https://github.com/pgdurand/BiojavaConvertor) to review how to do that.
 
 ##Once upon a time was: VisualBlast
 
