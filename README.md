@@ -61,6 +61,10 @@ Bioinformatics UI API itself is released under the GNU Affero General Public Lic
 
 It depends on several thrid-party libraries as stated in the NOTICE.txt file provided with this project.
 
+##Link with BioJava
+
+Have in mind that this library can be a nice friend to [Biojava](http://biojava.org): Sequence objects from Biojava can be converted quite easily to Sequence objects from [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API) for the purpose of using this [Bioinformatics UI library](https://github.com/pgdurand/Bioinformatics-UI-API). See [Biojava Convertor Project](https://github.com/pgdurand/BiojavaConvertor) to review how to do that.
+
 ##Once upon a time was: VisualBlast
 
 During Summer 2004 I was asking myself how easy it could be to rewrite in Java the original [VisualBlast software](http://www.ncbi.nlm.nih.gov/pubmed/9283755) written in C for the MS-Windows platform.
@@ -70,10 +74,6 @@ Actually, the answer was quite immediate: it took me a few days to fully rewrite
 So, during my holidays on Summer 2004, I started a wonderful story: the creation of what would eventually become the [KoriBlast/ngKLAST suite of softwares](http://plealog.com/korilog/product-sheets/ngKLAST.pdf), the founding software of my company, Korilog.
 
 Korilog ceased its activities on June 2015, therefore I decided to release these UI components to the open source community. 
-
-##Link with BioJava
-
-Have in mind that this library can be a nice friend to [Biojava](http://biojava.org): Sequence objects from Biojava can be converted quite easily to Sequence objects from [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API) for the purpose of using this [Bioinformatics UI library](https://github.com/pgdurand/Bioinformatics-UI-API). See [Biojava Convertor Project](https://github.com/pgdurand/BiojavaConvertor) to review how to do that.
 
 --
 (c) 2006-2016 - Patrick G. Durand
