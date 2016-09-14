@@ -73,7 +73,7 @@ Korilog ceased its activities on June 2015, therefore I decided to release these
 
 ##Link with BioJava
 
-Have in mind that this library can be a nice friend to [Biojava](http://biojava.org): Sequence objects from Biojava can be converted quite easily to Sequence objects from [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API) for the purpose of using this [Bioinformatics UI library](https://github.com/pgdurand/Bioinformatics-UI-API). Got it ? No... then you are welcome to ask me! ;-)
+Have in mind that this library can be a nice friend to [Biojava](http://biojava.org): Sequence objects from Biojava can be converted quite easily to Sequence objects from [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API) for the purpose of using this [Bioinformatics UI library](https://github.com/pgdurand/Bioinformatics-UI-API). See [Biojava Convertor Project](https://github.com/pgdurand/BiojavaConvertor) to review how to do that.
 
 --
 (c) 2006-2016 - Patrick G. Durand
