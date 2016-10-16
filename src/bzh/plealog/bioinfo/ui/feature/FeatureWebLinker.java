@@ -16,25 +16,23 @@
  */
 package bzh.plealog.bioinfo.ui.feature;
 
+import java.io.FileReader;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import com.plealog.genericapp.api.log.EZLogger;
 
+import bzh.plealog.bioinfo.ui.resources.SVMessages;
 import bzh.plealog.bioinfo.util.CoreUtil;
 
-import com.plealog.genericapp.api.EZEnvironment;
-import com.plealog.genericapp.api.file.EZFileUtils;
-
 /**
- * This class handles web links that can be used by the FeatureViewer
- * to allow starting a web browser. This can be used to display external
- * links displayed within a feature table.
- * <br><br>
+ * This class handles web links that can be used by the FeatureViewer to allow
+ * starting a web browser. This can be used to display external links displayed
+ * within a feature table. <br>
+ * <br>
  * 
  * Actually, this class is used to handle file "featureWebLink.config" located
  * in the "conf" directory of this project.
@@ -42,50 +40,63 @@ import com.plealog.genericapp.api.file.EZFileUtils;
  * @author Patrick G. Durand
  */
 public class FeatureWebLinker {
-  private Properties      _properties = new Properties();
+  private Properties _properties = new Properties();
   private HashSet<String> _linkTags;
 
-  private static final String CONF_FILE = "featureWebLink.config";
   private static final String LINK_TAG_KEY = "link.tags";
   private static final String ID_TAG = "@ID@";
 
-  protected static final Logger LOGGER = Logger.getLogger("kb."+"FeatureWebLinker");
-
-  private FeatureWebLinker(){
-  }
   /**
    * Constructor.
    * 
-   * @param confURL must be a url targeting a featureWebLink.config resource.
+   * Auto-load featureWebLink.conf resource located in the resources package.
    */
-  public FeatureWebLinker(String confURL){
-    this();
-    InputStream     fis=null;
-    String          tags, key, value = "unknown confURL";
-    String[]        tagsList;
-    Properties      props;
-    Enumeration<?>  e;
+  public FeatureWebLinker() {
+    this(SVMessages.class.getResourceAsStream("featureWebLink.conf"));
+  }
 
-    props = new Properties();
+  /**
+   * Constructor.
+   * 
+   * @param is
+   *          a Stream enabling to read a featureWebLink.conf resource.
+   */
+  public FeatureWebLinker(InputStream is) {
     try {
-      value = EZFileUtils.terminateURL(confURL)+CONF_FILE;
-      if (EZEnvironment.getOSType()!=EZEnvironment.WINDOWS_OS)
-        value = CoreUtil.replaceFirst(value, "file:/", "file:");
-      fis = new URL(value).openStream();
-      props.load(fis);
+      Properties props = new Properties();
+      props.load(is);
+      initProperties(props);
     } catch (Exception ex) {
-      LOGGER.warn("Unable to read FeatureWebLinker: "+value+": "+ex);
+      EZLogger.warn("Unable to read FeatureWebLinker IO stream: "+ex);
       return;
     }
-    finally{
-      try{if(fis!=null){fis.close();}}catch(Exception e2){}
+  }
+
+  /**
+   * Constructor.
+   * 
+   * @param confURL a path targeting a featureWebLink.conf resource.
+   */
+  public FeatureWebLinker(String confpath){
+    try (FileReader fr = new FileReader(confpath)){
+      Properties props = new Properties();
+      props.load(fr);
+      initProperties(props);
+    } catch (Exception ex) {
+      EZLogger.warn("Unable to read FeatureWebLinker: "+confpath+": "+ex);
+      return;
     }
+  }
+  private void initProperties(Properties props) {
+    String tags, key, value;
+    String[] tagsList;
+    Enumeration<?> e;
 
     e = props.keys();
-    while(e.hasMoreElements()){
+    while (e.hasMoreElements()) {
       key = (String) e.nextElement();
       value = props.getProperty(key).trim();
-      if (key.equals(LINK_TAG_KEY)){
+      if (key.equals(LINK_TAG_KEY)) {
         _properties.setProperty(key, value);
         continue;
       }
@@ -94,93 +105,89 @@ public class FeatureWebLinker {
 
     _linkTags = new HashSet<String>();
     tags = _properties.getProperty(LINK_TAG_KEY);
-    if (tags==null)
+    if (tags == null)
       return;
     tagsList = CoreUtil.tokenize(tags);
-    for(String tag : tagsList){
+    for (String tag : tagsList) {
       _linkTags.add(tag);
     }
   }
 
   /**
-   * Figures out if a qualifier name corresponds to a database link. 
-   * Parameter qualName is compared with the list of link tags reported
-   * in the configuration file associated to this FeatureWebLinker. 
+   * Figures out if a qualifier name corresponds to a database link. Parameter
+   * qualName is compared with the list of link tags reported in the
+   * configuration file associated to this FeatureWebLinker.
    */
-  public boolean isLinkTag(String qualName){
-    if (_linkTags==null)
+  public boolean isLinkTag(String qualName) {
+    if (_linkTags == null)
       return false;
     else
       return _linkTags.contains(qualName);
   }
 
-  private String[] getData(String qualName, String qualValue){
+  private String[] getData(String qualName, String qualValue) {
     StringTokenizer tokenizer;
-    String   dbCode, dbId;
-    int      idx;
+    String dbCode, dbId;
+    int idx;
 
-    //when qualName corresponds to a db xref, we can have three solutions
-    //to retrieve the db ID:
-    //either qualValue is formatted as <dbCode>:<dbId>
-    //or it is formated as <dbCode>;<dbId>;
-    //or qualValue is directly a dbID
+    // when qualName corresponds to a db xref, we can have three solutions
+    // to retrieve the db ID:
+    // either qualValue is formatted as <dbCode>:<dbId>
+    // or it is formated as <dbCode>;<dbId>;
+    // or qualValue is directly a dbID
     idx = qualValue.indexOf(';');
-    if (idx!=-1){
+    if (idx != -1) {
       tokenizer = new StringTokenizer(qualValue, ";");
-      if (tokenizer.countTokens()>=2){
+      if (tokenizer.countTokens() >= 2) {
         dbCode = tokenizer.nextToken().trim();
         dbId = tokenizer.nextToken().trim();
-      }
-      else{
+      } else {
         dbCode = qualName;
         dbId = qualValue;
       }
-    }
-    else if ((idx = qualValue.indexOf(':'))!=-1){
+    } else if ((idx = qualValue.indexOf(':')) != -1) {
       dbCode = qualValue.substring(0, idx);
-      dbId = qualValue.substring(idx+1);
-    }
-    else{
+      dbId = qualValue.substring(idx + 1);
+    } else {
       dbCode = qualName;
       dbId = qualValue;
     }
-    return new String[]{dbCode, dbId};
+    return new String[] { dbCode, dbId };
   }
 
-  public String getURLFromQualifier(String qualName, String qualValue){
+  public String getURLFromQualifier(String qualName, String qualValue) {
     String[] str;
 
-    if (isLinkTag(qualName)){
+    if (isLinkTag(qualName)) {
       str = getData(qualName, qualValue);
       return getURL(str[0], str[1]);
-    }
-    else{
+    } else {
       return (null);
     }
   }
 
   /**
-   * Given qualifier name and value, figures out if there is a possible
-   * link to a remote database source.
+   * Given qualifier name and value, figures out if there is a possible link to
+   * a remote database source.
    */
-  public boolean isLinkable(String qualName, String qualValue){
-    return (getURLFromQualifier(qualName, qualValue)!=null);
+  public boolean isLinkable(String qualName, String qualValue) {
+    return (getURLFromQualifier(qualName, qualValue) != null);
   }
 
   /**
    * Returns a full URL given dbCode and id. Parameter dbCode is used to query
-   * the list of database tags reported in the configuration file associated 
-   * to this FeatureWebLinker. If that tag exists, the method gets a URL where
-   * it replaces @ID@ by parameter id. If dbCode does not exist in the configuration
-   * file, then the method returns null.
+   * the list of database tags reported in the configuration file associated to
+   * this FeatureWebLinker. If that tag exists, the method gets a URL where it
+   * replaces @ID@ by parameter id. If dbCode does not exist in the
+   * configuration file, then the method returns null.
    */
-  public String getURL(String dbCode, String id){
+  public String getURL(String dbCode, String id) {
     String url;
 
-    if (dbCode==null || id==null)
+    if (dbCode == null || id == null)
       return null;
     url = _properties.getProperty(dbCode.toLowerCase());
-    if (url==null)
+    if (url == null)
       return null;
     return url.replace(ID_TAG, id);
   }

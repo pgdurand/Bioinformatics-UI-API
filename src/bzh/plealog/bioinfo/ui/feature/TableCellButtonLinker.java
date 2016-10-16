@@ -28,6 +28,7 @@ import javax.swing.JTable;
 
 import com.Ostermiller.util.Browser;
 import com.plealog.genericapp.api.EZEnvironment;
+import com.plealog.genericapp.api.log.EZLogger;
 
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
 
@@ -65,7 +66,7 @@ public class TableCellButtonLinker extends DefaultCellEditor {
           EZEnvironment.setDefaultCursor();
         } catch (IOException ex) {
           String msg = SVMessages.getString("FeatureViewer.7");
-          FeatureWebLinker.LOGGER.warn(msg+": "+ex);
+          EZLogger.warn(msg+": "+ex);
           EZEnvironment.displayWarnMessage(EZEnvironment.getParentFrame(), msg+".");
         }
         fireEditingStopped();

@@ -18,11 +18,7 @@ package bzh.plealog.bioinfo.ui.sequence.extended;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.io.File;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -42,6 +38,7 @@ import bzh.plealog.bioinfo.api.data.sequence.BankSequenceInfo;
 import bzh.plealog.bioinfo.api.data.sequence.DLocation;
 import bzh.plealog.bioinfo.api.data.sequence.DRulerModel;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
+import bzh.plealog.bioinfo.api.data.sequence.DSequenceInfo;
 import bzh.plealog.bioinfo.ui.feature.FeatureStatusViewer;
 import bzh.plealog.bioinfo.ui.feature.FeatureViewer;
 import bzh.plealog.bioinfo.ui.feature.FeatureWebLinker;
@@ -49,10 +46,8 @@ import bzh.plealog.bioinfo.ui.seqinfo.SequenceInfoViewer;
 import bzh.plealog.bioinfo.ui.sequence.event.DSelectionListenerSupport;
 import bzh.plealog.bioinfo.ui.util.ContextMenuElement;
 
-import com.plealog.genericapp.api.EZEnvironment;
-
 /**
- * This is av extended version of the CombinedSequenceViewerExt. It adds a FeatureViewer to
+ * This is an extended version of the CombinedSequenceViewerExt. It adds a FeatureViewer to
  * CombinedSequenceViewerExt.
  * 
  * @author Patrick G. Durand
@@ -67,10 +62,6 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
   private JSplitPane                    _jsp;
   private DSelectionListenerSupport     _lSupport;
 
-  protected static final MessageFormat ID_FORMATTER = new MessageFormat("{0} [{1}-{2}]");
-
-  protected static final SimpleDateFormat TIME_STAMP  = new SimpleDateFormat("yyyyMMdd");
-
   public CombinedAnnotatedSequenceViewer(){
     this(null, true);
   }
@@ -78,6 +69,7 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
    * Constructor.
    * 
    * @param confPath absolute path to the configuration path of the software. Can be null.
+   * If not null, confPath will be used to locate there a file named featureWebLink.config.
    * @param showComposition figures out whether or not the Composition panel has to be shown.
    */
   public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition){
@@ -118,9 +110,15 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
     JTabbedPane jtp2 = new JTabbedPane();
     jtp2.setFocusable(false);
 
-    _featViewer = new FeatureViewer(
-        new FeatureWebLinker(confPath==null ? null : "file:/"+confPath),
-        true);
+    if(confPath!=null){
+      _featViewer = new FeatureViewer(
+          new FeatureWebLinker(confPath),
+          true);
+    }
+    else{
+      _featViewer = new FeatureViewer(
+          new FeatureWebLinker(), true);
+    }
     _featViewer.setAutoSelectFirstFeature(false);
     _seqViewer.registerFeatureViewer(_featViewer);
     _featViewer.addFeatureSelectionListener(new SeqFeatureSelectionListener());
@@ -133,8 +131,7 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
     siP = new JPanel(new BorderLayout());
     siP.add(_seqInfoViewer, BorderLayout.CENTER);
 
-    jtp2.addTab("Features", 
-        EZEnvironment.getImageIcon("feature.png"), featP);
+    jtp2.addTab("Features", featP);
     jtp2.addTab("SeqInfo", siP);
     jtp2.addTab("Status", _featStatViewer);
     _featTabbedPane = jtp2;
@@ -163,9 +160,8 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
    * is only used for display purpose, i.e. the data structure is not processed to show
    * that region.
    */
-  public void setData(BankSequenceDescriptor sd, File source, int from, int to){
+  public void setData(BankSequenceDescriptor sd){
     DSequence    sequence;
-    String       seqName;
     FeatureTable fTable;
     BankSequenceInfo si;
 
@@ -174,51 +170,45 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
       sequence = sd.getSequence();
     else
       sequence = null;
-    if (sequence!=null){
-      seqName = sequence.getSequenceInfo().getName();
-      if (from>0 && to>0){
-        seqName = ID_FORMATTER.format(new Object[]{
-            seqName, from, to});
-        sequence.getSequenceInfo().setName(seqName);
-      }
+    // update sequence info if available
+    if(sequence !=null && sd.getSequenceInfo()!=null){
+      DSequenceInfo sinfo = new DSequenceInfo(sd.getSequenceInfo().getDescription(), sd.getSequenceInfo().getId());
+      sequence.setSequenceInfo(sinfo);
     }
-    _seqViewer.setVisible(sequence!=null);
+    //prepare sequence viewer
+    _seqViewer.setVisible(sequence != null);
     _seqViewer.setSequence(sequence);
+    
     enableToolbar(sequence!=null);
-    _featViewer.clear();
+    
+    //prepare feature viewer
     if (sd!=null)
       fTable = sd.getFeatureTable();
     else
       fTable=null;
+    _featViewer.clear();
     _seqViewer.setFeaturesForCartoView(fTable);
-    if (fTable!=null){
-      if (source!=null){
-        fTable.setSource(source.getAbsolutePath());
-        fTable.setDate(TIME_STAMP.format(new Date(source.lastModified())));
-      }
+    if (fTable != null) {
       fTable.sort(FeatureTable.POS_SORTER);
-      /*_featTabbedPane.setTitleAt(0, 
-                    Messages.getString("BlastSeqAlignViewer.14")+" ("+
-                    fTable.features()+")");*/
     }
-    /*else{
-        	_featTabbedPane.setTitleAt(0, 
-                    Messages.getString("BlastSeqAlignViewer.14"));
-        }*/
     _featViewer.setData(fTable);
     _featStatViewer.setData(fTable);
-    _seqInfoViewer.clear();
+   
+    //prepare sequence info viewer
     if (sd!=null)
       si = sd.getSequenceInfo();
     else
       si = null;
-    if (si!=null)
+    _seqInfoViewer.clear();
+    if (si != null)
       _seqInfoViewer.setData(si);
-    /*if (fTable==null && si==null){
-        	_featTabbedPane.setVisible(false);
-        	_jsp.setDividerLocation(1.0);
-        }*/
-  }
+
+    if (fTable == null) {
+      _featTabbedPane.setVisible(false);
+      _jsp.setDividerLocation(1.0);
+    }
+
+   }
   /**
    * Listener to the selections made on the Feature table.
    */
