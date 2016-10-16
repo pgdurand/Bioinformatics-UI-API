@@ -14,7 +14,7 @@ In other words, this library is the appropriate friend of the [Bioinformatics Co
 
 Here is an example of use:
 
-![DNA Sequence Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/bioinformatics-ui-viewer.png)
+![DNA Sequence Viewer](doc/bioinformatics-ui-viewer.png)
 
 ##Requirements
 
@@ -37,15 +37,27 @@ Since this package is a library, its primary purpose targets a use within other 
 
 You can see how to use the library by having a look at the "example" source package. It contains sample source codes to illustrate the use of these components:
 
-* **BasicSequenceViewer**: see how to create a simple sequence viewer
-* **HSPSequenceViewer**: see how to load and display BLAST pairwise sequence alignments
-![HSP Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/HSPSequenceViewer.png)
-* **CartoViewerPanelApp**: see how to create a graphic representation of a sequence
-![Cartographic Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/CartoViewer.png)
-* **CombinedSequenceViewerApp**: see to create a combined sequence viewer
-![Combined Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/CombinedSequenceViewer.png)
-* **HCAViewerApplet**: see how to create a HCA view of a protein sequence
-![HCA Viewer](https://raw.githubusercontent.com/pgdurand/Bioinformatics-UI-API/master/doc/HCAView.png)
+![BasicSequenceViewer](src/example/BasicSequenceViewer.java): see how to create a simple sequence viewer
+
+![HSPSequenceViewer](src/example/HSPSequenceViewer.java): see how to load and display BLAST pairwise sequence alignments
+
+![HSP Viewer](doc/HSPSequenceViewer.png)
+
+![CartoViewerPanelApp](src/example/CartoViewerPanelApp.java): see how to create a graphic representation of a sequence
+
+![Cartographic Viewer](doc/CartoViewer.png)
+
+![CombinedSequenceViewerApp](src/example/CombinedSequenceViewerApp.java): see to create a combined sequence viewer
+
+![Combined Viewer](doc/CombinedSequenceViewer.png)
+
+![HCAViewerApplet](src/example/HCAViewerApplet.java): see how to create a HCA view of a protein sequence
+
+![HCA Viewer](doc/HCAView.png)
+
+##Link with BioJava
+
+Have in mind that this library can be a nice friend to [Biojava](http://biojava.org): Sequence objects from Biojava can be converted quite easily to Sequence objects from [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API) for the purpose of using this [Bioinformatics UI library](https://github.com/pgdurand/Bioinformatics-UI-API). See [Biojava Convertor Project](https://github.com/pgdurand/BiojavaConvertor) to review how to do that.
 
 ##License and dependencies
 
@@ -62,10 +74,6 @@ Actually, the answer was quite immediate: it took me a few days to fully rewrite
 So, during my holidays on Summer 2004, I started a wonderful story: the creation of what would eventually become the [KoriBlast/ngKLAST suite of softwares](http://plealog.com/korilog/product-sheets/ngKLAST.pdf), the founding software of my company, Korilog.
 
 Korilog ceased its activities on June 2015, therefore I decided to release these UI components to the open source community. 
-
-##Link with BioJava
-
-Have in mind that this library can be a nice friend to [Biojava](http://biojava.org): Sequence objects from Biojava can be converted quite easily to Sequence objects from [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API) for the purpose of using this [Bioinformatics UI library](https://github.com/pgdurand/Bioinformatics-UI-API). Got it ? No... then you are welcome to ask me! ;-)
 
 --
 (c) 2006-2016 - Patrick G. Durand
