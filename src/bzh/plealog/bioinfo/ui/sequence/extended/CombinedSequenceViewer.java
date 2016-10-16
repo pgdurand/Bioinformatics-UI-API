@@ -69,13 +69,13 @@ import bzh.plealog.bioinfo.ui.sequence.event.DDSequenceViewerConn;
 import bzh.plealog.bioinfo.ui.sequence.event.DPatternEvent;
 import bzh.plealog.bioinfo.ui.sequence.event.DPatternListener;
 import bzh.plealog.bioinfo.ui.sequence.event.DSelectionListenerSupport;
-import bzh.plealog.bioinfo.ui.util.ContextMenuElement;
-import bzh.plealog.bioinfo.ui.util.ContextMenuManager;
-import bzh.plealog.bioinfo.ui.util.ImageManagerAction;
 import bzh.plealog.bioinfo.ui.util.SearchField;
 
 import com.plealog.genericapp.api.EZApplicationBranding;
 import com.plealog.genericapp.api.EZEnvironment;
+import com.plealog.genericapp.ui.common.ContextMenuElement;
+import com.plealog.genericapp.ui.common.ContextMenuManager;
+import com.plealog.genericapp.ui.common.ImageManagerAction;
 
 
 /**

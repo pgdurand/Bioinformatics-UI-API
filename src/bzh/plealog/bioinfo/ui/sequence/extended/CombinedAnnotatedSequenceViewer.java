@@ -44,7 +44,8 @@ import bzh.plealog.bioinfo.ui.feature.FeatureViewer;
 import bzh.plealog.bioinfo.ui.feature.FeatureWebLinker;
 import bzh.plealog.bioinfo.ui.seqinfo.SequenceInfoViewer;
 import bzh.plealog.bioinfo.ui.sequence.event.DSelectionListenerSupport;
-import bzh.plealog.bioinfo.ui.util.ContextMenuElement;
+
+import com.plealog.genericapp.ui.common.ContextMenuElement;
 
 /**
  * This is an extended version of the CombinedSequenceViewerExt. It adds a FeatureViewer to

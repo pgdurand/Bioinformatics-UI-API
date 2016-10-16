@@ -36,7 +36,8 @@ import bzh.plealog.bioinfo.ui.sequence.event.DDSequenceViewerConn;
 import bzh.plealog.bioinfo.ui.sequence.event.DSelectionListenerSupport;
 import bzh.plealog.bioinfo.ui.sequence.event.DSequenceSelectionEvent;
 import bzh.plealog.bioinfo.ui.sequence.event.DSequenceSelectionListener;
-import bzh.plealog.bioinfo.ui.util.ContextMenuManager;
+
+import com.plealog.genericapp.ui.common.ContextMenuManager;
 /**
  * This class adds event handling stuff to the basic HCA viewer panel PanelHCA.
  * 

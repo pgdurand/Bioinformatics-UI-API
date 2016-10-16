@@ -42,8 +42,9 @@ import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.api.data.sequence.DSequenceModel;
 import bzh.plealog.bioinfo.api.data.sequence.DSymbol;
 import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
-import bzh.plealog.bioinfo.ui.util.ClipBoardTextTransfer;
-import bzh.plealog.bioinfo.ui.util.ContextMenuManager;
+
+import com.plealog.genericapp.ui.common.ClipBoardTextTransfer;
+import com.plealog.genericapp.ui.common.ContextMenuManager;
 
 /**
  * This is a sequence viewer. This class inherits from a JList so that it is

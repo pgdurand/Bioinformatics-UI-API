@@ -33,7 +33,8 @@ import bzh.plealog.bioinfo.ui.feature.FeatureViewer;
 import bzh.plealog.bioinfo.ui.sequence.basic.AlphabetCounterDualViewer;
 import bzh.plealog.bioinfo.ui.sequence.event.DDSequenceViewerConn;
 import bzh.plealog.bioinfo.ui.sequence.event.DSelectionListenerSupport;
-import bzh.plealog.bioinfo.ui.util.ContextMenuElement;
+
+import com.plealog.genericapp.ui.common.ContextMenuElement;
 
 /**
  * This is a extended version of the CombinedSequenceViewer. It adds an AlphabetCounterDualViewer

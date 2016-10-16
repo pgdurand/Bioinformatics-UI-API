@@ -35,6 +35,8 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import com.plealog.genericapp.ui.common.UIUtils;
+
 
 /**
  * This panel is used to add a header on top of JTableHeader. 

@@ -44,6 +44,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import com.plealog.genericapp.api.EZEnvironment;
+import com.plealog.genericapp.ui.common.GradientPanel;
 
 
 /**
