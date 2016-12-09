@@ -26,6 +26,7 @@ import bzh.plealog.bioinfo.ui.carto.painter.FeaturePainter;
  * @author Patrick G. Durand
  */
 public class FeatureGraphics {
+  private boolean visible = true;
   private Feature feature;
   private FGraphics fGraphics;
   private FeaturePainter fPainter;
@@ -60,4 +61,11 @@ public class FeatureGraphics {
   public void setFPainter(FeaturePainter fPainter) {
     this.fPainter = fPainter;
   }
+  public boolean isVisible() {
+    return visible;
+  }
+  public void setVisible(boolean visible) {
+    this.visible = visible;
+  }
+  
 }
