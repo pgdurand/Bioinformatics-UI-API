@@ -130,4 +130,9 @@ public interface DrawingLane extends SViewerSelectionListener {
    * @param drawingArea the region that has to be used to draw
    */
   public void paintLane(Graphics2D g, Rectangle drawingArea);
+  
+  /**
+   * Set whether or not the drawing lane has to display a grid.
+   */
+  public void setDrawGrid(boolean b);
 }

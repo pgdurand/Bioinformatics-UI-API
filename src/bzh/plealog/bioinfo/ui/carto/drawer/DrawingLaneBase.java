@@ -43,10 +43,13 @@ public abstract class DrawingLaneBase implements DrawingLane{
   private int         bottomMargin;
   private int         refLabelWidth;
   private boolean     zoomable;
-
+  private boolean     drawGrid=false;
+  
   //when updating font size, please update dimension in the constructor
   //this is not good code, but we do not have access to a FontMetrics at this stage
   public static final Font DEF_FNT = new Font("Arial",Font.PLAIN,11);
+
+  private static final Color GRID_CLR = Color.LIGHT_GRAY;
 
   private DrawingLaneBase(){
     super();
@@ -64,6 +67,9 @@ public abstract class DrawingLaneBase implements DrawingLane{
     sequence = seq;
   }
 
+  public void setDrawGrid(boolean b){
+    drawGrid=b;
+  }
   public void setTopMargin(int top){
     topMargin = top;
   }
@@ -219,4 +225,48 @@ public abstract class DrawingLaneBase implements DrawingLane{
     xTick = (int) Math.pow(10,  ((int)log10(labelWidth)) + 1);
     return xTick;
   }
+
+  //Grid is adjusted as we were drawing axis or ruler
+  protected void drawGrid(Graphics2D g, double xFactor, Rectangle drawingArea){
+    Color clr;
+    int i, x3, xTick, from, to, sFrom, sTo, tickFrom, tickTo, sSize;
+    
+    if (!drawGrid)
+      return;
+    
+    xTick = getTickSpacer(drawingArea.width, xFactor);
+    if (xTick==0)
+      return;
+    tickFrom = drawingArea.y;
+    tickTo = drawingArea.y + drawingArea.height;
+    sSize = this.getSequence().size()-1;
+    //these are panel coordinates
+    from = drawingArea.x;
+    to = from + drawingArea.width;
+    //these are ruler absolute positions in the range [0..seqSize]
+    sFrom = (int)((double)from / xFactor);
+    //switch to absolute coord in the range [0..sSize]
+    sFrom = Math.min(Math.max(0,sFrom), sSize);
+    //adjust sFrom so that we are in the xTick numbering
+    sFrom = sFrom - (sFrom%xTick) - 2*xTick;
+    //do the same conversion for To
+    sTo = (int)((double)to / xFactor);
+    sTo = Math.min(Math.max(0,sTo), sSize);
+    sTo = sTo - (sTo%xTick) + 2*xTick;
+
+    //draw ticks
+    clr = g.getColor();
+    g.setColor(GRID_CLR);
+    xTick = xTick/10;
+    for(i=sFrom;i<=sTo;i+=xTick){
+      if (i<0) 
+        continue;
+      if (i>sSize)
+        break;
+      x3 = this.getLeftMargin() + (int)(xFactor * (double) (i));
+      g.drawLine(x3, tickFrom, x3, tickTo);
+    }
+    g.setColor(clr);
+  }
+
 }
