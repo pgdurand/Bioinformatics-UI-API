@@ -4,8 +4,8 @@
 <project name="Plealog-bionfo-ui" default="help" basedir=".">
 
 	<property name="pbc.libName"    value="pb-ui" />
-	<property name="pbc.LibVersion" value="5.0.1" />
-
+	<property name="pbc.LibVersion" value="5.0.2" />
+	
 	<property name="compile.optimize" value="on" />
 	<property name="compile.debug"    value="off" />
 
