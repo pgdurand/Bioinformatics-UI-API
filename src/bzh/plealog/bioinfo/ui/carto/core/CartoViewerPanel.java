@@ -48,6 +48,7 @@ import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.ui.carto.drawer.BasicFeatureDrawingLane;
 import bzh.plealog.bioinfo.ui.carto.drawer.DrawingLane;
 import bzh.plealog.bioinfo.ui.carto.drawer.DrawingLaneBase;
+import bzh.plealog.bioinfo.ui.carto.drawer.FeatureDrawingLane;
 import bzh.plealog.bioinfo.ui.carto.event.SViewerListenerSupport;
 import bzh.plealog.bioinfo.ui.carto.event.SViewerSelectionEvent;
 import bzh.plealog.bioinfo.ui.carto.event.SViewerSelectionListener;
@@ -69,7 +70,8 @@ public class CartoViewerPanel extends JPanel {
   private LaneHeaderList         _jHeader;
   private DSequence              _refSequence;
   private HashSet<String>        _featureTypesToDisplay;
-
+  private boolean                _drawGrid=false;
+  
   public static enum MOUSE_MODE {SELECTION, ZOOM};
 
   private static final Color ZOMMER_CLR = new Color(192, 192, 192, 50);
@@ -97,6 +99,19 @@ public class CartoViewerPanel extends JPanel {
       prepareDisplayDataModel();
     }
   }
+  /**
+   * Figures out whether or not the viewer has to show a drawing grid. 
+   * Such a grid may help the user to analyze the data.
+   */
+  public void setDrawGrid(boolean b){
+    _drawGrid=b;
+    for(DrawingLane dl : _dLanesDataModel){
+      dl.setDrawGrid(b);
+    }
+    for(DrawingLane dl : _dLanesToDisplay){
+      dl.setDrawGrid(b);
+    }
+  }
   private void prepareDisplayDataModel(){
     String fType;
     _dLanesToDisplay.clear();
@@ -116,6 +131,7 @@ public class CartoViewerPanel extends JPanel {
    * Adds a drawing lane to this viewer.
    */
   public synchronized void addDrawingLane(DrawingLane dl){
+    dl.setDrawGrid(_drawGrid);
     _dLanesDataModel.add(dl);
     //super.setPreferredSize(null);
     addSViewerSelectionListener(dl);
@@ -126,6 +142,7 @@ public class CartoViewerPanel extends JPanel {
    */
   public synchronized void addDrawingLanes(List<DrawingLane> dls){
     for(DrawingLane dl : dls){
+      dl.setDrawGrid(_drawGrid);
       _dLanesDataModel.add(dl);
       //super.setPreferredSize(null);
       addSViewerSelectionListener(dl);
@@ -155,6 +172,56 @@ public class CartoViewerPanel extends JPanel {
       return null;
     return _dLanesToDisplay.get(idx);
   }
+  
+  /**
+   * Returns the number of drawing lanes displayed by this viewer.
+   */
+  public int getDrawingLanes(){
+    return _dLanesToDisplay.size();
+  }
+  
+  /**
+   * Turn on or off visibility status of all features contained in 
+   * this drawing lane.
+   * 
+   *  @param visible visibility status
+   */
+  public void setFeaturesVisible(boolean visible){
+    for(DrawingLane dl : _dLanesDataModel){
+      if (dl instanceof FeatureDrawingLane){
+        ((FeatureDrawingLane)dl).setFeaturesVisible(visible);
+      }
+    }
+  }
+  
+  /**
+   * Turn on or off visibility status of a particular feature.
+   * 
+   * @param feat feature for which to switch visibility status
+   * @param visible visibility status
+   * 
+   * @return true if Feature was found in this lane, false otherwise.
+   */
+  public void setFeatureVisible(Feature feat, boolean visible){
+    BasicFeatureDrawingLane fdl;
+    String fType;
+    for(DrawingLane dl : _dLanesDataModel){
+      if (dl instanceof BasicFeatureDrawingLane){
+        fType = ((BasicFeatureDrawingLane)dl).getFeatureTable().get(0).getFeature().getKey();
+        fdl = (BasicFeatureDrawingLane)dl;
+        //Features are organized by types
+        if (feat.getKey().equals(fType)==false){
+          continue;
+        }
+        if (fdl.setFeatureVisible(feat, visible)){
+          //feature is contained in a single lane; so if found, we can
+          //end loop through all features
+          return;
+        }
+      }
+    }
+  }
+  
   public void setReferenceSequence(DSequence seq){
     _refSequence = seq;
   }

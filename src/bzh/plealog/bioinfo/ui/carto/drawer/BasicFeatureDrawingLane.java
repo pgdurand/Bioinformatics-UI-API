@@ -21,6 +21,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,8 +40,11 @@ import bzh.plealog.bioinfo.ui.carto.painter.FeaturePainter;
  * 
  * @author Patrick G. Durand
  */
-public class BasicFeatureDrawingLane extends DrawingLaneBase {
+public class BasicFeatureDrawingLane extends DrawingLaneBase implements FeatureDrawingLane{
+  // used for drawing purpose (features are ordered by location)
   private List<FeatureGraphics> features;
+  // used for fast lookup
+  private Hashtable<Feature, FeatureGraphics> hfeatures;
   private Feature               selectedFeature;
 
   /**this is the minimum width of any feature drawn on a viewer.*/
@@ -59,14 +63,45 @@ public class BasicFeatureDrawingLane extends DrawingLaneBase {
     setFeatureTable(features);
   }
 
+  /**
+   * @see FeatureDrawingLane#getFeatureTable()
+   */
   public List<FeatureGraphics> getFeatureTable() {
     return features;
   }
 
+  /**
+   * @see FeatureDrawingLane#setFeatureTable(List)
+   */
   public void setFeatureTable(List<FeatureGraphics> features) {
     this.features = features;
+    hfeatures = new Hashtable<>(features.size());
+    for(FeatureGraphics fg : features){
+      hfeatures.put(fg.getFeature(), fg);
+    }
   }
 
+  /**
+   * @see FeatureDrawingLane#setFeaturesVisible(boolean)
+   */
+  public void setFeaturesVisible(boolean visible){
+    for(FeatureGraphics fg : features){
+      fg.setVisible(visible);
+    }
+  }
+  
+  /**
+   * @see FeatureDrawingLane#setFeatureVisible(Feature, boolean)
+   */
+  public boolean setFeatureVisible(Feature feat, boolean visible){
+    FeatureGraphics fg = hfeatures.get(feat);
+    if (fg==null){
+      return false;
+    }
+    fg.setVisible(visible);
+    return true;
+  }
+  
   /**
    * Draw a simple line. Used for segmented features.
    */
@@ -88,15 +123,15 @@ public class BasicFeatureDrawingLane extends DrawingLaneBase {
     g.setColor(Color.red);
     y = fbox.y+fbox.height/2;
     r = dbox.intersection(fbox);
-    g.drawLine(r.x, y-2, r.x+r.width, y-2);
-    g.drawLine(r.x, y+2, r.x+r.width, y+2);
+    g.drawLine(r.x-3, y-2, r.x+r.width+2, y-2);
+    g.drawLine(r.x-3, y+2, r.x+r.width+2, y+2);
   }
   /**
    * Highlight the selected feature.
    */
   private void drawSelectedFeatureBox(Graphics2D g, Rectangle fbox, Rectangle dbox){
     g.setColor(Color.red);
-    g.drawRect(fbox.x, dbox.y, fbox.width, dbox.height);
+    g.drawRect(fbox.x-3, dbox.y-1, fbox.width+5, dbox.height+1);
   }
   /**
    * Compute the rectangle in which a feature will be drawn.
@@ -112,7 +147,8 @@ public class BasicFeatureDrawingLane extends DrawingLaneBase {
     to = this.getLeftMargin() + (int)(xFactor * (double) (sTo-decal+DECAL_COORD));
     box.x = from;
     box.y = drawingArea.y + this.getTopMargin();
-    box.width = Math.max(to-from+1, MIN_WIDTH);//a feature has a minimum width of 3 pix
+    //a feature has a minimum width of MIN_WIDTH pix to be visible somehow
+    box.width = Math.max(to-from+1, MIN_WIDTH);
     box.height = drawingArea.height-(this.getTopMargin()+this.getBottomMargin());
   }
   /**
@@ -129,6 +165,7 @@ public class BasicFeatureDrawingLane extends DrawingLaneBase {
     else
       return key.substring(0, idx);
   }
+  
   private void drawFeatures(Graphics2D g, double xFactor, Rectangle drawingArea){
     Iterator<FeatureGraphics> feats;
     FeatureGraphics   fGraphics;
@@ -160,8 +197,14 @@ public class BasicFeatureDrawingLane extends DrawingLaneBase {
     dBoxes = new ArrayList<Rectangle>();
     fBoxes = new ArrayList<Rectangle>();
     gStroke = g.getStroke();//get standard stroke
+    
+    drawGrid(g, xFactor, drawingArea);
+
     while(feats.hasNext()){
       fGraphics = feats.next();
+      if (fGraphics.isVisible()==false){
+        continue;
+      }
       feature = fGraphics.getFeature();
       fg = fGraphics.getFGraphics();
       painter = fGraphics.getFPainter();
@@ -179,6 +222,7 @@ public class BasicFeatureDrawingLane extends DrawingLaneBase {
               g.setStroke(stroke);
             else
               g.setStroke(gStroke);
+            painter.setUserData(feature);
             painter.paintFeature(g, fBox, fg, strand);
           }
           //there is only one feature selected: always draws it
@@ -210,6 +254,7 @@ public class BasicFeatureDrawingLane extends DrawingLaneBase {
                 g.setStroke(stroke);
               else
                 g.setStroke(gStroke);
+              painter.setUserData(feature);
               painter.paintFeature(g, fBox, fg, strand);
             }
             //there is only one feature selected: always draws it
@@ -230,6 +275,7 @@ public class BasicFeatureDrawingLane extends DrawingLaneBase {
       drawSelectedFeatureBox(g, fBoxes.get(i), dBoxes.get(i));
     }
   }
+
   public Object getClickedObject(int x){
     DRulerModel rModel;
     Feature     feat;
@@ -238,6 +284,8 @@ public class BasicFeatureDrawingLane extends DrawingLaneBase {
 
     rModel = this.getSequence().getRulerModel();
     for(FeatureGraphics fg : features){
+      if(fg.isVisible()==false)
+        continue;
       feat = fg.getFeature();
       from = rModel.getRulerPos(feat.getFrom())+DECAL_COORD;
       from = this.getLeftMargin() + (int)(xFactor * (double) from);
@@ -258,7 +306,7 @@ public class BasicFeatureDrawingLane extends DrawingLaneBase {
     return null;
   }
   public void paintLane(Graphics2D g, Rectangle drawingArea) {
-    super.paintLane(g, drawingArea);
+    //super.paintLane(g, drawingArea);
     if (features==null || features.isEmpty())
       return;
     drawFeatures(g, this.computeScaleFactor(), drawingArea);
