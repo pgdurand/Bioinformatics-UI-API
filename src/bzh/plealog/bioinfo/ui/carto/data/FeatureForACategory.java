@@ -133,8 +133,7 @@ public class FeatureForACategory {
       boolean bRet = canAddFeature(feat);
       if (bRet){
         fTable.addFeature(feat);
-        //+2: put 2 pix between 2 consecutive features
-        positionCursor = (int)(xFactor * (double) feat.getTo()) + 2;
+        positionCursor = (int)(xFactor * (double) feat.getTo());
       }
       return bRet;
     }
