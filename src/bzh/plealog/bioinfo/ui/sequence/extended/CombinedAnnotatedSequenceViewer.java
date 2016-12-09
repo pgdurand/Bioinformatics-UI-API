@@ -27,6 +27,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 
+import com.plealog.genericapp.ui.common.ContextMenuElement;
+
 import bzh.plealog.bioinfo.api.data.feature.FRange;
 import bzh.plealog.bioinfo.api.data.feature.Feature;
 import bzh.plealog.bioinfo.api.data.feature.FeatureLocation;
@@ -41,11 +43,10 @@ import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.api.data.sequence.DSequenceInfo;
 import bzh.plealog.bioinfo.ui.feature.FeatureStatusViewer;
 import bzh.plealog.bioinfo.ui.feature.FeatureViewer;
+import bzh.plealog.bioinfo.ui.feature.FeatureViewerFactory;
 import bzh.plealog.bioinfo.ui.feature.FeatureWebLinker;
 import bzh.plealog.bioinfo.ui.seqinfo.SequenceInfoViewer;
 import bzh.plealog.bioinfo.ui.sequence.event.DSelectionListenerSupport;
-
-import com.plealog.genericapp.ui.common.ContextMenuElement;
 
 /**
  * This is an extended version of the CombinedSequenceViewerExt. It adds a FeatureViewer to
@@ -56,7 +57,7 @@ import com.plealog.genericapp.ui.common.ContextMenuElement;
 public class CombinedAnnotatedSequenceViewer extends JPanel {
   private static final long serialVersionUID = 867341572122770228L;
   private CombinedSequenceViewerExt            _seqViewer;
-  private FeatureViewer                 _featViewer;
+  private FeatureViewer             _featViewer;
   private SequenceInfoViewer            _seqInfoViewer;
   private FeatureStatusViewer           _featStatViewer;
   private JTabbedPane                   _featTabbedPane;
@@ -64,8 +65,13 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
   private DSelectionListenerSupport     _lSupport;
 
   public CombinedAnnotatedSequenceViewer(){
-    this(null, true);
+    this(null, true, FeatureViewerFactory.TYPE.COMBO);
   }
+  
+  public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition){
+    this(confPath, showComposition, FeatureViewerFactory.TYPE.COMBO);
+  }
+  
   /**
    * Constructor.
    * 
@@ -73,7 +79,7 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
    * If not null, confPath will be used to locate there a file named featureWebLink.config.
    * @param showComposition figures out whether or not the Composition panel has to be shown.
    */
-  public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition){
+  public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition, FeatureViewerFactory.TYPE type){
     super();
 
     JPanel      seqPanel, tBarPnl;
@@ -92,7 +98,7 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
     tBarPnl.add(tBar, BorderLayout.EAST);
     _seqViewer.setCommandPanel(tBarPnl);
 
-    _jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, seqPanel, getFeatureInfoPanel(confPath));
+    _jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, seqPanel, getFeatureInfoPanel(confPath, type));
     _jsp.setResizeWeight(1.0);
     _jsp.setOneTouchExpandable(true);
 
@@ -103,22 +109,47 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
 
   }
   /**
+   * Figures out whether or not the viewer has to show a drawing grid. 
+   * Such a grid may help the user to analyze the data.
+   */
+  public void setDrawGrid(boolean b){
+    _seqViewer.setDrawGrid(b);
+  }
+  /**
+   * Turn on or off visibility status of all features contained in 
+   * this drawing lane.
+   * 
+   *  @param visible visibility status
+   */
+  public void setFeaturesVisible(boolean visible){
+    _seqViewer.setFeaturesVisible(visible);
+  }
+  
+  /**
+   * Turn on or off visibility status of a particular feature.
+   * 
+   * @param feat feature for which to switch visibility status
+   * @param visible visibility status
+   * 
+   * @return true if Feature was found in this lane, false otherwise.
+   */
+  public void setFeatureVisible(Feature feat, boolean visible){
+    _seqViewer.setFeatureVisible(feat, visible);
+  }
+  /**
    * Utility method to create the Feature panel.
    */
-  private JComponent getFeatureInfoPanel(String confPath){
+  private JComponent getFeatureInfoPanel(String confPath, FeatureViewerFactory.TYPE type){
     JPanel      featP, siP;
 
     JTabbedPane jtp2 = new JTabbedPane();
     jtp2.setFocusable(false);
 
     if(confPath!=null){
-      _featViewer = new FeatureViewer(
-          new FeatureWebLinker(confPath),
-          true);
+      _featViewer = FeatureViewerFactory.getInstance(type, new FeatureWebLinker(confPath), true);
     }
     else{
-      _featViewer = new FeatureViewer(
-          new FeatureWebLinker(), true);
+      _featViewer = FeatureViewerFactory.getInstance(type, new FeatureWebLinker(), true);
     }
     _featViewer.setAutoSelectFirstFeature(false);
     _seqViewer.registerFeatureViewer(_featViewer);

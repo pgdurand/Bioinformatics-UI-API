@@ -24,6 +24,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 
+import com.plealog.genericapp.ui.common.ContextMenuElement;
+
+import bzh.plealog.bioinfo.api.data.feature.Feature;
 import bzh.plealog.bioinfo.api.data.feature.FeatureTable;
 import bzh.plealog.bioinfo.api.data.sequence.DLocation;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
@@ -33,8 +36,6 @@ import bzh.plealog.bioinfo.ui.feature.FeatureViewer;
 import bzh.plealog.bioinfo.ui.sequence.basic.AlphabetCounterDualViewer;
 import bzh.plealog.bioinfo.ui.sequence.event.DDSequenceViewerConn;
 import bzh.plealog.bioinfo.ui.sequence.event.DSelectionListenerSupport;
-
-import com.plealog.genericapp.ui.common.ContextMenuElement;
 
 /**
  * This is a extended version of the CombinedSequenceViewer. It adds an AlphabetCounterDualViewer
@@ -61,6 +62,35 @@ public class CombinedSequenceViewerExt extends JPanel implements DDSequenceViewe
   public CombinedSequenceViewerExt(boolean showComposition){
     super();
     buildGUI(showComposition);
+  }
+
+  /**
+   * Figures out whether or not the viewer has to show a drawing grid. 
+   * Such a grid may help the user to analyze the data.
+   */
+  public void setDrawGrid(boolean b){
+    _seqViewer.setDrawGrid(b);
+  }
+  /**
+   * Turn on or off visibility status of all features contained in 
+   * this drawing lane.
+   * 
+   *  @param visible visibility status
+   */
+  public void setFeaturesVisible(boolean visible){
+    _seqViewer.setFeaturesVisible(visible);
+  }
+  
+  /**
+   * Turn on or off visibility status of a particular feature.
+   * 
+   * @param feat feature for which to switch visibility status
+   * @param visible visibility status
+   * 
+   * @return true if Feature was found in this lane, false otherwise.
+   */
+  public void setFeatureVisible(Feature feat, boolean visible){
+    _seqViewer.setFeatureVisible(feat, visible);
   }
 
   private void buildGUI(boolean showComposition){

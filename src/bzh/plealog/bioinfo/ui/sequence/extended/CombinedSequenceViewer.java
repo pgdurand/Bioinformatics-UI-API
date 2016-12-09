@@ -44,6 +44,12 @@ import javax.swing.JToolBar;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import com.plealog.genericapp.api.EZApplicationBranding;
+import com.plealog.genericapp.api.EZEnvironment;
+import com.plealog.genericapp.ui.common.ContextMenuElement;
+import com.plealog.genericapp.ui.common.ContextMenuManager;
+import com.plealog.genericapp.ui.common.ImageManagerAction;
+
 import bzh.plealog.bioinfo.api.data.feature.Feature;
 import bzh.plealog.bioinfo.api.data.feature.FeatureTable;
 import bzh.plealog.bioinfo.api.data.feature.utils.FeatureSelectionEvent;
@@ -70,12 +76,6 @@ import bzh.plealog.bioinfo.ui.sequence.event.DPatternEvent;
 import bzh.plealog.bioinfo.ui.sequence.event.DPatternListener;
 import bzh.plealog.bioinfo.ui.sequence.event.DSelectionListenerSupport;
 import bzh.plealog.bioinfo.ui.util.SearchField;
-
-import com.plealog.genericapp.api.EZApplicationBranding;
-import com.plealog.genericapp.api.EZEnvironment;
-import com.plealog.genericapp.ui.common.ContextMenuElement;
-import com.plealog.genericapp.ui.common.ContextMenuManager;
-import com.plealog.genericapp.ui.common.ImageManagerAction;
 
 
 /**
@@ -193,6 +193,35 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
   }
 
   /**
+   * Figures out whether or not the viewer has to show a drawing grid. 
+   * Such a grid may help the user to analyze the data.
+   */
+  public void setDrawGrid(boolean b){
+    _cartoViewer.setDrawGrid(b);
+  }
+  
+  /**
+   * Turn on or off visibility status of all features contained in 
+   * this drawing lane.
+   * 
+   *  @param visible visibility status
+   */
+  public void setFeaturesVisible(boolean visible){
+    _cartoViewer.setFeaturesVisible(visible);
+  }
+  
+  /**
+   * Turn on or off visibility status of a particular feature.
+   * 
+   * @param feat feature for which to switch visibility status
+   * @param visible visibility status
+   * 
+   * @return true if Feature was found in this lane, false otherwise.
+   */
+  public void setFeatureVisible(Feature feat, boolean visible){
+    _cartoViewer.setFeatureVisible(feat, visible);
+  }
+  /**
    * Register a FeatureViewer and connect it to sequence viewers.
    */
   public void registerFeatureViewer(FeatureViewer fv){
@@ -292,12 +321,12 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
 
     //adds the features if any
     if (fTable!=null){
-      String[] featureOrdering = {"source","gap","gene","mRNA","CDS"};
+      //String[] featureOrdering = {"source","gap","gene","mRNA","CDS"};
       BasicFeatureOrganizer.organizeFeatures(
           _cartoViewer, 
           fTable, 
           sequence, 
-          featureOrdering, 
+          //featureOrdering, 
           false, 
           sequence.size()//use seq size instead of panel width to compact view as more as possible
           );
