@@ -163,7 +163,8 @@ public class CartoViewerPanelApp {
 
     //create a viewer
     MySequenceViewer viewer = new MySequenceViewer();
-
+    viewer.setDrawGrid(true);
+    
     //create en empty sequence model
     EmptySequence seqStd = new EmptySequence(DViewerSystem.getIUPAC_DNA_Alphabet(), seqsize);
     //sequence coordinate system starts at 1
@@ -177,7 +178,6 @@ public class CartoViewerPanelApp {
         viewer, 
         ft, 
         seqStd, 
-        null, 
         false, 
         seqsize);
 
