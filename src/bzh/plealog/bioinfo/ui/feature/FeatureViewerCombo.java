@@ -16,35 +16,33 @@
  */
 package bzh.plealog.bioinfo.ui.feature;
 
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
-
-import com.plealog.genericapp.api.log.EZLogger;
+import javax.swing.JComboBox;
 
 import bzh.plealog.bioinfo.api.data.feature.FeatureTable;
-import bzh.plealog.bioinfo.ui.util.CheckBoxList;
-import bzh.plealog.bioinfo.ui.util.CheckBoxListItem;
-import bzh.plealog.bioinfo.ui.util.CheckBoxListSelectionListener;
+import bzh.plealog.bioinfo.api.data.feature.utils.FeatureSelectionListener;
 
 /**
  * This class implements a FeatureTable viewer. It adds to this view a
- * Feature Type controller relying on a list.
+ * Feature Type controller relying on a combo-box.
  * 
  * @author Patrick G. Durand
  */
-public class FeatureViewerList extends FeatureViewer {
+public class FeatureViewerCombo extends FeatureViewer {
   private static final long serialVersionUID = -4528182274441928087L;
-  private CheckBoxList  _featTypes;
+  private JComboBox<FeatureType>  _featTypes;
+
+  private String                  _lastSelectedFeatType = FeatureSelectionListener.ALL_TYPE;
   
   /**
    * Default constructor.
    * 
    * @param fwl a FeatureWebLinker instance
    */
-  public FeatureViewerList(FeatureWebLinker fwl){
+  public FeatureViewerCombo(FeatureWebLinker fwl){
     super(fwl, true);
     setUI();
   }
@@ -56,7 +54,7 @@ public class FeatureViewerList extends FeatureViewer {
    * @param showQualTable figures out whether or not the Qualifier table
    * has to be displayed
    */
-  public FeatureViewerList(FeatureWebLinker fwl, boolean showQualTable){
+  public FeatureViewerCombo(FeatureWebLinker fwl, boolean showQualTable){
     super(fwl, showQualTable);
     setUI();
   }
@@ -65,19 +63,20 @@ public class FeatureViewerList extends FeatureViewer {
    * Prepare the UI.
    */
   private void setUI(){
-    _featTypes = new CheckBoxList();
-    _featTypes.addCheckBoxListSelectionListener(new MyCheckBoxListSelectionListener());
+    _featTypes = new JComboBox<FeatureType>();
+    _featTypes.addActionListener(new FeatureTypeDisplayComboListener());
     _featTypes.setEnabled(false);
-    setFeatureTypeController(_featTypes, CONTROLLER_LOCATION.LEFT);
+    setFeatureTypeController(_featTypes, CONTROLLER_LOCATION.TOP);
   }
+
   /**
    * Update the list of FeatureTypes.
    * 
    * @param ft a FeatureTable
    */
-  protected void updateFeatureType(FeatureTable ft){
-    DefaultListModel<CheckBoxListItem> model;
-    ArrayList<String> names;
+  protected void updateFeatureTypeCombo(FeatureTable ft){
+    FeatureType type;
+    int         i, size, selIdx = 0;
     List<FeatureType> featNames;
     
     featNames = getFeatureNamesList(ft);
@@ -85,55 +84,46 @@ public class FeatureViewerList extends FeatureViewer {
       _featTypes.setEnabled(false);
       return;
     }
-    names = new ArrayList<>();
-    model = new DefaultListModel<>();
     _updating = true;
     _featTypes.setEnabled(true);
-    for(FeatureType type : featNames){
-      type.setSelected(true);
-      model.addElement(type);
-      names.add(type.getName());
+    featNames.add(0, new FeatureType(FeatureSelectionListener.ALL_TYPE, ft.features()));
+    size = featNames.size();
+    for(i=0;i<size;i++){
+      type = featNames.get(i);
+      _featTypes.addItem(type);
+      if (type.getName().equals(_lastSelectedFeatType)){
+        selIdx = i;
+      }
     }
-    _featTypes.setModel(model);
     _updating = false;
-    String[] sel = names.toArray(new String[0]);
-    updateFeatureList(sel);
-    fireFeatureTypesSelectedEvent(sel);
+    _featTypes.setSelectedIndex(selIdx);
   }
 
    /**
     * Sets a new FeatureTable.
-    * 
-    * @param fTable a FeatureTable
     */
     public void setData(FeatureTable fTable){
-      _featTypes.removeAll();
+      _featTypes.removeAllItems();
       _featTypes.setEnabled(false);
       super.setData(fTable);
-      updateFeatureType(fTable);
+      updateFeatureTypeCombo(fTable);
     }
+    
+    private class FeatureTypeDisplayComboListener implements ActionListener{
+      public void actionPerformed(ActionEvent e){
+        Object obj;
 
-    private class MyCheckBoxListSelectionListener implements CheckBoxListSelectionListener{
-
-      @Override
-      public void itemSelected(CheckBoxListItem item) {
-        EZLogger.info(item.toString()+": "+item.isSelected());
-        ListModel<CheckBoxListItem> model = _featTypes.getModel();
-        ArrayList<String> names;
-        CheckBoxListItem it;
-        int size = model.getSize();
-        String[] sel;
-        
-        names = new ArrayList<>();
-        for(int i=0;i<size;i++){
-          it = model.getElementAt(i);
-          if (it.isSelected()){
-            names.add(it.getLabel());
-          }
-        }
-        sel = names.toArray(new String[0]);
+        if (_updating)
+          return;
+        JComboBox<?> cb = (JComboBox<?>) e.getSource();
+        obj = cb.getSelectedItem();
+        if (obj==null)
+          return;
+        _lastSelectedFeatType = ((FeatureType)obj).getName();
+        String[] sel = new String[]{_lastSelectedFeatType};
         updateFeatureList(sel);
         fireFeatureTypesSelectedEvent(sel);
       }
     }
+
 }
