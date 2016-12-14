@@ -27,12 +27,12 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.sequence.DAlphabet;
 import bzh.plealog.bioinfo.api.data.sequence.DRulerModel;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.api.data.sequence.DSequenceModel;
 import bzh.plealog.bioinfo.api.data.sequence.DSymbol;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
 import bzh.plealog.bioinfo.ui.sequence.basic.DRulerViewer;
 import bzh.plealog.bioinfo.ui.sequence.basic.MyListSelectionModel;
 import bzh.plealog.bioinfo.ui.sequence.event.DSequenceSelectionEvent;
@@ -142,7 +142,7 @@ public class DSequenceViewerTest extends JPanel {
     chain = buf.toString();
     if (chain.length()==0)
       return null;
-    seq = DViewerSystem.getSequenceFactory().getSequence(new StringReader(chain), alphabet);
+    seq = CoreSystemConfigurator.getSequenceFactory().getSequence(new StringReader(chain), alphabet);
 
     return seq;
   }

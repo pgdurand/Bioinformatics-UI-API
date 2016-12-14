@@ -18,9 +18,9 @@ package test;
 
 import javax.swing.table.AbstractTableModel;
 
+import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.api.data.sequence.DSymbol;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
 
 /**
  * This class implements a sequence model. It is intended to wraps a DSequence
@@ -31,7 +31,7 @@ import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
 public class DSequenceModelTest extends AbstractTableModel {
   private static final long serialVersionUID = 6519721557306681212L;
   private DSequence  _sequence;
-  private DSymbol    _letter = DViewerSystem.getSymbolFactory().createDSymbol(0,' ');
+  private DSymbol    _letter = CoreSystemConfigurator.getSymbolFactory().createDSymbol(0,' ');
 
   /**
    * Constructor from a DSequence.

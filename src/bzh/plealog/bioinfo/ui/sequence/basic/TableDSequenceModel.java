@@ -20,7 +20,7 @@ import javax.swing.table.AbstractTableModel;
 
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.api.data.sequence.DSymbol;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
+import bzh.plealog.bioinfo.util.DAlphabetUtils;
 
 /**
  * This class wraps a DSequence within a TableModel so that it can be displayed
@@ -57,7 +57,7 @@ public class TableDSequenceModel extends AbstractTableModel {
   }
   public void setSequence(DSequence sequence){
     _sequence = sequence;
-    _spaceSymbol = DViewerSystem.getIUPAC_Protein_Alphabet().getSymbol(DSymbol.SPACE_SYMBOL_CODE);
+    _spaceSymbol = DAlphabetUtils.getIUPAC_Protein_Alphabet().getSymbol(DSymbol.SPACE_SYMBOL_CODE);
     computeRowCols();
   }
   public DSequence getSequence(){

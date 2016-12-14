@@ -31,14 +31,16 @@ import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
+import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.feature.FPosition;
 import bzh.plealog.bioinfo.api.data.feature.FRange;
 import bzh.plealog.bioinfo.api.data.feature.Feature;
 import bzh.plealog.bioinfo.api.data.feature.FeatureLocation;
 import bzh.plealog.bioinfo.api.data.feature.FeatureTable;
-import bzh.plealog.bioinfo.api.data.feature.utils.FeatureSystem;
 import bzh.plealog.bioinfo.api.data.feature.utils.FeatureTableFactory;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
 import bzh.plealog.bioinfo.data.sequence.EmptySequence;
 import bzh.plealog.bioinfo.ui.carto.core.CartoViewerPanel;
 import bzh.plealog.bioinfo.ui.carto.core.FeatureGraphics;
@@ -47,9 +49,7 @@ import bzh.plealog.bioinfo.ui.carto.data.FGraphics;
 import bzh.plealog.bioinfo.ui.carto.drawer.BasicFeatureDrawingLane;
 import bzh.plealog.bioinfo.ui.carto.drawer.DrawingLane;
 import bzh.plealog.bioinfo.ui.carto.painter.FeaturePainter;
-
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
+import bzh.plealog.bioinfo.util.DAlphabetUtils;
 
 /**
  * This class implements the control panel of the Cartographic Viewer.
@@ -63,7 +63,7 @@ public class CartoConfigPanel extends JPanel {
   private ClrChooserBtn fgColorBtn;
   private JComboBox<FeaturePainter>     painters;
 
-  private static FeatureTableFactory ftFactory = FeatureSystem.getFeatureTableFactory();
+  private static FeatureTableFactory ftFactory = CoreSystemConfigurator.getFeatureTableFactory();
   private static final String MSG_P1_TIP = "Click to change colour";
   private enum COLOR_ELEMENT {background, border};
 
@@ -131,7 +131,7 @@ public class CartoConfigPanel extends JPanel {
 
   private void prepareFakeViewer(){
 
-    EmptySequence seqStd = new EmptySequence(DViewerSystem.getIUPAC_DNA_Alphabet(), 80);
+    EmptySequence seqStd = new EmptySequence(DAlphabetUtils.getIUPAC_DNA_Alphabet(), 80);
     seqStd.createRulerModel(1, 1);
     previewPanel = new CartoViewerPanel();
     previewPanel.setReferenceSequence(seqStd);

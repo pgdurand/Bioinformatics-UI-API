@@ -42,17 +42,18 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import com.plealog.genericapp.ui.common.ContextMenuManager;
+
+import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.sequence.DLocation;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.api.data.sequence.DSymbol;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
 import bzh.plealog.bioinfo.ui.sequence.event.DDSelectionRange;
 import bzh.plealog.bioinfo.ui.sequence.event.DDSequenceViewerConn;
 import bzh.plealog.bioinfo.ui.sequence.event.DSelectionListenerSupport;
 import bzh.plealog.bioinfo.ui.sequence.event.DSequenceSelectionEvent;
 import bzh.plealog.bioinfo.ui.sequence.event.DSequenceSelectionListener;
-
-import com.plealog.genericapp.ui.common.ContextMenuManager;
+import bzh.plealog.bioinfo.util.DAlphabetUtils;
 
 /**
  * This is a basic sequence viewer implemented on top of a JTable.
@@ -197,7 +198,7 @@ public class DSequenceTableViewer extends JTable implements DSequenceSelectionLi
       loc = lst.get(i);
       buf.append(curSeq.getSubSequence(loc.getFrom(), loc.getTo()+1, false));
     }
-    seq = DViewerSystem.getSequenceFactory().getSequence(new StringReader(buf.toString()), curSeq.getAlphabet());
+    seq = CoreSystemConfigurator.getSequenceFactory().getSequence(new StringReader(buf.toString()), curSeq.getAlphabet());
     seq.createRulerModel(1, 1);
     seq.setSequenceInfo(curSeq.getSequenceInfo());
     return seq;
@@ -299,7 +300,7 @@ public class DSequenceTableViewer extends JTable implements DSequenceSelectionLi
         lbl.setBackground(Color.WHITE);
       }
       symb = (DSymbol) this.getValueAt(row, column);
-      spaceSymb = DViewerSystem.getIUPAC_Protein_Alphabet().getSymbol(DSymbol.SPACE_SYMBOL_CODE);
+      spaceSymb = DAlphabetUtils.getIUPAC_Protein_Alphabet().getSymbol(DSymbol.SPACE_SYMBOL_CODE);
       if (_mListener.isCellMySelected(row, column) && !symb.equals(spaceSymb)){
         lbl.setForeground(clr4);
         lbl.setBackground(clr3);

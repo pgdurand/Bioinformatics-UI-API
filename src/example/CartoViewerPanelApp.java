@@ -36,10 +36,8 @@ import bzh.plealog.bioinfo.api.data.feature.FeatureLocation;
 import bzh.plealog.bioinfo.api.data.feature.FeatureTable;
 import bzh.plealog.bioinfo.api.data.feature.utils.FeatureSelectionEvent;
 import bzh.plealog.bioinfo.api.data.feature.utils.FeatureSelectionListener;
-import bzh.plealog.bioinfo.api.data.feature.utils.FeatureSystem;
 import bzh.plealog.bioinfo.api.data.feature.utils.FeatureTableFactory;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
 import bzh.plealog.bioinfo.data.sequence.EmptySequence;
 import bzh.plealog.bioinfo.ui.carto.core.CartoViewerPanel;
 import bzh.plealog.bioinfo.ui.carto.data.BasicFeatureOrganizer;
@@ -49,6 +47,7 @@ import bzh.plealog.bioinfo.ui.carto.drawer.SequenceDrawingLane;
 import bzh.plealog.bioinfo.ui.carto.event.SViewerSelectionEvent;
 import bzh.plealog.bioinfo.ui.carto.event.SViewerSelectionListener;
 import bzh.plealog.bioinfo.ui.config.UISystemConfigurator;
+import bzh.plealog.bioinfo.util.DAlphabetUtils;
 
 /**
  * A simple class showing how to create, start and display a Carto viewer.
@@ -92,7 +91,7 @@ public class CartoViewerPanelApp {
     Feature             feat;
     FeatureLocation     locs;
 
-    FeatureTableFactory ftFactory = FeatureSystem.getFeatureTableFactory();
+    FeatureTableFactory ftFactory = CoreSystemConfigurator.getFeatureTableFactory();
     ft = ftFactory.getFTInstance();
 
     //simple feature
@@ -166,7 +165,7 @@ public class CartoViewerPanelApp {
     viewer.setDrawGrid(true);
     
     //create en empty sequence model
-    EmptySequence seqStd = new EmptySequence(DViewerSystem.getIUPAC_DNA_Alphabet(), seqsize);
+    EmptySequence seqStd = new EmptySequence(DAlphabetUtils.getIUPAC_DNA_Alphabet(), seqsize);
     //sequence coordinate system starts at 1
     seqStd.createRulerModel(1, 1);
 
@@ -213,7 +212,7 @@ public class CartoViewerPanelApp {
     viewer.addDrawingLane(rdl);
 
     //yet another ruler: relative coordinate system
-    seqStd = new EmptySequence(DViewerSystem.getIUPAC_DNA_Alphabet(), seqsize);
+    seqStd = new EmptySequence(DAlphabetUtils.getIUPAC_DNA_Alphabet(), seqsize);
     seqStd.createRulerModel(-10000, 1);
     rdl = new RulerDrawingLane(seqStd);
     rdl.setReferenceLabelSize(labelLength);

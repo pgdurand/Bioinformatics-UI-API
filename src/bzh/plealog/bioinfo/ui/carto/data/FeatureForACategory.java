@@ -18,9 +18,9 @@ package bzh.plealog.bioinfo.ui.carto.data;
 
 import java.util.ArrayList;
 
+import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.feature.Feature;
 import bzh.plealog.bioinfo.api.data.feature.FeatureTable;
-import bzh.plealog.bioinfo.api.data.feature.utils.FeatureSystem;
 import bzh.plealog.bioinfo.api.data.feature.utils.FeatureTableFactory;
 
 /**
@@ -112,7 +112,7 @@ public class FeatureForACategory {
 
     private OrganizedFeatureTable(){
       super();
-      FeatureTableFactory ftFactory = FeatureSystem.getFeatureTableFactory();
+      FeatureTableFactory ftFactory = CoreSystemConfigurator.getFeatureTableFactory();
       fTable = ftFactory.getFTInstance();
     }
 

@@ -9,21 +9,21 @@ import java.io.StringReader;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+import com.plealog.genericapp.api.EZApplicationBranding;
+import com.plealog.genericapp.api.EZEnvironment;
+import com.plealog.genericapp.api.EZGenericApplication;
+import com.plealog.genericapp.api.EZUIStarterListener;
+
 import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.sequence.DRulerModel;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.api.data.sequence.DSequenceModel;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
 import bzh.plealog.bioinfo.ui.config.UISystemConfigurator;
 import bzh.plealog.bioinfo.ui.sequence.basic.DRulerViewer;
 import bzh.plealog.bioinfo.ui.sequence.basic.DSequenceListViewer;
 import bzh.plealog.bioinfo.ui.sequence.basic.DSequenceViewer;
 import bzh.plealog.bioinfo.ui.sequence.basic.DViewerScroller;
-
-import com.plealog.genericapp.api.EZApplicationBranding;
-import com.plealog.genericapp.api.EZEnvironment;
-import com.plealog.genericapp.api.EZGenericApplication;
-import com.plealog.genericapp.api.EZUIStarterListener;
+import bzh.plealog.bioinfo.util.DAlphabetUtils;
 
 /**
  * A sample application to illustrate how to create a simple sequence viewer.
@@ -83,8 +83,8 @@ public class BasicSequenceViewer {
 
       // we use the DViewerSystem to get a DSequence factory. It aims at creating
       // a DSequence
-      seq = DViewerSystem.getSequenceFactory().getSequence(new StringReader(str),
-          DViewerSystem.getIUPAC_Protein_Alphabet());
+      seq = CoreSystemConfigurator.getSequenceFactory().getSequence(new StringReader(str),
+          DAlphabetUtils.getIUPAC_Protein_Alphabet());
       // by default, a DSequence is never associated to a coordinate system. So, we
       // specifically creates a coordinate system starting at one.
       seq.createRulerModel(1,1);

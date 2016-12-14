@@ -26,9 +26,9 @@ import com.plealog.genericapp.api.EZUIStarterListener;
 
 import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
 import bzh.plealog.bioinfo.ui.config.UISystemConfigurator;
 import bzh.plealog.bioinfo.ui.sequence.extended.CombinedSequenceViewer;
+import bzh.plealog.bioinfo.util.DAlphabetUtils;
 
 /**
  * A simple class showing how to create, start and display a Combined Sequence Viewer.
@@ -79,7 +79,7 @@ public class CombinedSequenceViewerApp {
               "VATAILSGITSSLTGNSLGRNDLADGVNSGQGLGIEIIGTLQLVLCVLATTDR"+
               "RRRDLGGSAPLAIGLSVALGHLLAIDYTGCGINPARSFGSAVITHNFSNHWIFW"+
               "VGPFIGGALAVLIYDFILAPRSSDLTDRVKVWTSGQVEEYDLDADDINSRVEMKPK";
-      seq = DViewerSystem.getSequenceFactory().getSequence(new StringReader(prot), DViewerSystem.getIUPAC_Protein_Alphabet());
+      seq = CoreSystemConfigurator.getSequenceFactory().getSequence(new StringReader(prot), DAlphabetUtils.getIUPAC_Protein_Alphabet());
 
       //use the following to display a DNA sequence sample
       @SuppressWarnings("unused")

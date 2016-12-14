@@ -37,14 +37,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import javax.swing.event.MouseInputAdapter;
 
+import com.plealog.genericapp.ui.common.ClipBoardTextTransfer;
+import com.plealog.genericapp.ui.common.ContextMenuManager;
+
+import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.sequence.DAlphabet;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.api.data.sequence.DSequenceModel;
 import bzh.plealog.bioinfo.api.data.sequence.DSymbol;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
-
-import com.plealog.genericapp.ui.common.ClipBoardTextTransfer;
-import com.plealog.genericapp.ui.common.ContextMenuManager;
 
 /**
  * This is a sequence viewer. This class inherits from a JList so that it is
@@ -163,7 +163,7 @@ public class DSequenceListViewer extends JList<DSymbol> {
     chain = buf.toString();
     if (chain.length()==0)
       return null;
-    seq = DViewerSystem.getSequenceFactory().getSequence(new StringReader(chain), alphabet);
+    seq = CoreSystemConfigurator.getSequenceFactory().getSequence(new StringReader(chain), alphabet);
 
     return seq;
   }

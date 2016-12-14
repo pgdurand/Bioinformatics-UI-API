@@ -28,16 +28,16 @@ import java.util.List;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import com.plealog.genericapp.ui.common.ContextMenuManager;
+
+import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.sequence.DLocation;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
 import bzh.plealog.bioinfo.ui.sequence.event.DDSelectionRange;
 import bzh.plealog.bioinfo.ui.sequence.event.DDSequenceViewerConn;
 import bzh.plealog.bioinfo.ui.sequence.event.DSelectionListenerSupport;
 import bzh.plealog.bioinfo.ui.sequence.event.DSequenceSelectionEvent;
 import bzh.plealog.bioinfo.ui.sequence.event.DSequenceSelectionListener;
-
-import com.plealog.genericapp.ui.common.ContextMenuManager;
 /**
  * This class adds event handling stuff to the basic HCA viewer panel PanelHCA.
  * 
@@ -112,7 +112,7 @@ public class DDPanelHCA extends PanelHca implements DDSequenceViewerConn, DSeque
       loc = lst.get(i);
       buf.append(curSeq.getSubSequence(loc.getFrom(), loc.getTo()+1, false));
     }
-    seq = DViewerSystem.getSequenceFactory().getSequence(new StringReader(buf.toString()), curSeq.getAlphabet());
+    seq = CoreSystemConfigurator.getSequenceFactory().getSequence(new StringReader(buf.toString()), curSeq.getAlphabet());
     seq.createRulerModel(1, 1);
     seq.setSequenceInfo(curSeq.getSequenceInfo());
     return seq;

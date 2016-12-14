@@ -13,6 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+import com.plealog.genericapp.api.EZApplicationBranding;
+import com.plealog.genericapp.api.EZEnvironment;
+import com.plealog.genericapp.api.EZGenericApplication;
+import com.plealog.genericapp.api.EZUIStarterListener;
+
 import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.searchresult.SRHsp;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
@@ -20,18 +25,13 @@ import bzh.plealog.bioinfo.api.data.searchresult.io.SRLoader;
 import bzh.plealog.bioinfo.api.data.sequence.DRulerModel;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.api.data.sequence.DSequenceModel;
-import bzh.plealog.bioinfo.api.data.sequence.DViewerSystem;
 import bzh.plealog.bioinfo.io.searchresult.SerializerSystemFactory;
 import bzh.plealog.bioinfo.ui.config.UISystemConfigurator;
 import bzh.plealog.bioinfo.ui.sequence.basic.DRulerViewer;
 import bzh.plealog.bioinfo.ui.sequence.basic.DSequenceListViewer;
 import bzh.plealog.bioinfo.ui.sequence.basic.DSequenceViewer;
 import bzh.plealog.bioinfo.ui.sequence.basic.DViewerScroller;
-
-import com.plealog.genericapp.api.EZApplicationBranding;
-import com.plealog.genericapp.api.EZEnvironment;
-import com.plealog.genericapp.api.EZGenericApplication;
-import com.plealog.genericapp.api.EZUIStarterListener;
+import bzh.plealog.bioinfo.util.DAlphabetUtils;
 
 /**
  * A sample application to illustrate how to create a simple sequence viewer.
@@ -93,8 +93,8 @@ public class HSPSequenceViewer {
 
       // we use the DViewerSystem to get a DSequence factory. It aims at creating
       // a DSequence
-      seq = DViewerSystem.getSequenceFactory().getSequence(new StringReader(str),
-          DViewerSystem.getIUPAC_Protein_Alphabet());
+      seq = CoreSystemConfigurator.getSequenceFactory().getSequence(new StringReader(str),
+          DAlphabetUtils.getIUPAC_Protein_Alphabet());
       // by default, a DSequence is never associated to a coordinate system. So, we
       // specifically creates a coordinate system starting at one.
       seq.createRulerModel(startpos,1);
@@ -119,8 +119,8 @@ public class HSPSequenceViewer {
       example.setFont(_fnt);
 
       DSequenceModel model = new DSequenceModel(
-          DViewerSystem.getSequenceFactory().getSequence(new StringReader(seq),
-              DViewerSystem.getComparer_Alphabet()));
+          CoreSystemConfigurator.getSequenceFactory().getSequence(new StringReader(seq),
+              DAlphabetUtils.getComparer_Alphabet()));
       example.setModel( model );
       return (example);
     }
