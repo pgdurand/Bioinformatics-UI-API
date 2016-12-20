@@ -52,7 +52,7 @@ public class CombinedSequenceViewerExt extends JPanel implements DDSequenceViewe
    * Default constructor.
    */
   public CombinedSequenceViewerExt(){
-    this(true);
+    this(true, true, true, true, true);
   }
   /**
    * Constructor.
@@ -60,10 +60,14 @@ public class CombinedSequenceViewerExt extends JPanel implements DDSequenceViewe
    * @param showComposition pass true to show sequence composition viewer. false otherwise.
    */
   public CombinedSequenceViewerExt(boolean showComposition){
-    super();
-    buildGUI(showComposition);
+    this(showComposition, true, true, true, true);
   }
 
+  public CombinedSequenceViewerExt(boolean showComposition, boolean showHCA, boolean showSequence, 
+      boolean showDefaultToolbar, boolean showPatternSearch){
+    super();
+    buildGUI(showComposition, showHCA, showSequence, showDefaultToolbar, showPatternSearch);
+  }
   /**
    * Figures out whether or not the viewer has to show a drawing grid. 
    * Such a grid may help the user to analyze the data.
@@ -93,11 +97,12 @@ public class CombinedSequenceViewerExt extends JPanel implements DDSequenceViewe
     _seqViewer.setFeatureVisible(feat, visible);
   }
 
-  private void buildGUI(boolean showComposition){
+  private void buildGUI(boolean showComposition, boolean showHCA, boolean showSequence, 
+      boolean showDefaultToolbar, boolean showPatternSearch){
     JTabbedPane jtp;
     JComponent  compo;
 
-    _seqViewer = new CombinedSequenceViewer();
+    _seqViewer = new CombinedSequenceViewer(showHCA, showSequence, showDefaultToolbar, showPatternSearch);
 
     if(showComposition){
       _alphViewer = new AlphabetCounterDualViewer();

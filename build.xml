@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- ============================================================= -->
-<project name="Plealog-bionfo-ui" default="help" basedir=".">
+<project name="Plealog-bioinfo-ui" default="help" basedir=".">
 
 	<property name="pbc.libName"    value="pb-ui" />
-	<property name="pbc.LibVersion" value="5.0.2" />
+	<property name="pbc.LibVersion" value="5.1.0" />
 	
 	<property name="compile.optimize" value="on" />
 	<property name="compile.debug"    value="off" />
@@ -51,6 +51,9 @@
 			<fileset dir="${src}">
 				<!-- configuration API -->
 				<include name="bzh/plealog/bioinfo/ui/config/**"/>
+
+        <!-- the BLAST viewer -->
+        <include name="bzh/plealog/bioinfo/ui/blast/**"/>
 
 				<!-- the cartographic viewer -->
 				<include name="bzh/plealog/bioinfo/ui/carto/**"/>

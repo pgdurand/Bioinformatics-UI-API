@@ -65,11 +65,21 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
   private DSelectionListenerSupport     _lSupport;
 
   public CombinedAnnotatedSequenceViewer(){
-    this(null, true, FeatureViewerFactory.TYPE.COMBO);
+    this(null, true, true, true, true, true, false, FeatureViewerFactory.TYPE.COMBO);
   }
   
   public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition){
-    this(confPath, showComposition, FeatureViewerFactory.TYPE.COMBO);
+    this(confPath, showComposition, true, true, true, true, false, FeatureViewerFactory.TYPE.COMBO);
+  }
+  
+  public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition, 
+      FeatureViewerFactory.TYPE type){
+    this(confPath, showComposition, true, true, true, true, false, type);
+  }
+  public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition, boolean showHCA, 
+      boolean showSequence, boolean showDefaultToolbar, boolean showPatternSearch, 
+      FeatureViewerFactory.TYPE type){
+    this(confPath, showComposition, true, true, true, true, false, type);
   }
   
   /**
@@ -79,13 +89,15 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
    * If not null, confPath will be used to locate there a file named featureWebLink.config.
    * @param showComposition figures out whether or not the Composition panel has to be shown.
    */
-  public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition, FeatureViewerFactory.TYPE type){
+  public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition, boolean showHCA, 
+      boolean showSequence, boolean showDefaultToolbar, boolean showPatternSearch, 
+      boolean showSimpleFeatureTable, FeatureViewerFactory.TYPE type){
     super();
 
     JPanel      seqPanel, tBarPnl;
     JToolBar    tBar;
 
-    _seqViewer = new CombinedSequenceViewerExt(showComposition);
+    _seqViewer = new CombinedSequenceViewerExt(showComposition, showHCA, showSequence, showDefaultToolbar, showPatternSearch);
     _lSupport = new DSelectionListenerSupport();
     _seqViewer.registerSelectionListenerSupport(_lSupport);
 
@@ -98,7 +110,7 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
     tBarPnl.add(tBar, BorderLayout.EAST);
     _seqViewer.setCommandPanel(tBarPnl);
 
-    _jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, seqPanel, getFeatureInfoPanel(confPath, type));
+    _jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, seqPanel, getFeatureInfoPanel(confPath, showSimpleFeatureTable, type));
     _jsp.setResizeWeight(1.0);
     _jsp.setOneTouchExpandable(true);
 
@@ -139,7 +151,7 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
   /**
    * Utility method to create the Feature panel.
    */
-  private JComponent getFeatureInfoPanel(String confPath, FeatureViewerFactory.TYPE type){
+  private JComponent getFeatureInfoPanel(String confPath, boolean showSimpleFeatureTable, FeatureViewerFactory.TYPE type){
     JPanel      featP, siP;
 
     JTabbedPane jtp2 = new JTabbedPane();
@@ -160,6 +172,9 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
     featP = new JPanel(new BorderLayout());
     featP.add(_featViewer, BorderLayout.CENTER);
 
+    if (showSimpleFeatureTable)
+      return featP;
+    
     siP = new JPanel(new BorderLayout());
     siP.add(_seqInfoViewer, BorderLayout.CENTER);
 
@@ -170,7 +185,7 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
     _featTabbedPane.setPreferredSize(new Dimension(150,150));
     return jtp2;
   }
-  protected void cleanViewer(){
+  public void cleanViewer(){
     _seqViewer.setSequence(null);
     _featViewer.clear();
     _seqInfoViewer.clear();
@@ -184,13 +199,6 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
    * Sets new data in this viewer.
    * 
    * @param sd the data to display
-   * @param source origin of the data
-   * @param from starting sequence position that is really shown here. This parameter
-   * is only used for display purpose, i.e. the data structure is not processed to show
-   * that region.
-   * @param to ending sequence position that is really shown here. This parameter
-   * is only used for display purpose, i.e. the data structure is not processed to show
-   * that region.
    */
   public void setData(BankSequenceDescriptor sd){
     DSequence    sequence;
@@ -236,7 +244,9 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
       _seqInfoViewer.setData(si);
 
     if (fTable == null) {
-      _featTabbedPane.setVisible(false);
+      if (_featTabbedPane!=null) {
+        _featTabbedPane.setVisible(false);
+      }
       _jsp.setDividerLocation(1.0);
     }
 

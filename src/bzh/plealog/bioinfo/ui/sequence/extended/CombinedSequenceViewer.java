@@ -112,7 +112,8 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
   private SearchField             _sf;
   private JTabbedPane             _jtp;
   private FeatureViewer           _featureViewer;
-
+  private boolean                 _showDefaultToolbar;
+  
   private static final String NAME_FIELD_HDR = "Name:";
   private static final String SIZE_FIELD_HDR = "Size:";
   private static final String NOT_FOUND = " not found.";
@@ -121,9 +122,13 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
    * Default constructor.
    */
   public CombinedSequenceViewer(){
+    this(true, true, true, true);
+  }
+  public CombinedSequenceViewer(boolean showHCA, boolean showSequence, boolean showDefaultToolbar, boolean showPatternSearch){
     super();
     JPanel      seqPnl, patternPnl;
 
+    _showDefaultToolbar = showDefaultToolbar;
     _seqViewer = new DSequenceTableViewer();
     _hcaViewer = new DDPanelHCA();
     _rowHeaderTable = new RowHeaderTable(null);
@@ -151,18 +156,23 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
     patternPnl.add(_sf);
     _sf.setEnabled(false);
     _headerPnl = new JPanel(new BorderLayout());
-    _headerPnl.add(patternPnl, BorderLayout.WEST);
+    if (showPatternSearch)
+      _headerPnl.add(patternPnl, BorderLayout.WEST);
 
-    _jtp = new JTabbedPane();
-    _jtp.setFocusable(false);
-    _jtp.setTabPlacement(JTabbedPane.LEFT);
-    //jtp.setOpaque(false);
-    _jtp.add("Graphic", prepareCartoViewer());
-    _jtp.add("Sequence", _mainScroller);
-    _jtp.add("HCA", new JScrollPane(_hcaViewer));
     this.setLayout(new BorderLayout());
     this.add(getHeaderpanel(), BorderLayout.NORTH);
-    this.add(_jtp, BorderLayout.CENTER);
+    if (!showHCA && !showSequence){
+      this.add(prepareCartoViewer(showDefaultToolbar), BorderLayout.CENTER);
+    }
+    else{
+      _jtp = new JTabbedPane();
+      _jtp.setFocusable(false);
+      _jtp.setTabPlacement(JTabbedPane.LEFT);
+      _jtp.add("Graphic", prepareCartoViewer(showDefaultToolbar));
+      _jtp.add("Sequence", _mainScroller);
+      _jtp.add("HCA", new JScrollPane(_hcaViewer));
+      this.add(_jtp, BorderLayout.CENTER);
+    }
     this.add(_headerPnl, BorderLayout.SOUTH);
 
   }
@@ -170,7 +180,7 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
   /**
    * Setup a Carto Viewer.
    */
-  private JPanel prepareCartoViewer(){
+  private JPanel prepareCartoViewer(boolean showDefaultToolbar){
     JScrollPane scroller;
     JPanel      pnl;
 
@@ -187,7 +197,8 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
     cmdPnl.add(_cartoCtrlPanel, BorderLayout.WEST);
 
     pnl = new JPanel(new BorderLayout());
-    pnl.add(cmdPnl, BorderLayout.NORTH);
+    if (showDefaultToolbar)
+      pnl.add(cmdPnl, BorderLayout.NORTH);
     pnl.add(scroller, BorderLayout.CENTER);
     return pnl;
   }
@@ -237,6 +248,8 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
     ImageIcon     icon;
     ImageManagerAction imager;
 
+    if (!_showDefaultToolbar)
+      return;
     tBar.addSeparator();
     //Capture
     icon = EZEnvironment.getImageIcon("imager.png");
@@ -468,11 +481,13 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
       _seqViewer.scrollRectToVisible(rect);
       if (sequence.getAlphabet().getType()==DAlphabet.PROTEIN_ALPHABET){
         _hcaViewer.setSequence(sequence);
-        _jtp.setEnabledAt(2, true);
+        if (_jtp!=null)
+          _jtp.setEnabledAt(2, true);
       }
       else{
         _hcaViewer.setSequence((DSequence)null);
-        _jtp.setEnabledAt(2, false);
+        if (_jtp!=null)
+          _jtp.setEnabledAt(2, false);
       }
     }
   }

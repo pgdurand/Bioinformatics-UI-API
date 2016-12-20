@@ -34,6 +34,7 @@ Since this package is a library, its primary purpose targets a use within other 
 6. CombinedSequenceViewer: combine viewers 2, 3 and 4 into a single one
 7. CombinedSequenceViewerExt: combine viewers 2, 3, 4 and 5 into a single one
 8. CombinedAnnotatedSequenceViewer: everything in a single full-featured viewer (above picture)
+9. BlastViewerPanelBase: a graphical BLAST results viewer component
 
 You can see how to use the library by having a look at the "example" source package. It contains sample source codes to illustrate the use of these components:
 
@@ -54,6 +55,10 @@ You can see how to use the library by having a look at the "example" source pack
 ![HCAViewerApplet](src/example/HCAViewerApplet.java): see how to create a HCA view of a protein sequence
 
 ![HCA Viewer](doc/HCAView.png)
+
+![BlastViewer](src/example/BasicBlastViewer.java): see how to create a BLAST Viewer tool
+
+![BlastViewer](doc/BlastViewer.png)
 
 ##Link with BioJava
 
