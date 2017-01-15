@@ -38,6 +38,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -58,6 +59,7 @@ import javax.swing.table.TableModel;
 
 import bzh.plealog.bioinfo.api.data.searchresult.SRHit;
 import bzh.plealog.bioinfo.api.data.searchresult.SRHsp;
+import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
 import bzh.plealog.bioinfo.api.data.sequence.BankSequenceInfo;
 import bzh.plealog.bioinfo.api.data.sequence.DSeqUtils;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
@@ -153,7 +155,7 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
   private static final String       EMPTY_STR                = " ";
 
   /**
-   * Default constructor. 
+   * Default constructor.
    */
   protected BlastHitTable() {
     this(null);
@@ -165,7 +167,7 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
    * instance of a BlastHitList, you should use a different id for each of them.
    */
   protected BlastHitTable(String id) {
-    JPanel panel;
+    JPanel panel, actPnl;
     JTableHeader tHeader;
     TableColumnManager tcm;
 
@@ -207,6 +209,13 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
 
     this.setLayout(new BorderLayout());
     this.add(panel, BorderLayout.CENTER);
+
+    JToolBar optionsTBar = getToolbar();
+    if (optionsTBar != null) {
+      actPnl = new JPanel(new BorderLayout());
+      actPnl.add(optionsTBar, BorderLayout.EAST);
+      this.add(actPnl, BorderLayout.SOUTH);
+    }
     _mainPanel = panel;
     activateActions(false);
     activateSelBasedActions(false, true);
@@ -218,14 +227,13 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
    * column display to on or off.
    */
   protected Action[] getTableSpecialActionsForMenu() {
-    /*EditColorPolicyAction editAct;
-    Action[] acts;
+    return null;
+  }
 
-    acts = new Action[1];
-    editAct = new EditColorPolicyAction("Edit colors");
-    editAct.setParent(_blastList);
-    acts[0] = editAct;
-    return acts;*/
+  /**
+   * Creates a toolbar with additional functions.
+   */
+  protected JToolBar getToolbar() {
     return null;
   }
 
@@ -236,7 +244,7 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
     String defColIDs = null;
     List<Integer> idSet;
 
-    if(ConfigManager.isEnableSerialApplicationProperty()){
+    if (ConfigManager.isEnableSerialApplicationProperty()) {
       defColIDs = EZEnvironment.getApplicationProperty(_tableID
           + DEF_COL_PROP_KEY);
     }
@@ -376,7 +384,6 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
     return -1;
   }
 
-
   /**
    * Implementation of BlastIterationListListener interface. This implementation
    * is intended to listen to notifications from BlastNavigator.
@@ -393,6 +400,18 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
         _curIteration = iter;
       }
     }
+  }
+
+  public SROutput getResult(){
+    return _curIteration.getEntry().getResult();
+  }
+  
+  public int getSelectedIteration(){
+    return _curIteration.getIterNum();
+  }
+  
+  public int[] getSelectedHits(){
+    return _blastList.getSelectedHitIds();
   }
 
   /**
@@ -492,7 +511,7 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
    * This method is called when a hit is selected in the Table.
    */
   public void blastHitHspChanged(BlastHitHSP bhh, int hspNum) {
-    
+
   }
 
   /**
@@ -613,9 +632,9 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
 
     public void updateColumnHeaders(TableHeaderColumnItem[] colH) {
       ((BlastHitTableModel) this.getModel()).setColHeaders(colH);
-      if(ConfigManager.isEnableSerialApplicationProperty()){
+      if (ConfigManager.isEnableSerialApplicationProperty()) {
         EZEnvironment.setApplicationProperty(_tableID + DEF_COL_PROP_KEY,
-          TableColumnManager.getDelColumns(colH));
+            TableColumnManager.getDelColumns(colH));
       }
     }
 
@@ -771,8 +790,8 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
    * The hit table model.
    */
   private class BlastHitTableModel extends AbstractTableModel {
-    private static final long   serialVersionUID = -8111948924562038269L;
-    private BlastHitHSP[] _hits;
+    private static final long serialVersionUID = -8111948924562038269L;
+    private BlastHitHSP[]     _hits;
 
     public BlastHitTableModel() {
     }
