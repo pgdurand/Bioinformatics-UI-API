@@ -27,9 +27,6 @@ public interface SeqAlignViewerFactory {
 
   /**
    * Create a new instance of a SeqAlignViewer.
-   * 
-   * @param id unique identifier of the table. If only one viewer is in use in
-   * a software then this value can be set to null.
    */
   public SeqAlignViewer createViewer();
 }

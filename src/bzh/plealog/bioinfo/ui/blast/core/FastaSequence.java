@@ -68,7 +68,7 @@ public class FastaSequence implements Serializable {
    * 
    * @param header
    *          Fasta header
-   * @param letters
+   * @param seq
    *          sequence
    * @param forceStrictAlphabet
    *          true or false

@@ -146,7 +146,7 @@ public class HspValuesPanel extends JPanel {
   /**
    * Displays the data for a particular HSP.
    * 
-   * @param hit
+   * @param bhh
    *          the hit containing the HSP to display
    * @param hspNum
    *          the HSP to display

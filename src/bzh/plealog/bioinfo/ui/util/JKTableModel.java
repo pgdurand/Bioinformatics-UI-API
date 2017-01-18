@@ -127,10 +127,10 @@ public abstract class JKTableModel extends AbstractTableModel {
   }
 
   /**
-   * To manage headers background color
+   * To manage headers background color.
    * 
-   * @param columnName
-   * @return
+   * @param columnName name of a column
+   * @return a color
    */
   public Color getHeaderColumn(String columnName) {
     return null;

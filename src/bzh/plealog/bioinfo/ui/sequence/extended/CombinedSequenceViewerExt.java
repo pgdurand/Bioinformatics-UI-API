@@ -90,8 +90,6 @@ public class CombinedSequenceViewerExt extends JPanel implements DDSequenceViewe
    * 
    * @param feat feature for which to switch visibility status
    * @param visible visibility status
-   * 
-   * @return true if Feature was found in this lane, false otherwise.
    */
   public void setFeatureVisible(Feature feat, boolean visible){
     _seqViewer.setFeatureVisible(feat, visible);

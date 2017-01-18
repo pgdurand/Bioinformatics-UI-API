@@ -53,12 +53,20 @@ public class BlastEntry implements Serializable {
   /**
    * Create a BlastEntry.
    * 
+   * @param bClientName
+   *          name of the client used to create this Blast result
    * @param name
    *          the name of this Blast result
-   * @param the
+   * @param path the
    *          absolute path where the file is located
    * @param result
    *          a Blast Result
+   * @param query
+   *          the query sequence
+   * @param dbName
+   *          name of the subject databank
+   * @param view
+   *          true if this is a simple view, false otherwise.
    */
   public BlastEntry(String bClientName, String name, String path,
       SROutput result, DSequence query, String dbName, Boolean view) {

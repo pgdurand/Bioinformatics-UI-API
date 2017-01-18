@@ -53,7 +53,7 @@ public interface FeatureOrganizerManager {
    * for a particular Feature.
    * 
    * @param feat a feature for which FeatureOrganizer wants to know FeaturePainter
-   * @param fg the default painter the FeatureOrganizer is going to assign to the feature.
+   * @param fp the default painter the FeatureOrganizer is going to assign to the feature.
    * If you do not want to modify it, simply return this parameter as it is, or null. If
    * you do want to set a different painter, create a new painter and return it. But never
    * modify this parameter.
@@ -62,6 +62,11 @@ public interface FeatureOrganizerManager {
    */
   public FeaturePainter getFeaturePainter(Feature feat, FeaturePainter fp);
   
+  /**
+   * Return the name of the feature used as the reference.
+   * 
+   * @return feature name.
+   */
   public String getReferenceFeatureName();
   
 }

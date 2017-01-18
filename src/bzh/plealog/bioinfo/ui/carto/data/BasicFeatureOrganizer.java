@@ -148,8 +148,6 @@ public class BasicFeatureOrganizer {
    * @param viewer the panel used to display the features.
    * @param ft the features to display.
    * @param seq the DNA sequence on which the features will be mapped.
-   * @param featureOrdering an array of feature types representing the order to use to display
-   * feature lanes. Can be null.
    * @param forceOneLanePerCategory if true then all features of a same type are put within a
    * single lane.
    * @param viewerWidth the width of the viewing area. Unit is pixels.

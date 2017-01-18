@@ -117,12 +117,12 @@
 		<delete dir="${Ddoc.api}" />
 		<mkdir dir="${Ddoc.api}" />
 		<javadoc
-    packagenames="bzh.plealog.bioinfo.ui.config,bzh.plealog.bioinfo.ui.carto.*,bzh.plealog.bioinfo.ui.feature.*,bzh.plealog.bioinfo.ui.hca.*,bzh.plealog.bioinfo.ui.resources.*,bzh.plealog.bioinfo.ui.seqinfo.*,bzh.plealog.bioinfo.ui.sequence.*,,bzh.plealog.bioinfo.ui.util.*"
+    packagenames="bzh.plealog.bioinfo.ui.blast.*,bzh.plealog.bioinfo.ui.config,bzh.plealog.bioinfo.ui.carto.*,bzh.plealog.bioinfo.ui.feature.*,bzh.plealog.bioinfo.ui.hca.*,bzh.plealog.bioinfo.ui.resources.*,bzh.plealog.bioinfo.ui.seqinfo.*,bzh.plealog.bioinfo.ui.sequence.*,,bzh.plealog.bioinfo.ui.util.*"
     excludepackagenames="test"
     Overview="${src}/overview.html" 
   	Private="false" 
     Splitindex="true" 
-    Windowtitle="Plealog Bioinformatics UI API" 
+    Windowtitle="Plealog Bioinformatics UI API - ${pbc.LibVersion}" 
     author="true" 
     classpathref="class.path" 
     destdir="${Ddoc.api}" 
@@ -130,12 +130,13 @@
     sourcepath="${src}" 
     version="true">
 			<bottom>
-				<![CDATA[(c) Patrick G. Durand - 2004-2016]]>
+				<![CDATA[(c) <a href="https://www.linkedin.com/in/pgdurand56/">Patrick G. Durand</a> - 2004-2017]]>
 			</bottom>
 			<header>
-				<![CDATA[Plealog Bioinformatics UI API]]>
+				<![CDATA[Plealog Bioinformatics UI API - ${pbc.LibVersion}]]>
 			</header>
-			<link href="https://docs.oracle.com/javase/6/docs/api/"/>
+      <link href="https://docs.oracle.com/javase/7/docs/api/"/>
+      <link href="https://pgdurand.github.io/Bioinformatics-Core-API/api/"/>
 			<!-- arg value="-Xdoclint:reference"/ -->
 		</javadoc>
 	</target>

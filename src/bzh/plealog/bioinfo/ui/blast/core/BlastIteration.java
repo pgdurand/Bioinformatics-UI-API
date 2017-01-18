@@ -35,12 +35,10 @@ public class BlastIteration {
   /**
    * Constructor.
    * 
+   * @param entry
+   *          Blast result with its description
    * @param iter
-   *          the SRIteration to store here
-   * @param qSize
-   *          the query sequence size
-   * @param bType
-   *          the Blast type. Use one of the SROutput.BLAST_XXX constants.
+   *          iteration. Zero-based value.
    */
   public BlastIteration(BlastEntry entry, int iter) {
     SROutput bo;

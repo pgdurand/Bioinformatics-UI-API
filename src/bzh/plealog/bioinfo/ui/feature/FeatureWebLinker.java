@@ -75,7 +75,7 @@ public class FeatureWebLinker {
   /**
    * Constructor.
    * 
-   * @param confURL a path targeting a featureWebLink.conf resource.
+   * @param confpath a path targeting a featureWebLink.conf resource.
    */
   public FeatureWebLinker(String confpath){
     try (FileReader fr = new FileReader(confpath)){

@@ -41,7 +41,7 @@ import com.plealog.genericapp.api.EZEnvironment;
  * This is the BlastViewer Main Module.
  * 
  * It wraps within a single component the various
- * elements required to displayed Blast data: a BlastNavigator, a Blast Hit Table,
+ * elements required to displaye Blast data: a BlastNavigator, a Blast Hit Table,
  * the pairwise sequence alignment viewer, etc.
  * 
  * @author Patrick G. Durand
