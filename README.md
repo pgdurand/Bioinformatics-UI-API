@@ -1,6 +1,6 @@
 #Bioinformatics UI API
 
-[![License](https://img.shields.io/badge/license-Affero%20GPL%203.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.txt)
+[![License AGPL](https://img.shields.io/badge/license-Affero%20GPL%203.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.txt)
 
 ##Introduction
 
@@ -59,6 +59,8 @@ You can see how to use the library by having a look at the "example" source pack
 ![BlastViewer](src/example/BasicBlastViewer.java): see how to create a BLAST Viewer tool
 
 ![BlastViewer](doc/BlastViewer.png)
+
+See also [Wiki](https://github.com/pgdurand/Bioinformatics-UI-API/wiki).
 
 ##Link with BioJava
 
