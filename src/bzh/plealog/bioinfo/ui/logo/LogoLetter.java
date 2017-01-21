@@ -18,6 +18,10 @@ package bzh.plealog.bioinfo.ui.logo;
 
 import java.awt.Color;
 
+/**
+ * A logo letter.
+ * 
+ * */
 public class LogoLetter {
 	private double  value_ = 0.0;
 	private String  symbol_ = "?";
@@ -25,27 +29,48 @@ public class LogoLetter {
 	private Color   symbBkColor_ = Color.GRAY;
 	private Color   symbFgColor_ = Color.BLACK;
 	
+	/**
+	 * Constructor.
+	 */
 	public LogoLetter(){}
 	
-	public LogoLetter(String symbol, double value){
-		setSymbol(symbol);
-		setValue(value);
+	/**
+	 * Constructor.
+	 * 
+	 * @param symbol letter symbolized by this LogoLetter.
+	 * @param frequency frequency of this letter
+	 */
+	public LogoLetter(String symbol, double frequency){
+		this();
+	  setSymbol(symbol);
+	  setFrequency(frequency);
 	}
-	public LogoLetter(String symbol, double value, 
+
+	/**
+   * Constructor.
+   * 
+   * @param symbol letter symbolized by this LogoLetter.
+   * @param frequency frequency of this letter
+   * @param barColor bar color
+   * @param symbBkColor symbol background color
+   * @param symbFgColor symbol foreground color
+   * 
+   */
+	public LogoLetter(String symbol, double frequency, 
 			Color barColor, Color symbBkColor, Color symbFgColor){
 		setSymbol(symbol);
-		setValue(value);
+		setFrequency(frequency);
 		setBarColor(barColor);
 		setSymbBkColor(symbBkColor);
 		setSymbFgColor(symbFgColor);
 	}
 
-	public double getValue() {
+	public double getFrequency() {
 		return value_;
 	}
 
 
-	public void setValue(double value) {
+	public void setFrequency(double value) {
 		value_ = value;
 	}
 

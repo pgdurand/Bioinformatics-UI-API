@@ -27,6 +27,9 @@ import bzh.plealog.bioinfo.api.data.sequence.DSymbol;
 import bzh.plealog.bioinfo.api.data.sequence.DSymbolGraphics;
 import bzh.plealog.bioinfo.api.data.sequence.stat.AlphabetCounter;
 
+/**
+ * LogoCell renderer.
+ */
 public class LogoCellRenderer extends LogoPanel implements TableCellRenderer {
   private static final long serialVersionUID = 5025470788986369253L;
   private LogoCell          lCell_;
@@ -34,6 +37,12 @@ public class LogoCellRenderer extends LogoPanel implements TableCellRenderer {
   private int               alphabetSize_;
   private int               nbAlignedSeq_;
 
+  /**
+   * Constructor.
+   * 
+   * @param alphabetSize number of symbols contained in an alphabet.
+   * @param nbSeq number of sequences
+   */
   public LogoCellRenderer(int alphabetSize, int nbSeq) {
     super();
     int i;
@@ -51,6 +60,9 @@ public class LogoCellRenderer extends LogoPanel implements TableCellRenderer {
     }
   }
 
+  /**
+   * @see TableCellRenderer#getTableCellRendererComponent(JTable, Object, boolean, boolean, int, int)
+   * */
   public Component getTableCellRendererComponent(JTable table, Object value,
       boolean isSelected, boolean hasFocus, int row, int column) {
     AlphabetCounter aCounter;
@@ -76,12 +88,13 @@ public class LogoCellRenderer extends LogoPanel implements TableCellRenderer {
           continue;
         d = val.doubleValue();
         letter = letters_[i];
-        letter.setValue(d);
+        letter.setFrequency(d);
         letter.setSymbol(symbol.toString());
         dg = symbol.getGraphics();
         if (dg != null) {
+          letter.setSymbFgColor(dg.getTextColor());
+          letter.setSymbBkColor(dg.getBkColor());
           letter.setBarColor(dg.getTextColor());
-          letter.setSymbFgColor(dg.getBkColor());
         }
         lCell_.addLogoLetter(letter);
         i++;

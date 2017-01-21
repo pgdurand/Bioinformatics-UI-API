@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Implementation of a logo cell. Such a cell contains all LogoLetter stacked
+ * at the same position of a sequence.
+ */
 public class LogoCell {
 
   private double                value_;
@@ -27,42 +31,79 @@ public class LogoCell {
   private boolean               ordered_;
   private LogoLetterSorter      llSorter_;
 
+  /**
+   * Constructor.
+   */
   public LogoCell() {
     logoLetters_ = new ArrayList<>();
     llSorter_ = new LogoLetterSorter();
   }
 
-  public LogoCell(double mxVal) {
+  /**
+   * Constructor.
+   * 
+   * @param maxFrequency maximum frequency of the cell. E.g. 2.0 (bits).
+   */
+  public LogoCell(double maxFrequency) {
     this();
-    setMaxValue(mxVal);
+    setMaxValue(maxFrequency);
   }
 
-  public double getMaxValue() {
+  /**
+   * @return the maximum frequency of this cell.
+   */
+  public double getMaxFrequency() {
     return value_;
   }
 
-  public void setMaxValue(double mxVal) {
-    value_ = mxVal;
+  /**
+   * Set the maximum frequency of this cell.
+   * 
+   * @param maxFrequency maximum frequency of the cell. E.g. 2.0 (bits).
+   */
+  public void setMaxValue(double maxFrequency) {
+    value_ = maxFrequency;
   }
 
+  /**
+   * Add a new logo letter.
+   * 
+   * @param ll logo letter to add
+   */
   public void addLogoLetter(LogoLetter ll) {
     logoLetters_.add(ll);
   }
 
+  /**
+   * @return number of logo letter contained in this cell.
+   */
   public int size() {
     return logoLetters_.size();
   }
 
+  /**
+   * Return a logo cell.
+   * 
+   * @param idx letter index
+   * 
+   * @return a logo letter
+   */
   public LogoLetter getLogoLetter(int idx) {
     return ((LogoLetter) logoLetters_.get(idx));
   }
 
+  /**
+   * Remove all logo letters.
+   */
   public void clear() {
     logoLetters_.clear();
     value_ = 0.0;
     ordered_ = false;
   }
 
+  /**
+   * Force sorting of logo letters.
+   */
   public void orderLogoLetter() {
     if (ordered_)
       return;
@@ -75,8 +116,8 @@ public class LogoCell {
       double ll1, ll2;
       int ret;
 
-      ll1 = o1.getValue();
-      ll2 = o2.getValue();
+      ll1 = o1.getFrequency();
+      ll2 = o2.getFrequency();
       if (ll1 < ll2) {
         ret = 1;
       } else if (ll1 > ll2) {

@@ -27,8 +27,12 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+/**
+ * Implementation of the LogoViewer.
+ */
 public class LogoPanel extends JPanel {
   private static final long serialVersionUID = -1971120756526434031L;
   private LogoCell logoCell_;
@@ -42,6 +46,9 @@ public class LogoPanel extends JPanel {
     LogoBar, LogoLetter
   };
 
+  /**
+   * Constructor.
+   */
   public LogoPanel() {
     super();
     setFont(Font.decode("Serif-10"));
@@ -50,10 +57,20 @@ public class LogoPanel extends JPanel {
     type_ = Type.LogoBar;
   }
 
+  /**
+   * Set the logo cell.
+   * 
+   * @param lc logo cell
+   */
   public void setLogoCell(LogoCell lc) {
     logoCell_ = lc;
   }
 
+  /**
+   * Set the logo type.
+   * 
+   * @param type logo type
+   */
   public void setType(LogoPanel.Type type) {
     type_ = type;
   }
@@ -61,44 +78,77 @@ public class LogoPanel extends JPanel {
   /**
    * In the current implementation, when using horizontal layout, only logo bar
    * type is available.
+   * 
+   * @param horz true to use a horizontal layout. False to use a vertical display.
    */
   public void setHorizontal(boolean horz) {
     horizontal_ = horz;
   }
 
+  /**
+   * Figure out whether or not all the panel is filled in with logo.
+   * 
+   * @param fillAll true or false
+   */
   public void setFillAllPanel(boolean fillAll) {
     fillAllPanel_ = fillAll;
   }
 
+  /**
+   * Figure out whether or not logo letters our outlined.
+   * 
+   * @param val true or false
+   */
   public void setOutlineLetter(boolean val) {
     outlineLetter_ = val;
   }
 
+  /**
+   * Figure out whether or not to use anti-alias.
+   * 
+   * @param val true or false
+   */
   public void setUseAntiAlias(boolean val) {
     useAntiAlias_ = val;
   }
 
+  /**
+   * @return true of false for horizontal or vertical layout, respectively.
+   */
   public boolean isHorizontal() {
     return horizontal_;
   }
 
+  /**
+   * @return true or false if filling entire panel or not, respectively.
+   */
   public boolean isFillingAllPanel() {
     return fillAllPanel_;
   }
 
+  /**
+   * @return true or false if outlining letters or not, respectively.
+   */
   public boolean isOutliningLetter() {
     return outlineLetter_;
   }
 
+  
+  /**
+   * @return true or false if using anti-alias or not, respectively.
+   */
   public boolean isUsingAntiAlias() {
     return useAntiAlias_;
   }
 
+  /**
+   * @return the logo cell.
+   */
   public LogoCell getColgoCell() {
     return logoCell_;
   }
 
-  public void paintComponentVertically(Graphics g) {
+  private void paintComponentVertically(Graphics g) {
     FontMetrics fm;
     Font fnt;
     int i, nLetters, height, width, decal, cHeight, xDecal;
@@ -119,12 +169,12 @@ public class LogoPanel extends JPanel {
     height = this.getBounds().height;
     width = (fillAllPanel_ ? this.getBounds().width : fm.getMaxAdvance());
     nLetters = logoCell_.size();
-    mxBits = logoCell_.getMaxValue();
+    mxBits = logoCell_.getMaxFrequency();
 
     totBits = 0;
     for (i = 0; i < nLetters; i++) {
       letter = logoCell_.getLogoLetter(i);
-      totBits += letter.getValue();
+      totBits += letter.getFrequency();
     }
     decal = (int) ((double) height / mxBits * (mxBits - totBits));
     oldFnt = g2.getFont();
@@ -139,13 +189,13 @@ public class LogoPanel extends JPanel {
             letter.getSymbol());
         outline = gv.getOutline();
         oBounds = outline.getBounds2D();
-        v = ((double) height / mxBits * letter.getValue());
+        v = ((double) height / mxBits * letter.getFrequency());
         at = new AffineTransform();
         at.setToTranslation(0, baseY - v);
         at.scale(width / oBounds.getWidth(), v / oBounds.getHeight());
         at.translate(-oBounds.getMinX(), -oBounds.getMinY());
         outline = at.createTransformedShape(outline);
-        c = letter.getBarColor();
+        c = letter.getSymbFgColor();
         if (c.equals(this.getBackground())) {
           c = this.getForeground();
         }
@@ -160,7 +210,7 @@ public class LogoPanel extends JPanel {
     } else {
       for (i = 0; i < nLetters; i++) {
         letter = logoCell_.getLogoLetter(i);
-        lHeight = ((double) height / mxBits * letter.getValue());
+        lHeight = ((double) height / mxBits * letter.getFrequency());
         g2.setColor(letter.getBarColor());
         g.fillRect(0, decal, width - 1, (int) lHeight);
         g2.setColor(Color.BLACK);
@@ -182,7 +232,7 @@ public class LogoPanel extends JPanel {
     g2.setColor(Color.BLACK);
   }
 
-  public void paintComponentHorizontally(Graphics g) {
+  private void paintComponentHorizontally(Graphics g) {
     FontMetrics fm;
     Font fnt;
     int i, adv, nLetters, width, height, cWidth, cHeight, xDecal, lHeight, y;
@@ -198,14 +248,14 @@ public class LogoPanel extends JPanel {
     adv = fm.getMaxAdvance();
     height = this.getSize().height;
     nLetters = logoCell_.size();
-    mxBits = logoCell_.getMaxValue();
+    mxBits = logoCell_.getMaxFrequency();
     cWidth = (fillAllPanel_ ? width / nLetters : adv);
 
     g2.setColor(Color.RED);
     xDecal = 0;
     for (i = 0; i < nLetters; i++) {
       letter = logoCell_.getLogoLetter(i);
-      lHeight = (int) ((double) height / mxBits * letter.getValue());
+      lHeight = (int) ((double) height / mxBits * letter.getFrequency());
       y = height - cHeight - lHeight;
       g2.setColor(letter.getBarColor());
       g2.fillRect(xDecal, y, cWidth, lHeight);
@@ -222,6 +272,9 @@ public class LogoPanel extends JPanel {
     g2.setColor(Color.BLACK);
   }
 
+  /**
+   * @see JComponent#paintComponents(Graphics)
+   */
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
 
