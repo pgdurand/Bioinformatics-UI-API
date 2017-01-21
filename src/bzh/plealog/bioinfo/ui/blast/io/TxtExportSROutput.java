@@ -42,6 +42,7 @@ import bzh.plealog.bioinfo.api.data.sequence.DAlphabet;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.api.data.sequence.DSymbol;
 import bzh.plealog.bioinfo.data.searchresult.SRUtils;
+import bzh.plealog.bioinfo.io.PrintfFormat;
 import bzh.plealog.bioinfo.util.CoreUtil;
 
 /**

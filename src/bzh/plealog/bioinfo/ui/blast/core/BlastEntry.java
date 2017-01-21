@@ -20,9 +20,7 @@ import java.io.Serializable;
 
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
 import bzh.plealog.bioinfo.api.data.searchresult.SRRequestInfo;
-import bzh.plealog.bioinfo.api.data.sequence.DSeqUtils;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
-import bzh.plealog.bioinfo.api.data.sequence.DSequenceInfo;
 
 /**
  * This interface defines a BLAST entry. Such an entry wraps a Blast Result
@@ -44,11 +42,6 @@ public class BlastEntry implements Serializable {
   private SROutput          _result;
   private DSequence         _query;
   private boolean           _view;
-
-  // unable to serialize a DSequence object => too many cross references
-  // so to store a BlastEntry : set a FastaSequence and create a DSequence when
-  // asked
-  private FastaSequence     sequence         = null;
 
   /**
    * Create a BlastEntry.
@@ -83,13 +76,6 @@ public class BlastEntry implements Serializable {
   public BlastEntry(QueryBase query, SROutput bo, DSequence seq, Boolean view) {
     this(query.getEngineSysName(), query.getJobName(), query.getQueryPath(),
         bo, seq, query.getDatabankName(), view);
-  }
-
-  public BlastEntry(QueryBase query, SROutput bo, FastaSequence seq,
-      Boolean view) {
-    this(query.getEngineSysName(), query.getJobName(), query.getQueryPath(),
-        bo, null, query.getDatabankName(), view);
-    this.sequence = seq;
   }
 
   public BlastEntry(BlastEntry entry, SROutput bo) {
@@ -194,15 +180,6 @@ public class BlastEntry implements Serializable {
    * Set the query sequence that was used to create this result.
    */
   public DSequence getQuery() {
-    if ((_query == null) && (this.sequence != null)) {
-      // create the DSequence object
-      _query = DSeqUtils.getSequence(this.sequence.getSequence(), this
-          .getResult().getQuerySeqType() == SROutput.AA_SEQ ? true : false);
-      DSequenceInfo dsi = new DSequenceInfo();
-      dsi.setId(this.sequence.getId());
-      dsi.setName(this.sequence.getName());
-      _query.setSequenceInfo(dsi);
-    }
     return _query;
   }
 
@@ -210,9 +187,6 @@ public class BlastEntry implements Serializable {
    * Return the query sequence ID.
    */
   public String getSequenceId() {
-    if (this.sequence != null) {
-      return this.sequence.getId();
-    }
     if (this.getQuery() != null) {
       return this.getQuery().getSequenceInfo().getId();
     } else {
@@ -224,9 +198,6 @@ public class BlastEntry implements Serializable {
    * Return the query sequence name.
    */
   public String getSequenceName() {
-    if (this.sequence != null) {
-      return this.sequence.getName();
-    }
     if (this.getQuery() != null) {
       return this.getQuery().getSequenceInfo().getName();
     } else {
@@ -238,9 +209,6 @@ public class BlastEntry implements Serializable {
    * Return the query sequence size.
    */
   public int getSequenceSize() {
-    if (this.sequence != null) {
-      return this.sequence.getSize();
-    }
     if (this.getQuery() != null) {
       return this.getQuery().size();
     } else {
