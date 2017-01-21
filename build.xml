@@ -4,7 +4,7 @@
 <project name="Plealog-bioinfo-ui" default="help" basedir=".">
 
 	<property name="pbc.libName"    value="pb-ui" />
-	<property name="pbc.LibVersion" value="5.1.1" />
+	<property name="pbc.LibVersion" value="5.2.0" />
 	
 	<property name="compile.optimize" value="on" />
 	<property name="compile.debug"    value="off" />
@@ -64,6 +64,9 @@
         <!-- the HCA viewer -->
         <include name="bzh/plealog/bioinfo/ui/hca/**"/>
 
+        <!-- the Logo viewer -->
+        <include name="bzh/plealog/bioinfo/ui/logo/**"/>
+
         <!-- the SequenceInfo viewer -->
         <include name="bzh/plealog/bioinfo/ui/seqinfo/**"/>
 
@@ -117,7 +120,7 @@
 		<delete dir="${Ddoc.api}" />
 		<mkdir dir="${Ddoc.api}" />
 		<javadoc
-    packagenames="bzh.plealog.bioinfo.ui.blast.*,bzh.plealog.bioinfo.ui.config,bzh.plealog.bioinfo.ui.carto.*,bzh.plealog.bioinfo.ui.feature.*,bzh.plealog.bioinfo.ui.hca.*,bzh.plealog.bioinfo.ui.resources.*,bzh.plealog.bioinfo.ui.seqinfo.*,bzh.plealog.bioinfo.ui.sequence.*,,bzh.plealog.bioinfo.ui.util.*"
+    packagenames="bzh.plealog.bioinfo.ui.blast.*,bzh.plealog.bioinfo.ui.config,bzh.plealog.bioinfo.ui.carto.*,bzh.plealog.bioinfo.ui.feature.*,bzh.plealog.bioinfo.ui.hca.*,bzh.plealog.bioinfo.ui.logo.*,bzh.plealog.bioinfo.ui.resources.*,bzh.plealog.bioinfo.ui.seqinfo.*,bzh.plealog.bioinfo.ui.sequence.*,,bzh.plealog.bioinfo.ui.util.*"
     excludepackagenames="test"
     Overview="${src}/overview.html" 
   	Private="false" 
