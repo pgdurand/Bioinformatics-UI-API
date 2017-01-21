@@ -49,6 +49,8 @@ public abstract class ColorPolicyConfig extends AbstractPropertiesConfig {
    */
   public abstract boolean isUsingAntialias();
 
+  public abstract boolean useInverseVideo();
+  
   /**
    * Given a bitScore return the color defined by this color policy.
    * 
