@@ -9,8 +9,8 @@ This package is a library of UI components:
 
 * to display Feature Table objects in appropriate table 
 * to display Sequence Information objects in appropriate viewer
-* to display DNA/RNA/Protein Sequence objects in several viewers: text, graphic, HCA (protein only), *etc.*
-* * to display BLAST result objects in an appropriate viewer
+* to display DNA and Protein Sequence objects in various viewers: text, graphic, HCA (protein only), *etc.*
+* to display BLAST result objects in an appropriate viewer
 
 
 In other words, this library is the appropriate UI friend of the [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API).
