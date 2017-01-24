@@ -23,6 +23,8 @@ import java.util.Comparator;
 /**
  * Implementation of a logo cell. Such a cell contains all LogoLetter stacked
  * at the same position of a sequence.
+ * 
+ * @author Patrick G. Durand
  */
 public class LogoCell {
 

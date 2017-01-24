@@ -32,6 +32,8 @@ import javax.swing.JPanel;
 
 /**
  * Implementation of the LogoViewer.
+ * 
+ * @author Patrick G. Durand
  */
 public class LogoPanel extends JPanel {
   private static final long serialVersionUID = -1971120756526434031L;

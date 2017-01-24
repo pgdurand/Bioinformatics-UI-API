@@ -29,6 +29,8 @@ import bzh.plealog.bioinfo.api.data.sequence.stat.AlphabetCounter;
 
 /**
  * LogoCell renderer.
+ * 
+ * @author Patrick G. Durand
  */
 public class LogoCellRenderer extends LogoPanel implements TableCellRenderer {
   private static final long serialVersionUID = 5025470788986369253L;

@@ -21,6 +21,8 @@ import java.awt.Color;
 /**
  * A logo letter.
  * 
+ * @author Patrick G. Durand
+ * 
  * */
 public class LogoLetter {
 	private double  value_ = 0.0;
