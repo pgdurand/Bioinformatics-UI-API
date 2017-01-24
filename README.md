@@ -7,13 +7,15 @@
 
 This package is a library of UI components:
 
-* to display FeatureTable objects in appropriate table 
-* to display SequenceInfo objects in appropriate viewer
-* to display DNA/RNA/Protein Sequence objects in several viewers: text, graphic, HCA (protein only), etc.
+* to display Feature Table objects in appropriate table 
+* to display Sequence Information objects in appropriate viewer
+* to display DNA/RNA/Protein Sequence objects in several viewers: text, graphic, HCA (protein only), *etc.*
+* * to display BLAST result objects in an appropriate viewer
 
-In other words, this library is the appropriate friend of the [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API).
 
-Here is an example of use:
+In other words, this library is the appropriate UI friend of the [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API).
+
+Here is an example of use (more, below):
 
 ![DNA Sequence Viewer](doc/bioinformatics-ui-viewer.png)
 
@@ -84,4 +86,4 @@ So, during my holidays on Summer 2004, I started a wonderful story: the creation
 Korilog ceased its activities on June 2015, therefore I decided to release these UI components to the open source community. 
 
 --
-(c) 2006-2016 - Patrick G. Durand
+(c) 2004-2016 - Patrick G. Durand
