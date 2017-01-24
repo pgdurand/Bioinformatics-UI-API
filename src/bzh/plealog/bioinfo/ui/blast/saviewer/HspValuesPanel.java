@@ -33,9 +33,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
-
 import bzh.plealog.bioinfo.api.data.searchresult.SRHit;
 import bzh.plealog.bioinfo.api.data.searchresult.SRHsp;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
@@ -44,6 +41,9 @@ import bzh.plealog.bioinfo.ui.blast.core.BlastHitHspImplem;
 import bzh.plealog.bioinfo.ui.blast.event.BlastHitListEvent;
 import bzh.plealog.bioinfo.ui.blast.event.BlastHitListSupport;
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
 
 /**
  * This class displays HSP values.
@@ -401,7 +401,7 @@ public class HspValuesPanel extends JPanel {
         newHsp = getCurHsp() + 1;
       }
       if (newHsp != 0) {
-        ArrayList<BlastHitHspImplem> hits = new ArrayList<BlastHitHspImplem>();
+        ArrayList<BlastHitHSP> hits = new ArrayList<BlastHitHSP>();
         hits.add(new BlastHitHspImplem((SRHit) _curHit.getHit(), _curHit.getBlastCLient(), newHsp,
             _curHit.getQuerySize(), _curHit.getBlastType()));
         _updateSupport.fireHitChange(new BlastHitListEvent(HspValuesPanel.this, hits, BlastHitListEvent.HIT_CHANGED));

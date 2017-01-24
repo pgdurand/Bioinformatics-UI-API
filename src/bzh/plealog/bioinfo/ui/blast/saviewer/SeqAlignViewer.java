@@ -30,13 +30,10 @@ import javax.swing.JToolBar;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import com.plealog.genericapp.api.EZEnvironment;
-
 import bzh.plealog.bioinfo.api.data.searchresult.SRHsp;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
 import bzh.plealog.bioinfo.ui.blast.core.AnalysisUtils;
 import bzh.plealog.bioinfo.ui.blast.core.BlastHitHSP;
-import bzh.plealog.bioinfo.ui.blast.core.BlastHitHspImplem;
 import bzh.plealog.bioinfo.ui.blast.event.BlastHitListEvent;
 import bzh.plealog.bioinfo.ui.blast.event.BlastHitListListener;
 import bzh.plealog.bioinfo.ui.blast.event.BlastHitListSupport;
@@ -44,6 +41,8 @@ import bzh.plealog.bioinfo.ui.feature.FeatureViewer;
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
 import bzh.plealog.bioinfo.ui.sequence.basic.DViewerScroller;
 import bzh.plealog.bioinfo.ui.util.JHeadPanel;
+
+import com.plealog.genericapp.api.EZEnvironment;
 
 /**
  * This class is the Blast sequence alignment viewer implementation for the
@@ -143,7 +142,7 @@ public class SeqAlignViewer extends JPanel implements BlastHitListListener, Tabl
    * selected, this method will ensures to display the sequence alignment.
    */
   public void hitChanged(BlastHitListEvent e) {
-    List<BlastHitHspImplem> hits;
+    List<BlastHitHSP> hits;
     BlastHitHSP hit;
     boolean displaySeqAlign;
 

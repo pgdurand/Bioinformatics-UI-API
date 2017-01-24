@@ -418,7 +418,7 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
    * Handle event when a hit is selected in the table.
    */
   public void hitChanged(BlastHitListEvent e) {
-    List<BlastHitHspImplem> hits;
+    List<BlastHitHSP> hits;
     BlastHitHSP hit;
     boolean bFirst = true;
     int rowIdx, firstRow = 0;
@@ -1028,7 +1028,7 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
     // Listen to the JTable embedded within BlastHitList component
     public void valueChanged(ListSelectionEvent e) {
       ListSelectionModel lsm;
-      ArrayList<BlastHitHspImplem> hits = null;
+      ArrayList<BlastHitHSP> hits = null;
       BlastHitHSP hit = null;
       Object obj;
       int[] sels;
@@ -1042,12 +1042,12 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
       isSingleSel = ((!lsm.isSelectionEmpty() && (lsm.getMinSelectionIndex() == lsm
           .getMaxSelectionIndex())));
       if (!lsm.isSelectionEmpty()) {
-        hits = new ArrayList<BlastHitHspImplem>();
+        hits = new ArrayList<BlastHitHSP>();
         sels = _blastList.getSelectedRows();
         for (int i : sels) {
           obj = _blastList.getModel().getValueAt(i, -1);
-          if (obj != null && obj instanceof BlastHitHspImplem)
-            hits.add((BlastHitHspImplem) obj);
+          if (obj != null && obj instanceof BlastHitHSP)
+            hits.add((BlastHitHSP) obj);
         }
       } else {
         hits = null;

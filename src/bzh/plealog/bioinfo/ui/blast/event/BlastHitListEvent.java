@@ -19,7 +19,7 @@ package bzh.plealog.bioinfo.ui.blast.event;
 import java.util.EventObject;
 import java.util.List;
 
-import bzh.plealog.bioinfo.ui.blast.core.BlastHitHspImplem;
+import bzh.plealog.bioinfo.ui.blast.core.BlastHitHSP;
 
 /**
  * This event is fired to notify about the selection of a some Blast Hits.
@@ -33,7 +33,7 @@ public class BlastHitListEvent extends EventObject {
   public static final int HIT_CHANGED = 1;
 
   protected int _type;
-  protected List<BlastHitHspImplem> _hitHsp;
+  protected List<BlastHitHSP> _hitHsp;
 
   /**
    * Constructor.
@@ -45,13 +45,13 @@ public class BlastHitListEvent extends EventObject {
    * @param type
    *          the type of event. See HIT_XXX constants from this class.
    */
-  public BlastHitListEvent(Object src, List<BlastHitHspImplem> hitHsp, int type) {
+  public BlastHitListEvent(Object src, List<BlastHitHSP> hitHsp, int type) {
     super(src);
     _type = type;
     _hitHsp = hitHsp;
   }
 
-  public List<BlastHitHspImplem> getHitHsps() {
+  public List<BlastHitHSP> getHitHsps() {
     return _hitHsp;
   }
 
