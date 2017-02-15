@@ -320,11 +320,6 @@ public class FeatureViewer extends JPanel {
     setNbFeature(0);
 
     _featTable = fTable;
-
-    if (fTable == null || fTable.features() == 0) {
-      return;
-    }
-    // updateFeatureTypeCombo(getFeatureNamesList(fTable), fTable);
   }
 
   private void setNbFeature(int val) {

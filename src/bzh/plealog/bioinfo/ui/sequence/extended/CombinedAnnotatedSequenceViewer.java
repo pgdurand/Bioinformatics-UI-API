@@ -146,6 +146,11 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
   public void setFeatureVisible(Feature feat, boolean visible){
     _seqViewer.setFeatureVisible(feat, visible);
   }
+  
+  public FeatureViewer getFeatureViewer(){
+    return _featViewer;
+  }
+  
   /**
    * Utility method to create the Feature panel.
    */
