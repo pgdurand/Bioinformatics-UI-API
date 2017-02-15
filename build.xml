@@ -4,7 +4,7 @@
 <project name="Plealog-bioinfo-ui" default="help" basedir=".">
 
 	<property name="pbc.libName"    value="pb-ui" />
-	<property name="pbc.LibVersion" value="5.2.0" />
+	<property name="pbc.LibVersion" value="5.2.1" />
 	
 	<property name="compile.optimize" value="on" />
 	<property name="compile.debug"    value="off" />
