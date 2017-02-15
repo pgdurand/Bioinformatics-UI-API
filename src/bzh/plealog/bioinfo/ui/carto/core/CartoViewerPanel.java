@@ -74,7 +74,7 @@ public class CartoViewerPanel extends JPanel {
   
   public static enum MOUSE_MODE {SELECTION, ZOOM};
 
-  private static final Color ZOMMER_CLR = new Color(192, 192, 192, 50);
+  private static final Color ZOMMER_CLR = new Color(192, 192, 192, 192);
 
   /**
    * Standard constructor.
