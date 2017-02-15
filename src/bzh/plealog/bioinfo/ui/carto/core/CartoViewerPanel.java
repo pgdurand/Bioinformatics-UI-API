@@ -380,8 +380,8 @@ public class CartoViewerPanel extends JPanel {
       dl.paintLane((Graphics2D)g, laneBounds);
       height+=dim.height;
     }
-    g.setClip(paintBounds.x, 0, paintBounds.width, height);
-    g.clipRect(paintBounds.x, 0, paintBounds.width, height);
+    //g.setClip(paintBounds.x, 0, paintBounds.width, height);
+    //g.clipRect(paintBounds.x, 0, paintBounds.width, height);
     drawSelection(g);
   }
   /**
