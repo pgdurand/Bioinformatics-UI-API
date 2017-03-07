@@ -40,9 +40,9 @@ import bzh.plealog.bioinfo.ui.blast.event.BlastHitListSupport;
 import bzh.plealog.bioinfo.ui.feature.FeatureViewer;
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
 import bzh.plealog.bioinfo.ui.sequence.basic.DViewerScroller;
-import bzh.plealog.bioinfo.ui.util.JHeadPanel;
 
 import com.plealog.genericapp.api.EZEnvironment;
+import com.plealog.genericapp.ui.common.JHeadPanel;
 
 /**
  * This class is the Blast sequence alignment viewer implementation for the
