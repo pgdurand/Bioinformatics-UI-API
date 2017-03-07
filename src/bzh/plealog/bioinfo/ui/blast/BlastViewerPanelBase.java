@@ -33,9 +33,9 @@ import bzh.plealog.bioinfo.ui.blast.hittable.BlastHitTable;
 import bzh.plealog.bioinfo.ui.blast.nav.BlastNavigator;
 import bzh.plealog.bioinfo.ui.blast.saviewer.SeqAlignViewer;
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
-import bzh.plealog.bioinfo.ui.util.JHeadPanel;
 
 import com.plealog.genericapp.api.EZEnvironment;
+import com.plealog.genericapp.ui.common.JHeadPanel;
 
 /**
  * This is the BlastViewer Main Module.
