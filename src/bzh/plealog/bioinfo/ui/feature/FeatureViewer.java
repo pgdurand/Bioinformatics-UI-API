@@ -281,7 +281,7 @@ public class FeatureViewer extends JPanel {
    * 
    * @param featType feature type names for which Features have to be shown.
    */
-  protected void updateFeatureList(String[] featType) {
+  public void updateFeatureList(String[] featType) {
     DefaultListModel<Feature> model;
     Enumeration<Feature> myEnum;
     Feature feat;

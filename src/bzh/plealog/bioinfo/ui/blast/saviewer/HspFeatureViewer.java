@@ -112,8 +112,13 @@ public class HspFeatureViewer extends JPanel {
     _curHit = bhh;
     _curHsp = ((SRHit) bhh.getHit()).getHsp(hspNum);
 
+    _featViewer.clear();
     fTable = _curHsp.getFeatures();
-    _featViewer.setData(fTable);
+    if (fTable != null) {
+      fTable.sort(FeatureTable.POS_SORTER);
+      _featViewer.setData(fTable);
+      _featViewer.updateFeatureList(new String[]{FeatureSelectionListener.ALL_TYPE});
+    }
     _featStatViewer.setData(fTable);
     si = _curHit.getHit().getSequenceInfo();
     if (si != null) {

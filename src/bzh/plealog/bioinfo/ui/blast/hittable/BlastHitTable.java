@@ -166,7 +166,7 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
    * persistence of the graphical properties of the table. Is you use multiple
    * instance of a BlastHitList, you should use a different id for each of them.
    */
-  protected BlastHitTable(String id) {
+  public BlastHitTable(String id) {
     JPanel panel, actPnl;
     JTableHeader tHeader;
     TableColumnManager tcm;

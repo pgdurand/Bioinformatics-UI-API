@@ -26,6 +26,7 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -93,10 +94,12 @@ public class SeqAlignViewer extends JPanel implements BlastHitListListener, Tabl
     box.add(pnl);
     box.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 1));
 
+    JTabbedPane jtp = new JTabbedPane();
+    jtp.add("Alignment", box);
+    jtp.add("Features", getFeatureViewerCompo());
     pnl2 = new JPanel(new BorderLayout());
-    getFeatureViewerCompo();
     pnl2.add(_hspValues, BorderLayout.WEST);
-    pnl2.add(box, BorderLayout.CENTER);
+    pnl2.add(/*box*/jtp, BorderLayout.CENTER);
     // for now, feature viewer is hidden since Features are not available in BlastViewer
     //pnl2.add(fViewer, BorderLayout.CENTER);
     
