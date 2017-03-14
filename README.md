@@ -1,10 +1,10 @@
-#Bioinformatics UI API
+# Bioinformatics UI API
 
 [![License AGPL](https://img.shields.io/badge/license-Affero%20GPL%203.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.txt) [![Build Status](https://travis-ci.org/pgdurand/Bioinformatics-UI-API.svg?branch=master)](https://travis-ci.org/pgdurand/Bioinformatics-UI-API) [![](https://tokei.rs/b1/github/pgdurand/Bioinformatics-UI-API?category=code)](https://github.com/pgdurand/Bioinformatics-UI-API) [![](https://img.shields.io/badge/platform-Java--1.7+-yellow.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) [![](https://img.shields.io/badge/run_on-Linux--Mac_OSX--Windows-yellowgreen.svg)]()
 
 
 
-##Introduction
+## Introduction
 
 This package is a library of UI components:
 
@@ -20,13 +20,13 @@ Here is an example of use (more, below):
 
 ![DNA Sequence Viewer](doc/bioinformatics-ui-viewer.png)
 
-##Requirements
+## Requirements
 
 Use a [Java Virtual Machine](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.7 (or above) from Oracle. 
 
 *Not tested with any other JVM providers but Oracle... so there is no guarantee that the software will work as expected if not using Oracle's JVM.*
 
-##Library uses
+## Library uses
 
 Since this package is a library, its primary purpose targets a use within other softwares. The package contains a quite large number of classes, most of them being actually supporting code to these viewers:
 
@@ -66,17 +66,17 @@ You can see how to use the library by having a look at the "example" source pack
 
 See also [Wiki](https://github.com/pgdurand/Bioinformatics-UI-API/wiki).
 
-##Link with BioJava
+## Link with BioJava
 
 Have in mind that this library can be a nice friend to [Biojava](http://biojava.org): Sequence objects from Biojava can be converted quite easily to Sequence objects from [Bioinformatics Core library](https://github.com/pgdurand/Bioinformatics-Core-API) for the purpose of using this [Bioinformatics UI library](https://github.com/pgdurand/Bioinformatics-UI-API). See [Biojava Convertor Project](https://github.com/pgdurand/BiojavaConvertor) to review how to do that.
 
-##License and dependencies
+## License and dependencies
 
 Bioinformatics UI API itself is released under the GNU Affero General Public License, Version 3.0. [AGPL](https://www.gnu.org/licenses/agpl-3.0.txt)
 
 It depends on several thrid-party libraries as stated in the NOTICE.txt file provided with this project.
 
-##Once upon a time was: VisualBlast
+## Once upon a time was: VisualBlast
 
 During Summer 2004 I was asking myself how easy it could be to rewrite in Java the original [VisualBlast software](http://www.ncbi.nlm.nih.gov/pubmed/9283755) written in C for the MS-Windows platform.
 
@@ -87,4 +87,4 @@ So, during my holidays on Summer 2004, I started a wonderful story: the creation
 Korilog ceased its activities on June 2015, therefore I decided to release these UI components to the open source community. 
 
 --
-(c) 2004-2016 - Patrick G. Durand
+(c) 2004-2017 - Patrick G. Durand
