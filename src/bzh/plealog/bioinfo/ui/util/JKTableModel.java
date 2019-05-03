@@ -25,6 +25,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.plealog.genericapp.api.EZEnvironment;
 
+import bzh.plealog.bioinfo.ui.blast.resulttable.sort.SerialEntityBag;
+
 /**
  * Define the data model flavor to use with JKTable.
  * 
@@ -37,6 +39,7 @@ public abstract class JKTableModel extends AbstractTableModel {
   private TableHeaderColumnItem[] displayedHeaders;
   private int sortedColumn = 0;
   private boolean sortAscending = false;
+  protected SerialEntityBag sortedItems = null;
 
   public JKTableModel() {
     String columnsToDisplay = EZEnvironment.getApplicationProperty(getDisplayHeaderPropertyName());
@@ -82,7 +85,6 @@ public abstract class JKTableModel extends AbstractTableModel {
   public abstract String getSortColumnPropertyName();
 
   public abstract String getSortAscendingPropertyName();
-
 
   public void updateColumnHeaders(TableHeaderColumnItem[] newHeaders) {
     this.displayedHeaders = newHeaders;
@@ -135,4 +137,54 @@ public abstract class JKTableModel extends AbstractTableModel {
   public Color getHeaderColumn(String columnName) {
     return null;
   }
+
+  public abstract JKTableModelSorter<?> getModelSorter();
+
+  public void sortData(boolean force) {
+
+    JKTableModelSorter<?> sorter = this.getModelSorter();
+    if (sorter != null) {
+      EZEnvironment.setWaitCursor();
+      ProgressTinyDialog mon = null;
+      if ((!sorter.stillSorted(getSortColumn())) && (sorter.getSize() > 100000)) {// display Progress UI only with large
+                                                                                  // amount of data
+        mon = new ProgressTinyDialog("Sorting table", 0, true, true, false);
+      }
+
+      SortDataThread task = new SortDataThread(mon, force, sorter);
+      task.start();
+      if (mon != null) {
+        mon.setVisible(true);
+      }
+
+      EZEnvironment.setDefaultCursor();
+    }
+  }
+
+  protected void sortData(ProgressTinyDialog monitor, boolean force, JKTableModelSorter<?> sorter) {
+    SerialEntityBag data = sorter.sort(monitor, getSortColumn(), force);
+
+    if (data == null)
+      return;
+    this.sortedItems = data;
+
+    this.fireTableDataChanged();
+  }
+
+  private class SortDataThread extends Thread {
+    ProgressTinyDialog monitor;
+    boolean force;
+    JKTableModelSorter<?> sorter;
+
+    public SortDataThread(ProgressTinyDialog mon, boolean force, JKTableModelSorter<?> sorter) {
+      monitor = mon;
+      this.force = force;
+      this.sorter = sorter;
+    }
+
+    public void run() {
+      sortData(monitor, force, sorter);
+    }
+  }
+
 }

@@ -386,13 +386,12 @@ public class JKTable extends JTable implements ColumnManagableTable {
       }
       header.repaint();
       tableObj.clearSelection();
+      boolean bForceReload = (e.getModifiers() & ActionEvent.CTRL_MASK) != 0;
+      model.sortData(bForceReload);
     }
   }
 
   private class UIResourceTableCellRenderer extends DefaultTableCellRenderer implements UIResource {
-    /**
-     *
-     */
     private static final long serialVersionUID = -162050309161381597L;
     private int[] xPoints = new int[3];
     private int[] yPoints = new int[3];
@@ -476,8 +475,6 @@ public class JKTable extends JTable implements ColumnManagableTable {
     }
   }
 
-  // Thx to
-  // http://www.exampledepot.8waytrips.com/egs/javax.swing.table/ColHeadTips.html
   private class ColumnHeaderToolTips extends MouseMotionAdapter {
 
     // Current column whose tooltip is being displayed.

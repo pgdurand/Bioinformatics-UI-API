@@ -18,6 +18,7 @@ package bzh.plealog.bioinfo.ui.blast.core;
 
 import java.io.Serializable;
 
+import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
 import bzh.plealog.bioinfo.api.data.searchresult.SRRequestInfo;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;

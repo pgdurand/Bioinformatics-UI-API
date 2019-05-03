@@ -5,3 +5,5 @@
 /lib
 /bin
 **/.DS_Store
+/data/*.lst
+
