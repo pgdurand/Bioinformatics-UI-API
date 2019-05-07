@@ -763,4 +763,187 @@ public class SummaryTableModel extends JKTableModel {
     return new SummaryTableModelSorter(this._query);
   }
 
+  public static Object getValueItem(int rowID, int colID, BFileSummary summary, String status, QueryBase query) {
+    Object val = null;
+    switch (colID) {
+    case RES_FILE_NUM_HEADER:
+      val = new Integer(rowID + 1);
+      break;
+    case RES_SEQ_NAME_HEADER:
+      if (summary != null) {
+        val = summary.getQueryId();
+      }
+      break;
+    case RES_SUMMARY_BEST_HIT_ACC:
+      if (summary != null) {
+        val = summary.getBestHitAccession();
+      }
+      break;
+    case RES_SUMMARY_BEST_HIT_DEF:
+      if (summary != null) {
+        val = summary.getBestHitDescription();
+      }
+      break;
+    case RES_SUMMARY_BEST_HIT_LEN:
+      if (summary != null) {
+        val = summary.getBestHitLength();
+      }
+      break;
+    case RES_SUMMARY_BEST_HIT_EVAL:
+      if (summary != null) {
+        val = summary.getBestHitEValue();
+      }
+      break;
+    case RES_SUMMARY_BEST_HIT_SCORE:
+      if (summary != null) {
+        val = summary.getBestHitScore();
+      }
+      break;
+    case RES_SUMMARY_BEST_HIT_SCOREBITS:
+      if (summary != null) {
+        val = summary.getBestHitScoreBits();
+      }
+      break;
+    case RES_STATUS_HEADER:
+      val = status;
+      break;
+    case RES_FILE_NAME_HEADER:
+      if (summary != null) {
+        val = summary.getQueryRID();//starting with KB 3.2, get RID
+      }
+      if (val == null || val.equals("-")) {
+        if (query.getRID() != null) {
+          val = query.getRID(); // KServer 4.1
+        } else {
+          val = "-";
+        }
+      }
+      break;
+    case RES_IDENTITY:
+      if (summary != null) {
+        val = summary.getBestHitIdentify();
+      }
+      break;
+    case RES_SIMILARITY:
+      if (summary != null) {
+        val = summary.getBestHitSimilarity();
+      }
+      break;
+    case RES_COVERAGE:
+      if (summary != null) {
+        val = summary.getBestHitCoverage();
+      }
+      break;
+    case RES_COVERAGE_H:
+      if (summary != null) {
+        val = summary.getBestHitCoverageH();
+      }
+      break;
+    case RES_TAXONOMY:
+      if (summary != null) {
+        val = summary.getTaxonomy();
+      }
+      break;
+    case RES_ORGANISM:
+      if (summary != null) {
+        val = summary.getOrganism();
+      }
+      break;
+    case RES_QUERY_LENGTH:
+      if (summary != null) {
+        val = summary.getQueryLength();
+      }
+      break;
+    case RES_QUERY_FROM:
+      if (summary != null) {
+        val = summary.getQueryFrom();
+      }
+      break;
+    case RES_QUERY_TO:
+      if (summary != null) {
+        val = summary.getQueryTo();
+      }
+      break;
+    case RES_QUERY_FRAME:
+      if (summary != null) {
+        val = summary.getQueryFrame();
+      }
+      break;
+    case RES_QUERY_GAPS:
+      if (summary != null) {
+        val = summary.getQueryGaps();
+      }
+      break;
+    case RES_BESTHIT_FROM:
+      if (summary != null) {
+        val = summary.getBestHitFrom();
+      }
+      break;
+    case RES_BESTHIT_TO:
+      if (summary != null) {
+        val = summary.getBestHitTo();
+      }
+      break;
+    case RES_BESTHIT_FRAME:
+      if (summary != null) {
+        val = summary.getBestHitFrame();
+      }
+      break;
+    case RES_BESTHIT_GAPS:
+      if (summary != null) {
+        val = summary.getBestHitGaps();
+      }
+      break;
+    case RES_ALIGN_LENGTH:
+      if (summary != null) {
+        val = summary.getAlignLength();
+      }
+      break;
+    case RES_NB_HITS:
+      if (summary != null) {
+        val = summary.getNHits();
+      }
+      break;
+    case RES_NB_HSPS:
+      if (summary != null) {
+        val = summary.getNbHsps();
+      }
+      break;
+    case RES_T_GAPS:
+      if (summary != null) {
+        val = summary.getTotalGaps();
+      }
+      break;
+    case RES_P_GAPS:
+      if (summary != null) {
+        val = summary.getPercentGaps();
+      }
+      break;
+    case RES_MISMATCHES:
+      if (summary != null) {
+        val = summary.getMistmatches();
+      }
+      break;
+    case RES_LCA:
+      if (summary != null) {
+        val = summary.getLCA();
+      }
+      break;
+    case RES_RANK_LCA:
+      if (summary != null) {
+        val = summary.getRankLCA();
+      }
+      break;
+    case RES_ORIGIN_JOB:
+      if (summary != null) {
+        val = summary.getOriginJobName();
+      }
+      break;
+    }
+
+    if (val == null) {
+      val = "-";
+    }
+    return (val);
+  }
 }
