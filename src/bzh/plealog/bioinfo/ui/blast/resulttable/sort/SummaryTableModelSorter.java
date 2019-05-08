@@ -21,7 +21,6 @@ import java.util.Enumeration;
 import java.util.List;
 
 import bzh.plealog.bioinfo.api.data.searchjob.BFileSummary;
-import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
 import bzh.plealog.bioinfo.ui.blast.core.QueryBaseUI;
 import bzh.plealog.bioinfo.ui.blast.resulttable.SummaryTableModel;
 import bzh.plealog.bioinfo.ui.util.JKTableModelSorter;
@@ -45,13 +44,13 @@ public class SummaryTableModelSorter extends JKTableModelSorter<BFileSummary> {
     _query = bq;
   }
 
-  @Override
+  /*@Override
   protected boolean canSave() {
     // because of the new retrieve mode from KServer which allows display of results
     // even the job is not finished : do not save the sort while some queries are
     // not still executed
     return (_query.countStatuses((byte) QueryBase.OK) == _query.sequences());
-  }
+  }*/
 
   /**
    * 

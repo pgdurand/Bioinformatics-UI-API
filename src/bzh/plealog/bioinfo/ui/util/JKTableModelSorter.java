@@ -76,7 +76,7 @@ public abstract class JKTableModelSorter<T> {
 	protected abstract int getSize();
 
 	protected boolean canSave() {
-		return true;
+		return this.directoryPath!=null && new File(this.directoryPath).exists();
 	}
 
 	/**
