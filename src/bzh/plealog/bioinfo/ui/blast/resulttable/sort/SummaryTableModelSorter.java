@@ -21,6 +21,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import bzh.plealog.bioinfo.api.data.searchjob.BFileSummary;
+import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
 import bzh.plealog.bioinfo.ui.blast.core.QueryBaseUI;
 import bzh.plealog.bioinfo.ui.blast.resulttable.SummaryTableModel;
 import bzh.plealog.bioinfo.ui.util.JKTableModelSorter;
@@ -28,8 +29,8 @@ import bzh.plealog.bioinfo.ui.util.ProgressTinyDialog;
 import bzh.plealog.bioinfo.util.CoreUtil;
 
 /**
- * This is the main class of the ResultTableModelSorter framework. It aims at
- * enabling the support of column data sorting for the ResultTableModel.
+ * This is the main class of the SummaryTableModelSorter framework. It aims at
+ * enabling the support of column data sorting for the SummaryTableModel.
  */
 public class SummaryTableModelSorter extends JKTableModelSorter<BFileSummary> {
   private QueryBaseUI _query;
@@ -44,13 +45,13 @@ public class SummaryTableModelSorter extends JKTableModelSorter<BFileSummary> {
     _query = bq;
   }
 
-  /*@Override
+  @Override
   protected boolean canSave() {
     // because of the new retrieve mode from KServer which allows display of results
     // even the job is not finished : do not save the sort while some queries are
     // not still executed
-    return (_query.countStatuses((byte) QueryBase.OK) == _query.sequences());
-  }*/
+    return (super.canSave() && (_query.countStatuses((byte) QueryBase.OK) == _query.sequences()));
+  }
 
   /**
    * 
