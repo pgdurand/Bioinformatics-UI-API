@@ -1,4 +1,4 @@
-/* Copyright (C) 2003-2016 Patrick G. Durand
+/* Copyright (C) 2003-2019 Patrick G. Durand
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -476,11 +476,12 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
    * Set a new data model.
    */
   public void setDataModel(BlastHitHSP[] bhh) {
-    int[] colWidth = _blastList.getCurrentColumnSize();
-    _blastList.setModel(new BlastHitTableModel(bhh));
-    _blastList.initColumnSize(_mainPanel.getWidth(), colWidth);
     _blastList.getSelectionModel().setSelectionInterval(0, 0);
+    BlastHitTableModel tModel = (BlastHitTableModel) _blastList.getModel();
+    tModel.updateModel(bhh);
     activateActions(true);
+    int[] colWidth = _blastList.getCurrentColumnSize();
+    _blastList.initColumnSize(_mainPanel.getWidth(), colWidth);
     _scroll.getVerticalScrollBar().setValue(0);
   }
 
@@ -793,10 +794,10 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
     private static final long serialVersionUID = -8111948924562038269L;
     private BlastHitHSP[]     _hits;
 
-    public BlastHitTableModel() {
+    private BlastHitTableModel() {
     }
 
-    public BlastHitTableModel(BlastHitHSP[] bhh) {
+    private BlastHitTableModel(BlastHitHSP[] bhh) {
       setColHeaders(null);
       _hits = bhh;
       sortData();
@@ -808,6 +809,12 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
           TableModelEvent.DELETE));
     }
 
+    public void updateModel(BlastHitHSP[] bhh) {
+      _hits = bhh;
+      sortData();
+      fireTableChanged(new TableModelEvent(this, 0, 0, 0,
+          TableModelEvent.UPDATE));
+    }
     public void setColHeaders(TableHeaderColumnItem[] colH) {
       if (colH != null)
         _colItems = colH;
