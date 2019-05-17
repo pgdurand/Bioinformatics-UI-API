@@ -108,13 +108,13 @@ public class BlastResultTableViewerTest {
 
 			//Load data file and make a Model
 			//File blastFile = new File("data/blastp.xml");
-	    File blastFile = new File("data/blastp-71queries-swissprot.xml");
+	    //File blastFile = new File("data/blastp-71queries-swissprot.xml");
 	    //File blastFile = new File("data/hits_with_bco.zml");
-	    //File blastFile = new File("data/blastp-71queries-swissprot.zml");
-			SRLoader ncbiBlastLoader = SerializerSystemFactory.getLoaderInstance(
-			    SerializerSystemFactory.NCBI_LOADER);
-	    //SRLoader ncbiBlastLoader = SerializerSystemFactory.getLoaderInstance(
-	    //      SerializerSystemFactory.NATIVE_LOADER);
+	    File blastFile = new File("data/blastp-71queries-swissprot.zml");
+			//SRLoader ncbiBlastLoader = SerializerSystemFactory.getLoaderInstance(
+			//    SerializerSystemFactory.NCBI_LOADER);
+	    SRLoader ncbiBlastLoader = SerializerSystemFactory.getLoaderInstance(
+	          SerializerSystemFactory.NATIVE_LOADER);
 			SROutput bo = ncbiBlastLoader.load(blastFile);
 			
 			assert bo != null;
