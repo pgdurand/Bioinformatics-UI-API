@@ -77,7 +77,8 @@ public class BlastResultTableViewerTest {
 		resultTable.setColumnSelectionAllowed(false);
 		resultTable.setRowSelectionAllowed(true);
 		resultTable.setGridColor(Color.LIGHT_GRAY);
-
+		resultTable.updateRowHeights();
+		
 		// Top Scroll Pane
 		scrollPaneRT = new JScrollPane(resultTable);
 		scrollPaneRT.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -108,8 +109,12 @@ public class BlastResultTableViewerTest {
 			//Load data file and make a Model
 			//File blastFile = new File("data/blastp.xml");
 	    File blastFile = new File("data/blastp-71queries-swissprot.xml");
+	    //File blastFile = new File("data/hits_with_bco.zml");
+	    //File blastFile = new File("data/blastp-71queries-swissprot.zml");
 			SRLoader ncbiBlastLoader = SerializerSystemFactory.getLoaderInstance(
 			    SerializerSystemFactory.NCBI_LOADER);
+	    //SRLoader ncbiBlastLoader = SerializerSystemFactory.getLoaderInstance(
+	    //      SerializerSystemFactory.NATIVE_LOADER);
 			SROutput bo = ncbiBlastLoader.load(blastFile);
 			
 			assert bo != null;

@@ -486,6 +486,20 @@ public class BlastHitTable extends JPanel implements BlastHitListListener,
   }
 
   /**
+   * Set a new data model.
+   */
+  public void setDataModel(BlastIteration iter) {
+    if (iter == null || iter.getIteration().countHit() == 0) {
+      resetDataModel();
+      _curIteration = null;
+    } else {
+      if (_curIteration != iter) {
+        setDataModel(AnalysisUtils.prepareDataModel(iter));
+        _curIteration = iter;
+      }
+    }
+  }
+  /**
    * Register a BlastHitListSupport.
    * 
    * */

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import bzh.plealog.bioinfo.api.data.searchjob.BFileSummary;
+import bzh.plealog.bioinfo.api.data.searchjob.SRFileSummary;
 import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
 import bzh.plealog.bioinfo.ui.blast.core.QueryBaseUI;
 import bzh.plealog.bioinfo.ui.blast.resulttable.SummaryTableModel;
@@ -32,7 +32,7 @@ import bzh.plealog.bioinfo.util.CoreUtil;
  * This is the main class of the SummaryTableModelSorter framework. It aims at
  * enabling the support of column data sorting for the SummaryTableModel.
  */
-public class SummaryTableModelSorter extends JKTableModelSorter<BFileSummary> {
+public class SummaryTableModelSorter extends JKTableModelSorter<SRFileSummary> {
   private QueryBaseUI _query;
 
   public static final String SORT_FILE_PREFIX = "sort_";
@@ -58,11 +58,11 @@ public class SummaryTableModelSorter extends JKTableModelSorter<BFileSummary> {
    */
   protected List<Entity> getEntities(ProgressTinyDialog monitor, int sortColumn) {
     List<Entity> entities;
-    BFileSummary summary;
+    SRFileSummary summary;
     ENTITY_TYPE eType;
     int i, size, delta = 100;
 
-    // if not, start ordering BFileSummary as needed
+    // if not, start ordering SRFileSummary as needed
     entities = new ArrayList<Entity>();
     size = _query.sequences();
     eType = getEntityType(sortColumn);
@@ -99,7 +99,7 @@ public class SummaryTableModelSorter extends JKTableModelSorter<BFileSummary> {
         }
       }
     } else {
-      Enumeration<BFileSummary> summaries = _query.getSummaries();
+      Enumeration<SRFileSummary> summaries = _query.getSummaries();
       int index = 0;
       while (summaries.hasMoreElements()) {
         try {
@@ -139,7 +139,7 @@ public class SummaryTableModelSorter extends JKTableModelSorter<BFileSummary> {
     String str, str2;
     if (value == null)
       return null;
-    // As a reminder, BFileSummary was created to store all data as String for
+    // As a reminder, SRFileSummary was created to store all data as String for
     // display purpose
     // % values contains an ending %, so remove it
     int idx = value.indexOf("%");
@@ -148,11 +148,11 @@ public class SummaryTableModelSorter extends JKTableModelSorter<BFileSummary> {
     } else {
       str = value;
     }
-    // % formatting (see BFileSummary class) uses decimal formatter and current
+    // % formatting (see SRFileSummary class) uses decimal formatter and current
     // Locale
     // when dealing with French-based Locale, decimal separator is a comma: so
     // replace it
-    // this solution was chosen instead of using parse() methods from BFileSummary
+    // this solution was chosen instead of using parse() methods from SRFileSummary
     // class
     // formatter. Indeed, that class uses several formatters, and here it is quite
     // difficult
@@ -165,16 +165,16 @@ public class SummaryTableModelSorter extends JKTableModelSorter<BFileSummary> {
   }
 
   /**
-   * Get a specific value from a BFileSummary data block.
+   * Get a specific value from a SRFileSummary data block.
    * 
-   * @param summary    the BFileSummary from where to retrieve the data value
+   * @param summary    the SRFileSummary from where to retrieve the data value
    * 
    * @param sortColumn id of the column that targets the value to retrieve. This
    *                   parameter must be one of the RES_XXX constants defined in
    *                   the ResultTableModel class.
    */
   @Override
-  protected Object getValue(BFileSummary summary, int sortColumn) {
+  protected Object getValue(SRFileSummary summary, int sortColumn) {
     Object val = "";
     switch (sortColumn) {
     case SummaryTableModel.RES_SEQ_NAME_HEADER:

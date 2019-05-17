@@ -19,7 +19,7 @@ package bzh.plealog.bioinfo.ui.blast.core;
 import java.text.DecimalFormat;
 
 import bzh.plealog.bioinfo.api.data.feature.FeatureTable;
-import bzh.plealog.bioinfo.api.data.searchjob.BFileSummary;
+import bzh.plealog.bioinfo.api.data.searchjob.SRFileSummary;
 import bzh.plealog.bioinfo.api.data.searchresult.SRHit;
 import bzh.plealog.bioinfo.api.data.searchresult.SRHsp;
 import bzh.plealog.bioinfo.api.data.searchresult.SRIteration;
@@ -35,11 +35,11 @@ import bzh.plealog.bioinfo.api.data.sequence.DSymbol;
  * @author Patrick G. Durand
  */
 public class AnalysisUtils {
-  //Refactoring part of AnalysisUtils to BFileSummary while keeping API compatibility
-  public static final DecimalFormat EVALUE_FORMATTER1      = BFileSummary.EVALUE_FORMATTER1;
-  public static final DecimalFormat EVALUE_FORMATTER2      = BFileSummary.EVALUE_FORMATTER2;
-  public static final DecimalFormat PCT_FORMATTER          = BFileSummary.PCT_FORMATTER;
-  public static final DecimalFormat SCORE_FORMATTER        = BFileSummary.SCORE_FORMATTER;
+  //Refactoring part of AnalysisUtils to SRFileSummary while keeping API compatibility
+  public static final DecimalFormat EVALUE_FORMATTER1      = SRFileSummary.EVALUE_FORMATTER1;
+  public static final DecimalFormat EVALUE_FORMATTER2      = SRFileSummary.EVALUE_FORMATTER2;
+  public static final DecimalFormat PCT_FORMATTER          = SRFileSummary.PCT_FORMATTER;
+  public static final DecimalFormat SCORE_FORMATTER        = SRFileSummary.SCORE_FORMATTER;
   
   public static final DecimalFormat KSERVER_COST_FORMATTER = new DecimalFormat(
                                                                "0.### \u20ac");

@@ -19,6 +19,7 @@ package bzh.plealog.bioinfo.ui.util;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.text.DecimalFormat;
 
@@ -40,12 +41,14 @@ public class JPercentLabel extends JPanel {
 
   protected static final DecimalFormat PCT_FORMATTER = new DecimalFormat("###.#");
 
-  protected JLabel  _lbl;
+  public JLabel  _lbl;
   protected double  _percent = -1.0;
   protected Color   _clr;
   protected boolean _drawBox;
   protected boolean _drawZero = true;
 
+  private FontMetrics _fm = null;
+  
   /**
    * Constructor.
    */
@@ -217,10 +220,15 @@ public class JPercentLabel extends JPanel {
 
     if (_percent==-1.0 || (_percent==0.0 && !_drawZero))
       return;
+    if (_fm==null) {
+      _fm = g.getFontMetrics();
+    }
     //fill
     g.setColor(_clr);
     x = (int) ((double)dim.width*_percent/100.0)-2;
-    y = dim.height-2;
+    //added to take into account use of this component as JTable cell renderer
+    //when row height is set to multiple lines
+    y = Math.min(_fm.getHeight(), dim.height-2);
     g.fillRect(1, 1, x, y);
     //draw a box
     if (_drawBox){

@@ -18,8 +18,10 @@ package bzh.plealog.bioinfo.ui.blast.resulttable;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -27,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -34,6 +37,7 @@ import javax.swing.table.TableColumnModel;
 import com.plealog.genericapp.api.EZEnvironment;
 
 import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
+import bzh.plealog.bioinfo.api.data.searchjob.SRTermSummary;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
 import bzh.plealog.bioinfo.ui.util.JKTable;
@@ -157,10 +161,14 @@ public class SummaryTable extends JKTable {
       tcr = super.getCellRenderer(row, column);
     }
 
-    if (tcr instanceof JLabel) {
+    if (tcr instanceof JPercentLabel) {
+      ((JPercentLabel)tcr)._lbl.setVerticalAlignment(SwingConstants.TOP);
+    }
+    else if (tcr instanceof JLabel) {
       JLabel lbl;
 
       lbl = (JLabel) tcr;
+      lbl.setVerticalAlignment(SwingConstants.TOP);
       if (colID == SummaryTableModel.RES_FILE_NUM_HEADER || colID == SummaryTableModel.RES_SUMMARY_BEST_HIT_ACC
           || colID == SummaryTableModel.RES_SUMMARY_BEST_HIT_EVAL
           || colID == SummaryTableModel.RES_SUMMARY_BEST_HIT_SCORE
@@ -239,6 +247,46 @@ public class SummaryTable extends JKTable {
       }
     }
     return tcr;
+  }
+
+  public void updateRowHeights() {
+    //System.out.println("--> updateRowHeights()");
+
+    SummaryTableModel model = (SummaryTableModel) this.getModel();
+    int colID;
+    boolean showClassification = false;
+    //find out whether Classification column if displayed
+    for (int i=0 ; i< this.getColumnCount() ; i++) {
+      colID = model.getColumnId(i);
+      if (colID == SummaryTableModel.RES_CLASSIFICATION) {
+        showClassification = true;
+        break;
+      }
+    }
+    //get current FontMetrics for Table Font
+    Font fnt = UIManager.getLookAndFeelDefaults().getFont("Table.font");//this.getFont()->null !
+    FontMetrics fm = this.getFontMetrics(fnt);
+    int height = fm.getHeight() + fm.getDescent();
+    int i, size, classifs;
+    size = this.getRowCount();
+    //setup row height
+    for(i=0 ; i<size ; i++) {
+      if (showClassification) {
+        List<SRTermSummary> lst = model.getQuery().getSummary(i).getClassificationForView(); 
+        classifs = Math.max(1, lst!=null ? lst.size() : 1);
+      }
+      else {
+        classifs = 1;
+      }
+      //System.out.println("Entry: "+i+" - rows: "+classifs);
+      this.setRowHeight(i, classifs * height);
+    }
+
+  }
+  @Override
+  public void tableChanged(TableModelEvent event) {
+    super.tableChanged(event);
+    updateRowHeights();
   }
 
   /**

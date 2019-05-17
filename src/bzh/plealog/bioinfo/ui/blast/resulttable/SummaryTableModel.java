@@ -19,17 +19,19 @@ package bzh.plealog.bioinfo.ui.blast.resulttable;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
-import bzh.plealog.bioinfo.api.data.searchjob.BFileSummary;
 import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
+import bzh.plealog.bioinfo.api.data.searchjob.SRFileSummary;
+import bzh.plealog.bioinfo.api.data.searchjob.SRTermSummary;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
 import bzh.plealog.bioinfo.ui.blast.core.QueryBaseUI;
 import bzh.plealog.bioinfo.ui.blast.resulttable.sort.Entity;
-import bzh.plealog.bioinfo.ui.blast.resulttable.sort.SummaryTableModelSorter;
 import bzh.plealog.bioinfo.ui.blast.resulttable.sort.SerialEntityBag;
+import bzh.plealog.bioinfo.ui.blast.resulttable.sort.SummaryTableModelSorter;
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
 import bzh.plealog.bioinfo.ui.util.JKTableModel;
 import bzh.plealog.bioinfo.ui.util.JKTableModelSorter;
@@ -106,7 +108,8 @@ public class SummaryTableModel extends JKTableModel {
   public static final int RES_LCA = 31;
   public static final int RES_RANK_LCA = 32;
   public static final int RES_ORIGIN_JOB = 33;
-
+  public static final int RES_CLASSIFICATION = 34;
+  
   public static enum VIEW_TYPE {
     ALL, // all queries
     HITS_ONLY, // all queries having hits
@@ -118,7 +121,8 @@ public class SummaryTableModel extends JKTableModel {
       RES_LCA, RES_RANK_LCA };
 
   private static final int[] HIT_ORDERED_HEADER_IDS = new int[] { RES_NB_HITS, RES_SUMMARY_BEST_HIT_ACC,
-      RES_SUMMARY_BEST_HIT_DEF, RES_SUMMARY_BEST_HIT_LEN, RES_NB_HSPS, RES_TAXONOMY, RES_ORGANISM, RES_BESTHIT_FROM,
+      RES_SUMMARY_BEST_HIT_DEF, RES_SUMMARY_BEST_HIT_LEN, RES_NB_HSPS, RES_TAXONOMY, RES_ORGANISM, RES_CLASSIFICATION,
+      RES_BESTHIT_FROM,
       RES_BESTHIT_TO, RES_BESTHIT_FRAME, RES_BESTHIT_GAPS, RES_COVERAGE_H, RES_SUMMARY_BEST_HIT_EVAL,
       RES_SUMMARY_BEST_HIT_SCORE, RES_SUMMARY_BEST_HIT_SCOREBITS, RES_IDENTITY, RES_SIMILARITY, RES_P_GAPS,
       RES_ALIGN_LENGTH, RES_T_GAPS, RES_MISMATCHES, RES_FILE_NAME_HEADER, RES_ORIGIN_JOB };
@@ -139,7 +143,8 @@ public class SummaryTableModel extends JKTableModel {
       /* 16 */RES_QUERY_LENGTH, /* 17 */RES_QUERY_FROM, /* 18 */RES_QUERY_TO, /* 19 */RES_QUERY_FRAME,
       /* 20 */RES_QUERY_GAPS, /* 21 */RES_BESTHIT_FROM, /* 22 */RES_BESTHIT_TO, /* 23 */RES_BESTHIT_FRAME,
       /* 24 */RES_BESTHIT_GAPS, /* 25 */RES_ALIGN_LENGTH, /* 26 */RES_NB_HITS, /* 27 */RES_NB_HSPS, /* 28 */RES_T_GAPS,
-      /* 29 */RES_P_GAPS, /* 30 */RES_MISMATCHES, /* 31 */RES_LCA, /* 32 */RES_RANK_LCA, /* 33 */RES_ORIGIN_JOB };
+      /* 29 */RES_P_GAPS, /* 30 */RES_MISMATCHES, /* 31 */RES_LCA, /* 32 */RES_RANK_LCA, /* 33 */RES_ORIGIN_JOB,
+      /* 34 */RES_CLASSIFICATION};
 
   public static final String[] RES_HEADERS = { 
       SVMessages.getString("ResultTableModel.tableHeader.1"),
@@ -175,7 +180,8 @@ public class SummaryTableModel extends JKTableModel {
       SVMessages.getString("ResultTableModel.tableHeader.31"),
       SVMessages.getString("ResultTableModel.tableHeader.32"),
       SVMessages.getString("ResultTableModel.tableHeader.33"),
-      SVMessages.getString("ResultTableModel.tableHeader.34") };
+      SVMessages.getString("ResultTableModel.tableHeader.34"),
+      SVMessages.getString("ResultTableModel.tableHeader.35")};
 
   // set query header for background table headers
   static {
@@ -273,10 +279,10 @@ public class SummaryTableModel extends JKTableModel {
   }
 
   /**
-   * This method is used to convert a BFileSummary index to a row table. This method relies on the internal sorted
+   * This method is used to convert a SRFileSummary index to a row table. This method relies on the internal sorted
    * data model of BFileSummaries.
    * 
-   * @param idx BFileSummary index
+   * @param idx SRFileSummary index
    * 
    * @return table row index
    */
@@ -305,7 +311,7 @@ public class SummaryTableModel extends JKTableModel {
    * 
    * @param idx table row index
    * 
-   * @return BFileSummary index
+   * @return SRFileSummary index
    */
   public int convertTableRowToSummaryIdx(int idx) {
     if (_viewTypeDataBinner == null || _viewTypeDataBinner.size() == 0)
@@ -387,13 +393,13 @@ public class SummaryTableModel extends JKTableModel {
    * 
    * @param rowID row index
    * @param colID column index
-   * @param summary BFileSummary
+   * @param summary SRFileSummary
    * @param status status
    * @param query the QueryBase object
    * 
    * @return a cell data value
    */
-  public static Object getValueItem(int rowID, int colID, BFileSummary summary, String status, QueryBaseUI query) {
+  public static Object getValueItem(int rowID, int colID, SRFileSummary summary, String status, QueryBaseUI query) {
     Object val = null;
     switch (colID) {
     case RES_FILE_NUM_HEADER:
@@ -569,6 +575,26 @@ public class SummaryTableModel extends JKTableModel {
         val = summary.getOriginJobName();
       }
       break;
+    case RES_CLASSIFICATION:
+      if (summary != null) {
+        List<SRTermSummary> mainTerms= summary.getClassificationForView();
+        if (mainTerms!=null && mainTerms.size()!=0) {
+          StringBuffer buf = new StringBuffer("<html>");
+          for(SRTermSummary term : mainTerms) {
+            buf.append(term.getID());
+            buf.append("&nbsp;");
+            buf.append(term.getDescription());
+            buf.append("<br>");
+          }
+          buf.append("</html>");
+          val = buf.toString();
+        }
+        else {
+          val =null;
+        }
+      }
+      break;
+
     }
 
     if (val == null) {
@@ -587,7 +613,7 @@ public class SummaryTableModel extends JKTableModel {
    */
   private Object getValueAtEx(int row, int col) {
     Object val = null;
-    BFileSummary summary;
+    SRFileSummary summary;
     String status;
     Entity entity;
     int colID, rowID;
@@ -645,7 +671,7 @@ public class SummaryTableModel extends JKTableModel {
     colID = this.getColumnId(col);
     // return column specific data
     val = getValueItem(rowID, colID, summary, status, _query);
-    // optimization : when resubmitting a job, BFileSummary is not updated before
+    // optimization : when resubmitting a job, SRFileSummary is not updated before
     // starting job
     // (task may take a long time with huge amount of queries). So, unless query is
     // "ok", we only
@@ -687,8 +713,6 @@ public class SummaryTableModel extends JKTableModel {
   public boolean[] queryHasHits() {
     boolean[] hasHits = null;
 
-    // see
-    // http://nadeausoftware.com/articles/2008/02/java_tip_how_read_files_quickly
     if (_hasHits != null) {
       // check required since status of query and hasHits array may change during
       // query execution
@@ -763,7 +787,7 @@ public class SummaryTableModel extends JKTableModel {
     return new SummaryTableModelSorter(this._query);
   }
 
-  public static Object getValueItem(int rowID, int colID, BFileSummary summary, String status, QueryBase query) {
+  /*public static Object getValueItem(int rowID, int colID, SRFileSummary summary, String status, QueryBase query) {
     Object val = null;
     switch (colID) {
     case RES_FILE_NUM_HEADER:
@@ -939,11 +963,32 @@ public class SummaryTableModel extends JKTableModel {
         val = summary.getOriginJobName();
       }
       break;
+    case RES_CLASSIFICATION:
+      if (summary != null) {
+        SRClassification classif = summary.getClassification();
+        if (classif!=null && classif.size()!=0) {
+          StringBuffer buf = new StringBuffer("<html>");
+          Enumeration<String> classifIDs = classif.getTermIDs();
+          while(classifIDs.hasMoreElements()) {
+            String id = classifIDs.nextElement();
+            SRCTerm term = classif.getTerm(id);
+            buf.append(id);
+            buf.append("&nbsp;");
+            buf.append(term.getDescription());
+            buf.append("<br>");
+          }
+          buf.append("</html>");
+          val = buf.toString();
+        }
+        else {
+          val =null;
+        }
+      }
     }
 
     if (val == null) {
       val = "-";
     }
     return (val);
-  }
+  }*/
 }
