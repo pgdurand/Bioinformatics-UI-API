@@ -144,6 +144,26 @@ public class SummaryTable extends JKTable {
     model.setViewType(vType);
   }
 
+  /**
+   * Returns the types of classification to view.
+   * See SRFileSummary.getClassificationForView()
+   */
+  public List<String> getClassificationsToView(){
+    SummaryTableModel model = (SummaryTableModel) this.getModel();
+    return model.getClassificationsToView();
+  }
+  
+  /**
+   * Returns the types of classification to view.
+   * See SRFileSummary.getClassificationForView()
+   */
+  public void setClassificationsToView(List<String> cToV){
+    SummaryTableModel model = (SummaryTableModel) this.getModel();
+    model.setClassificationsToView(cToV);
+    updateRowHeights();
+  }
+
+  
   @Override
   public TableCellRenderer getCellRenderer(int row, int column) {
     TableCellRenderer tcr;
@@ -266,20 +286,20 @@ public class SummaryTable extends JKTable {
     //get current FontMetrics for Table Font
     Font fnt = UIManager.getLookAndFeelDefaults().getFont("Table.font");//this.getFont()->null !
     FontMetrics fm = this.getFontMetrics(fnt);
-    int height = fm.getHeight() + fm.getDescent();
+    int height = fm.getHeight();
     int i, size, classifs;
     size = this.getRowCount();
     //setup row height
     for(i=0 ; i<size ; i++) {
       if (showClassification) {
-        List<SRTermSummary> lst = model.getQuery().getSummary(i).getClassificationForView(); 
+        List<SRTermSummary> lst = model.getQuery().getSummary(i).getClassificationForView(model.getClassificationsToView()); 
         classifs = Math.max(1, lst!=null ? lst.size() : 1);
       }
       else {
         classifs = 1;
       }
       //System.out.println("Entry: "+i+" - rows: "+classifs);
-      this.setRowHeight(i, classifs * height);
+      this.setRowHeight(i, (classifs * height) + fm.getDescent());
     }
 
   }

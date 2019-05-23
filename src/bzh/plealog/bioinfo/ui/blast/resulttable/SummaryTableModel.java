@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
+import bzh.plealog.bioinfo.api.data.feature.AnnotationDataModelConstants;
 import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
 import bzh.plealog.bioinfo.api.data.searchjob.SRFileSummary;
 import bzh.plealog.bioinfo.api.data.searchjob.SRTermSummary;
@@ -48,6 +49,7 @@ public class SummaryTableModel extends JKTableModel {
   private static final long serialVersionUID = 1650459792644776263L;
 
   private TableHeaderColumnItem[] _colItemsReference;
+  private List<String> _classificationsToView;
   private boolean[] _hasHits; // use to optimize display with big job
   private int _queryStatus = -1;
   private QueryBaseUI _query;
@@ -197,8 +199,34 @@ public class SummaryTableModel extends JKTableModel {
    */
   public SummaryTableModel() {
     super();
+    prepareDefaultClassificationsToView();
   }
 
+  private void prepareDefaultClassificationsToView() {
+    _classificationsToView = new ArrayList<>();
+    
+    for(AnnotationDataModelConstants.ANNOTATION_CATEGORY cat : 
+      AnnotationDataModelConstants.ANNOTATION_CATEGORY.values()) {
+      if (cat.equals(AnnotationDataModelConstants.ANNOTATION_CATEGORY.TAX) ||
+          cat.equals(AnnotationDataModelConstants.ANNOTATION_CATEGORY.LCA)) {
+        //we do not handle these classifications types here
+        continue;
+      }
+      else if(cat.equals(AnnotationDataModelConstants.ANNOTATION_CATEGORY.GO)){
+        //GO special : handle sub-category (P, C, F)
+        for (AnnotationDataModelConstants.ANNOTATION_GO_SUBCATEGORY subcat : 
+          AnnotationDataModelConstants.ANNOTATION_GO_SUBCATEGORY.values()) {
+          _classificationsToView.add(SRTermSummary.formatViewType(
+              AnnotationDataModelConstants.ANNOTATION_CATEGORY.GO.getType(), 
+              subcat.getType()));
+        }
+      }
+      else {
+        _classificationsToView.add(cat.getType());
+      }
+    }
+  }
+  
   @Override
   public Color getHeaderColumn(String columnName) {
     if (ArrayUtils.contains(QUERY_HEADERS, columnName)) {
@@ -241,6 +269,22 @@ public class SummaryTableModel extends JKTableModel {
     return this._colItemsReference;
   }
 
+  /**
+   * Returns the types of classification to view.
+   * See SRFileSummary.getClassificationForView()
+   */
+  public List<String> getClassificationsToView(){
+    return _classificationsToView;
+  }
+  
+  /**
+   * Returns the types of classification to view.
+   * See SRFileSummary.getClassificationForView()
+   */
+  public void setClassificationsToView(List<String> cToV){
+    _classificationsToView = cToV;
+  }
+  
   /**
    * Set the data model.
    * 
@@ -577,10 +621,13 @@ public class SummaryTableModel extends JKTableModel {
       break;
     case RES_CLASSIFICATION:
       if (summary != null) {
-        List<SRTermSummary> mainTerms= summary.getClassificationForView();
+        List<SRTermSummary> mainTerms = summary.getClassificationForView(_classificationsToView);
         if (mainTerms!=null && mainTerms.size()!=0) {
           StringBuffer buf = new StringBuffer("<html>");
+          //just a test to figure out how to simply decorate terms with an icon
+          //URL url = SVMessages.class.getResource( "feature.png" );
           for(SRTermSummary term : mainTerms) {
+            //buf.append("<img src =" + url + "/> ");
             buf.append(term.getID());
             buf.append("&nbsp;");
             buf.append(term.getDescription());
