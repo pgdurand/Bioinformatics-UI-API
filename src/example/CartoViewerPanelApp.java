@@ -277,6 +277,12 @@ public class CartoViewerPanelApp {
       // application startup.
     }
 
+    @Override
+    public void frameDisplayed() {
+      // TODO Auto-generated method stub
+      
+    }
+
   }
 
   /**

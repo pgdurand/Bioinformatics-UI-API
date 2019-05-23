@@ -235,6 +235,11 @@ public class HSPSequenceViewer {
       // This method is called by the framework at the very beginning of
       // application startup.
     }
+    @Override
+    public void frameDisplayed() {
+      // TODO Auto-generated method stub
+      
+    }
 
   }
 
