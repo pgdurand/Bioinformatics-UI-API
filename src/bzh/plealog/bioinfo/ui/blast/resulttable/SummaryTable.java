@@ -37,7 +37,7 @@ import javax.swing.table.TableColumnModel;
 import com.plealog.genericapp.api.EZEnvironment;
 
 import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
-import bzh.plealog.bioinfo.api.data.searchjob.SRTermSummary;
+import bzh.plealog.bioinfo.api.data.searchjob.SJTermSummary;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
 import bzh.plealog.bioinfo.ui.util.JKTable;
@@ -275,10 +275,11 @@ public class SummaryTable extends JKTable {
     SummaryTableModel model = (SummaryTableModel) this.getModel();
     int colID;
     boolean showClassification = false;
-    //find out whether Classification column if displayed
+    //find out whether Classification column is displayed
     for (int i=0 ; i< this.getColumnCount() ; i++) {
       colID = model.getColumnId(i);
-      if (colID == SummaryTableModel.RES_CLASSIFICATION) {
+      if (colID == SummaryTableModel.RES_HITCLASSIFICATION 
+          || colID == SummaryTableModel.RES_QUERYCLASSIFICATION) {
         showClassification = true;
         break;
       }
@@ -292,8 +293,10 @@ public class SummaryTable extends JKTable {
     //setup row height
     for(i=0 ; i<size ; i++) {
       if (showClassification) {
-        List<SRTermSummary> lst = model.getQuery().getSummary(i).getClassificationForView(model.getClassificationsToView()); 
-        classifs = Math.max(1, lst!=null ? lst.size() : 1);
+        List<SJTermSummary> lst_h = model.getQuery().getSummary(i).getHitClassificationForView(model.getClassificationsToView()); 
+        List<SJTermSummary> lst_q = model.getQuery().getSummary(i).getQueryClassificationForView(model.getClassificationsToView()); 
+        classifs = Math.max(lst_h!=null ? lst_h.size() : 1, lst_q!=null ? lst_q.size() : 1);
+        classifs = Math.max(1, classifs);
       }
       else {
         classifs = 1;

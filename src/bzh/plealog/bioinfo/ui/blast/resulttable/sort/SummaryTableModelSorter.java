@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import bzh.plealog.bioinfo.api.data.searchjob.SRFileSummary;
 import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
+import bzh.plealog.bioinfo.api.data.searchjob.SJFileSummary;
 import bzh.plealog.bioinfo.ui.blast.core.QueryBaseUI;
 import bzh.plealog.bioinfo.ui.blast.resulttable.SummaryTableModel;
 import bzh.plealog.bioinfo.ui.util.JKTableModelSorter;
@@ -32,7 +32,7 @@ import bzh.plealog.bioinfo.util.CoreUtil;
  * This is the main class of the SummaryTableModelSorter framework. It aims at
  * enabling the support of column data sorting for the SummaryTableModel.
  */
-public class SummaryTableModelSorter extends JKTableModelSorter<SRFileSummary> {
+public class SummaryTableModelSorter extends JKTableModelSorter<SJFileSummary> {
   private QueryBaseUI _query;
 
   public static final String SORT_FILE_PREFIX = "sort_";
@@ -58,7 +58,7 @@ public class SummaryTableModelSorter extends JKTableModelSorter<SRFileSummary> {
    */
   protected List<Entity> getEntities(ProgressTinyDialog monitor, int sortColumn) {
     List<Entity> entities;
-    SRFileSummary summary;
+    SJFileSummary summary;
     ENTITY_TYPE eType;
     int i, size, delta = 100;
 
@@ -99,7 +99,7 @@ public class SummaryTableModelSorter extends JKTableModelSorter<SRFileSummary> {
         }
       }
     } else {
-      Enumeration<SRFileSummary> summaries = _query.getSummaries();
+      Enumeration<SJFileSummary> summaries = _query.getSummaries();
       int index = 0;
       while (summaries.hasMoreElements()) {
         try {
@@ -174,7 +174,7 @@ public class SummaryTableModelSorter extends JKTableModelSorter<SRFileSummary> {
    *                   the ResultTableModel class.
    */
   @Override
-  protected Object getValue(SRFileSummary summary, int sortColumn) {
+  protected Object getValue(SJFileSummary summary, int sortColumn) {
     Object val = "";
     switch (sortColumn) {
     case SummaryTableModel.RES_SEQ_NAME_HEADER:

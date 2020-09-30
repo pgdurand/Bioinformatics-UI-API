@@ -26,8 +26,8 @@ import org.apache.log4j.Logger;
 
 import bzh.plealog.bioinfo.api.data.feature.AnnotationDataModelConstants;
 import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
-import bzh.plealog.bioinfo.api.data.searchjob.SRFileSummary;
-import bzh.plealog.bioinfo.api.data.searchjob.SRTermSummary;
+import bzh.plealog.bioinfo.api.data.searchjob.SJFileSummary;
+import bzh.plealog.bioinfo.api.data.searchjob.SJTermSummary;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
 import bzh.plealog.bioinfo.ui.blast.core.QueryBaseUI;
 import bzh.plealog.bioinfo.ui.blast.resulttable.sort.Entity;
@@ -110,7 +110,8 @@ public class SummaryTableModel extends JKTableModel {
   public static final int RES_LCA = 31;
   public static final int RES_RANK_LCA = 32;
   public static final int RES_ORIGIN_JOB = 33;
-  public static final int RES_CLASSIFICATION = 34;
+  public static final int RES_HITCLASSIFICATION = 34;
+  public static final int RES_QUERYCLASSIFICATION = 35;
   
   public static enum VIEW_TYPE {
     ALL, // all queries
@@ -120,10 +121,10 @@ public class SummaryTableModel extends JKTableModel {
 
   private static final int[] QUERY_ORDERED_HEADER_IDS = new int[] { RES_FILE_NUM_HEADER, RES_SEQ_NAME_HEADER,
       RES_QUERY_LENGTH, RES_STATUS_HEADER, RES_QUERY_FROM, RES_QUERY_TO, RES_QUERY_FRAME, RES_QUERY_GAPS, RES_COVERAGE,
-      RES_LCA, RES_RANK_LCA };
+      RES_LCA, RES_RANK_LCA, RES_QUERYCLASSIFICATION };
 
   private static final int[] HIT_ORDERED_HEADER_IDS = new int[] { RES_NB_HITS, RES_SUMMARY_BEST_HIT_ACC,
-      RES_SUMMARY_BEST_HIT_DEF, RES_SUMMARY_BEST_HIT_LEN, RES_NB_HSPS, RES_TAXONOMY, RES_ORGANISM, RES_CLASSIFICATION,
+      RES_SUMMARY_BEST_HIT_DEF, RES_SUMMARY_BEST_HIT_LEN, RES_NB_HSPS, RES_TAXONOMY, RES_ORGANISM, RES_HITCLASSIFICATION,
       RES_BESTHIT_FROM,
       RES_BESTHIT_TO, RES_BESTHIT_FRAME, RES_BESTHIT_GAPS, RES_COVERAGE_H, RES_SUMMARY_BEST_HIT_EVAL,
       RES_SUMMARY_BEST_HIT_SCORE, RES_SUMMARY_BEST_HIT_SCOREBITS, RES_IDENTITY, RES_SIMILARITY, RES_P_GAPS,
@@ -146,7 +147,7 @@ public class SummaryTableModel extends JKTableModel {
       /* 20 */RES_QUERY_GAPS, /* 21 */RES_BESTHIT_FROM, /* 22 */RES_BESTHIT_TO, /* 23 */RES_BESTHIT_FRAME,
       /* 24 */RES_BESTHIT_GAPS, /* 25 */RES_ALIGN_LENGTH, /* 26 */RES_NB_HITS, /* 27 */RES_NB_HSPS, /* 28 */RES_T_GAPS,
       /* 29 */RES_P_GAPS, /* 30 */RES_MISMATCHES, /* 31 */RES_LCA, /* 32 */RES_RANK_LCA, /* 33 */RES_ORIGIN_JOB,
-      /* 34 */RES_CLASSIFICATION};
+      /* 34 */RES_HITCLASSIFICATION, /* 35 */ RES_QUERYCLASSIFICATION};
 
   public static final String[] RES_HEADERS = { 
       SVMessages.getString("ResultTableModel.tableHeader.1"),
@@ -183,7 +184,8 @@ public class SummaryTableModel extends JKTableModel {
       SVMessages.getString("ResultTableModel.tableHeader.32"),
       SVMessages.getString("ResultTableModel.tableHeader.33"),
       SVMessages.getString("ResultTableModel.tableHeader.34"),
-      SVMessages.getString("ResultTableModel.tableHeader.35")};
+      SVMessages.getString("ResultTableModel.tableHeader.35"),
+      SVMessages.getString("ResultTableModel.tableHeader.36")};
 
   // set query header for background table headers
   static {
@@ -216,7 +218,7 @@ public class SummaryTableModel extends JKTableModel {
         //GO special : handle sub-category (P, C, F)
         for (AnnotationDataModelConstants.ANNOTATION_GO_SUBCATEGORY subcat : 
           AnnotationDataModelConstants.ANNOTATION_GO_SUBCATEGORY.values()) {
-          _classificationsToView.add(SRTermSummary.formatViewType(
+          _classificationsToView.add(SJTermSummary.formatViewType(
               AnnotationDataModelConstants.ANNOTATION_CATEGORY.GO.getType(), 
               subcat.getType()));
         }
@@ -271,7 +273,7 @@ public class SummaryTableModel extends JKTableModel {
 
   /**
    * Returns the types of classification to view.
-   * See SRFileSummary.getClassificationForView()
+   * See SJFileSummary.getClassificationForView()
    */
   public List<String> getClassificationsToView(){
     return _classificationsToView;
@@ -279,7 +281,7 @@ public class SummaryTableModel extends JKTableModel {
   
   /**
    * Returns the types of classification to view.
-   * See SRFileSummary.getClassificationForView()
+   * See SJFileSummary.getClassificationForView()
    */
   public void setClassificationsToView(List<String> cToV){
     _classificationsToView = cToV;
@@ -323,10 +325,10 @@ public class SummaryTableModel extends JKTableModel {
   }
 
   /**
-   * This method is used to convert a SRFileSummary index to a row table. This method relies on the internal sorted
+   * This method is used to convert a SJFileSummary index to a row table. This method relies on the internal sorted
    * data model of BFileSummaries.
    * 
-   * @param idx SRFileSummary index
+   * @param idx SJFileSummary index
    * 
    * @return table row index
    */
@@ -355,7 +357,7 @@ public class SummaryTableModel extends JKTableModel {
    * 
    * @param idx table row index
    * 
-   * @return SRFileSummary index
+   * @return SJFileSummary index
    */
   public int convertTableRowToSummaryIdx(int idx) {
     if (_viewTypeDataBinner == null || _viewTypeDataBinner.size() == 0)
@@ -437,13 +439,13 @@ public class SummaryTableModel extends JKTableModel {
    * 
    * @param rowID row index
    * @param colID column index
-   * @param summary SRFileSummary
+   * @param summary SJFileSummary
    * @param status status
    * @param query the QueryBase object
    * 
    * @return a cell data value
    */
-  public Object getValueItem(int rowID, int colID, SRFileSummary summary, String status, QueryBase query) {
+  public Object getValueItem(int rowID, int colID, SJFileSummary summary, String status, QueryBase query) {
     Object val = null;
     switch (colID) {
     case RES_FILE_NUM_HEADER:
@@ -619,29 +621,22 @@ public class SummaryTableModel extends JKTableModel {
         val = summary.getOriginJobName();
       }
       break;
-    case RES_CLASSIFICATION:
+    case RES_HITCLASSIFICATION:
       if (summary != null) {
-        List<SRTermSummary> mainTerms = summary.getClassificationForView(_classificationsToView);
-        if (mainTerms!=null && mainTerms.size()!=0) {
-          StringBuffer buf = new StringBuffer("<html>");
-          //just a test to figure out how to simply decorate terms with an icon
-          //URL url = SVMessages.class.getResource( "feature.png" );
-          for(SRTermSummary term : mainTerms) {
-            //buf.append("<img src =" + url + "/> ");
-            buf.append(term.getID());
-            buf.append("&nbsp;");
-            buf.append(term.getDescription());
-            buf.append("<br>");
-          }
-          buf.append("</html>");
-          val = buf.toString();
-        }
-        else {
-          val =null;
-        }
+        val = getFormattedTerms(summary.getHitClassificationForView(_classificationsToView));
+      }
+      else {
+        val = null;
       }
       break;
-
+    case RES_QUERYCLASSIFICATION:
+      if (summary != null) {
+        val = getFormattedTerms(summary.getQueryClassificationForView(_classificationsToView));
+      }
+      else {
+        val = null;
+      }
+      break;
     }
 
     if (val == null) {
@@ -650,6 +645,24 @@ public class SummaryTableModel extends JKTableModel {
     return (val);
   }
 
+  private Object getFormattedTerms(List<SJTermSummary> mainTerms){
+      if (mainTerms!=null && mainTerms.size()!=0) {
+        StringBuffer buf = new StringBuffer("<html>");
+        //just a test to figure out how to simply decorate terms with an icon
+        //URL url = SVMessages.class.getResource( "feature.png" );
+        for(SJTermSummary term : mainTerms) {
+          //buf.append("<img src =" + url + "/> ");
+          buf.append(term.getID());
+          buf.append("&nbsp;");
+          buf.append(term.getDescription());
+          buf.append("<br>");
+        }
+        buf.append("</html>");
+        return buf.toString();
+    }
+    return null;
+  }
+  
   /**
    * Return the data associated to each table cell.
    * 
@@ -660,7 +673,7 @@ public class SummaryTableModel extends JKTableModel {
    */
   private Object getValueAtEx(int row, int col) {
     Object val = null;
-    SRFileSummary summary;
+    SJFileSummary summary;
     String status;
     Entity entity;
     int colID, rowID;
@@ -718,7 +731,7 @@ public class SummaryTableModel extends JKTableModel {
     colID = this.getColumnId(col);
     // return column specific data
     val = getValueItem(rowID, colID, summary, status, _query);
-    // optimization : when resubmitting a job, SRFileSummary is not updated before
+    // optimization : when resubmitting a job, SJFileSummary is not updated before
     // starting job
     // (task may take a long time with huge amount of queries). So, unless query is
     // "ok", we only

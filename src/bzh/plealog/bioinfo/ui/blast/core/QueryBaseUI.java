@@ -18,8 +18,8 @@ package bzh.plealog.bioinfo.ui.blast.core;
 
 import java.util.Enumeration;
 
-import bzh.plealog.bioinfo.api.data.searchjob.SRFileSummary;
 import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
+import bzh.plealog.bioinfo.api.data.searchjob.SJFileSummary;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 
@@ -119,12 +119,12 @@ public class QueryBaseUI extends QueryBase {
   }
 
   @Override
-  public Enumeration<SRFileSummary> getSummaries() {
+  public Enumeration<SJFileSummary> getSummaries() {
     return _query.getSummaries();
   }
 
   @Override
-  public SRFileSummary getSummary(int arg0) {
+  public SJFileSummary getSummary(int arg0) {
     return _query.getSummary(arg0);
   }
 
