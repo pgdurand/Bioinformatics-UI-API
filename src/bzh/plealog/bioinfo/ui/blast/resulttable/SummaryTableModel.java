@@ -24,11 +24,13 @@ import java.util.List;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
+import bzh.plealog.bioinfo.api.core.config.CoreSystemConfigurator;
 import bzh.plealog.bioinfo.api.data.feature.AnnotationDataModelConstants;
 import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
 import bzh.plealog.bioinfo.api.data.searchjob.SJFileSummary;
 import bzh.plealog.bioinfo.api.data.searchjob.SJTermSummary;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
+import bzh.plealog.bioinfo.io.searchresult.csv.ExtractAnnotation;
 import bzh.plealog.bioinfo.ui.blast.core.QueryBaseUI;
 import bzh.plealog.bioinfo.ui.blast.resulttable.sort.Entity;
 import bzh.plealog.bioinfo.ui.blast.resulttable.sort.SerialEntityBag;
@@ -287,6 +289,29 @@ public class SummaryTableModel extends JKTableModel {
     _classificationsToView = cToV;
   }
   
+  /**
+   * Return a new shallow SROutput from this view.
+   * 
+   * Shallow means that returned SROutput contains reference (not copy) to
+   * SRIterations from individual SROutput of each row. 
+   */
+  public SROutput getResultFromView() {
+    SROutput sro, sroMaster=null;
+    for(int i=0; i< getRowCount(); i++) {
+      sro = (SROutput) getValueAt(i, SummaryTableModel.RESULT_DATA_COL);
+      if (sroMaster==null) {
+        sroMaster = CoreSystemConfigurator.getSRFactory().createBOutput();
+        sroMaster.setBlastOutputParam(sro.getBlastOutputParam());
+        sroMaster.setBlastType(sro.getBlastType());
+        sroMaster.setRequestInfo(sro.getRequestInfo());
+        sroMaster.setClassification(CoreSystemConfigurator.getSRFactory().creationBClassification());
+      }
+      //in this view model, each sro contains a single Iteration, always!
+      sroMaster.addIteration(sro.getIteration(0));
+      ExtractAnnotation.addClassificationdata(sroMaster.getClassification(), sro.getClassification());
+    }
+    return sroMaster;
+  }
   /**
    * Set the data model.
    * 
