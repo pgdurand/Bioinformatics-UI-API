@@ -44,7 +44,9 @@ public class TableCellButtonLinker extends DefaultCellEditor {
   private JButton          button;
   private String           url;
   private FeatureWebLinker linker;
-
+  private int              qualifierNameColumn = FeatureViewer.QUAL_NAME;
+  private int              qualifierValueColumn = FeatureViewer.QUAL_VALUE;
+  
   private static final String EMPTY_STR = "";
 
   public TableCellButtonLinker(FeatureWebLinker fwl, JCheckBox checkBox) {
@@ -74,6 +76,13 @@ public class TableCellButtonLinker extends DefaultCellEditor {
     });
   }
 
+  public TableCellButtonLinker(FeatureWebLinker fwl, JCheckBox checkBox, 
+      int  qualifierNameColumn, int qualifierValueColumn) {
+    this(fwl, checkBox);
+    this.qualifierNameColumn = qualifierNameColumn;
+    this.qualifierValueColumn = qualifierValueColumn;
+  }
+  
   public FeatureWebLinker getFeatureWebLinker(){
     return linker;
   }
@@ -88,8 +97,8 @@ public class TableCellButtonLinker extends DefaultCellEditor {
     }
     if (linker!=null){
       url = linker.getURLFromQualifier(
-          table.getValueAt(row, FeatureViewer.QUAL_NAME).toString(),
-          table.getValueAt(row, FeatureViewer.QUAL_VALUE).toString());
+          table.getValueAt(row, qualifierNameColumn).toString(),
+          table.getValueAt(row, qualifierValueColumn).toString());
     }
     else{
       url=null;

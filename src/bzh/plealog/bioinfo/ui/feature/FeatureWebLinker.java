@@ -25,6 +25,7 @@ import java.util.StringTokenizer;
 
 import com.plealog.genericapp.api.log.EZLogger;
 
+import bzh.plealog.bioinfo.api.data.feature.AnnotationDataModelConstants;
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
 import bzh.plealog.bioinfo.util.CoreUtil;
 
@@ -125,7 +126,7 @@ public class FeatureWebLinker {
       return _linkTags.contains(qualName);
   }
 
-  private String[] getData(String qualName, String qualValue) {
+  public String[] getData(String qualName, String qualValue) {
     StringTokenizer tokenizer;
     String dbCode, dbId;
     int idx;
@@ -157,9 +158,16 @@ public class FeatureWebLinker {
 
   public String getURLFromQualifier(String qualName, String qualValue) {
     String[] str;
-
-    if (isLinkTag(qualName)) {
-      str = getData(qualName, qualValue);
+    String qName;
+    
+    if (qualName.isEmpty()) {
+      qName = AnnotationDataModelConstants.FEATURE_QUALIFIER_XREF;
+    }
+    else {
+      qName = qualName;
+    }
+    if (isLinkTag(qName)) {
+      str = getData(qName, qualValue);
       return getURL(str[0], str[1]);
     } else {
       return (null);
