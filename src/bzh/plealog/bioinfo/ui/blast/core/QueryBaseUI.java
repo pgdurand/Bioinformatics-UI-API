@@ -138,4 +138,19 @@ public class QueryBaseUI extends QueryBase {
     return _query.sequences();
   }
 
+  @Override
+  public int getTotalHitAccessions() {
+    return _query.getTotalHitAccessions();
+  }
+
+  @Override
+  public int getTotalMatchingQueries() {
+    return _query.getTotalMatchingQueries();
+  }
+
+  @Override
+  public int getTotalNotMatchingQueries() {
+    return _query.getTotalNotMatchingQueries();
+  }
+
 }
