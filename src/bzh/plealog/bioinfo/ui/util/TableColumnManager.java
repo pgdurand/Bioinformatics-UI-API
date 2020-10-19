@@ -36,6 +36,7 @@ import javax.swing.event.TableModelEvent;
 
 import com.plealog.genericapp.api.EZEnvironment;
 
+import bzh.plealog.bioinfo.ui.resources.SVMessages;
 import bzh.plealog.bioinfo.util.CoreUtil;
 
 /**
@@ -78,9 +79,9 @@ public class TableColumnManager {
     if (icon != null) {
       tOptions = new JButton(icon);
     } else {
-      tOptions = new JButton(EZEnvironment.getMessage("Table.options.lbl"));
+      tOptions = new JButton(SVMessages.getString("BlastHitList.22"));
     }
-    tOptions.setToolTipText(EZEnvironment.getMessage("Table.options.tip"));
+    tOptions.setToolTipText(SVMessages.getString("BlastHitList.22.tip"));
     tOptions.addActionListener(new TableOptionActionListener(tOptions));
     tOptions.setBorder(null);
     _invoker = tOptions;
