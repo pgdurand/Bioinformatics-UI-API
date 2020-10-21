@@ -13,6 +13,7 @@ import bzh.plealog.bioinfo.api.data.sequence.DLocation;
 import bzh.plealog.bioinfo.api.data.sequence.DRulerModel;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
+import bzh.plealog.bioinfo.ui.util.Selection;
 
 /**
  * Handles the selection of sequence on the sequence viewer.
@@ -23,12 +24,8 @@ public class SelectSequenceAction extends AbstractAction {
   private static final long serialVersionUID = -3165198883879337438L;
   private DSelectionListenerSupport _lSupport;
   private DSequence _sequence;
-  private SelectType _selectType;
+  private Selection.SelectType _selectType;
   private boolean _running;
-
-  public static enum SelectType {
-    ALL, CLEAR, RANGE
-  };
 
   /**
    * Action constructor.
@@ -36,7 +33,7 @@ public class SelectSequenceAction extends AbstractAction {
    * @param name
    *          the name of the action.
    */
-  public SelectSequenceAction(String name, SelectType selType) {
+  public SelectSequenceAction(String name, Selection.SelectType selType) {
     super(name);
     _selectType = selType;
   }
@@ -49,7 +46,7 @@ public class SelectSequenceAction extends AbstractAction {
    * @param icon
    *          the icon of the action.
    */
-  public SelectSequenceAction(String name, Icon icon, SelectType selType) {
+  public SelectSequenceAction(String name, Icon icon, Selection.SelectType selType) {
     super(name, icon);
     _selectType = selType;
   }
@@ -126,6 +123,7 @@ public class SelectSequenceAction extends AbstractAction {
     case RANGE:
       handleRangeSelection();
       break;
+      default:
     }
   }
 

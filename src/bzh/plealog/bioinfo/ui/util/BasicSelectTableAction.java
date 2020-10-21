@@ -35,12 +35,8 @@ import com.plealog.genericapp.api.EZEnvironment;
 public class BasicSelectTableAction extends AbstractAction {
   private static final long serialVersionUID = -985182696603351294L;
   private JTable _table;
-  private SelectType _selectType;
+  private Selection.SelectType _selectType;
   private boolean _running = false;
-
-  public static enum SelectType {
-    ALL, INVERT, CLEAR
-  };
 
   /**
    * Action constructor.
@@ -48,7 +44,7 @@ public class BasicSelectTableAction extends AbstractAction {
    * @param name
    *          the name of the action.
    */
-  public BasicSelectTableAction(String name, SelectType selType) {
+  public BasicSelectTableAction(String name, Selection.SelectType selType) {
     super(name);
     _selectType = selType;
   }
@@ -61,7 +57,7 @@ public class BasicSelectTableAction extends AbstractAction {
    * @param icon
    *          the icon of the action.
    */
-  public BasicSelectTableAction(String name, Icon icon, SelectType selType) {
+  public BasicSelectTableAction(String name, Icon icon, Selection.SelectType selType) {
     super(name, icon);
     _selectType = selType;
   }
@@ -128,6 +124,7 @@ public class BasicSelectTableAction extends AbstractAction {
       case CLEAR:
         clearSelection();
         break;
+        default:
       }
       EZEnvironment.setDefaultCursor();
       _running = false;

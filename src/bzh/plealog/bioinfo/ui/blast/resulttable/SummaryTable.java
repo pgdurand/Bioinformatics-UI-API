@@ -37,6 +37,7 @@ import javax.swing.table.TableColumnModel;
 import com.plealog.genericapp.api.EZEnvironment;
 
 import bzh.plealog.bioinfo.api.data.searchjob.QueryBase;
+import bzh.plealog.bioinfo.api.data.searchjob.SJFileSummary;
 import bzh.plealog.bioinfo.api.data.searchjob.SJTermSummary;
 import bzh.plealog.bioinfo.api.data.searchresult.SROutput;
 import bzh.plealog.bioinfo.ui.resources.SVMessages;
@@ -291,10 +292,12 @@ public class SummaryTable extends JKTable {
     int i, size, classifs;
     size = this.getRowCount();
     //setup row height
+    SJFileSummary summary;
     for(i=0 ; i<size ; i++) {
       if (showClassification) {
-        List<SJTermSummary> lst_h = model.getQuery().getSummary(i).getHitClassificationForView(model.getClassificationsToView()); 
-        List<SJTermSummary> lst_q = model.getQuery().getSummary(i).getQueryClassificationForView(model.getClassificationsToView()); 
+        summary = (SJFileSummary) getValueAt(i, SummaryTableModel.SUMMARY_DATA_COL);
+        List<SJTermSummary> lst_h = summary.getHitClassificationForView(model.getClassificationsToView()); 
+        List<SJTermSummary> lst_q = summary.getQueryClassificationForView(model.getClassificationsToView()); 
         classifs = Math.max(lst_h!=null ? lst_h.size() : 1, lst_q!=null ? lst_q.size() : 1);
         classifs = Math.max(1, classifs);
       }
