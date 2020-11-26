@@ -62,6 +62,8 @@ public class SequenceDrawingLane extends DrawingLaneBase {
 
     //use computation similar to ruler drawer
     int xTick = getTickSpacer(drawingArea.width, xFactor);
+    if (xTick==0)
+      return;
     sFrom = (int)((double)from / xFactor); 
     sFrom = Math.min(Math.max(0,sFrom), sSize);
     sFrom = sFrom - (sFrom%xTick) - 2*xTick;

@@ -45,6 +45,8 @@ public class RulerDrawingLane extends DrawingLaneBase {
     rModel = this.getSequence().getRulerModel();
     g.setColor(Color.black);
     xTick = getTickSpacer(drawingArea.width, xFactor);
+    if (xTick==0)
+      return;
     sSize = this.getSequence().size()-1;
     fm = g.getFontMetrics(this.getFont());
     yBase = drawingArea.y + drawingArea.height / 2+fm.getHeight()/2;

@@ -66,7 +66,8 @@ public class AxisDrawingLane extends DrawingLaneBase {
     int i, x3, yBase, xTick, from, to, sFrom, sTo, tickFrom, tickTo, x1, x2, sSize;
 
     xTick = getTickSpacer(drawingArea.width, xFactor);
-
+    if (xTick==0)
+      return;
     yBase = drawingArea.y + drawingArea.height / 2;
 
     switch(tickType){
