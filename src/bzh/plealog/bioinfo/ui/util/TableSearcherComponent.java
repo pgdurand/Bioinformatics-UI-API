@@ -114,6 +114,14 @@ public class TableSearcherComponent extends JPanel
     return btn;
   }
 
+  public void setSearchText(String txt) {
+    _sf.setText(txt);
+  }
+  
+  public String getSearchText() {
+    return _sf.getText();
+  }
+  
   private void buildGUI() {
 
     _sf = new SearchField();
