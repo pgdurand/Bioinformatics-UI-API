@@ -60,13 +60,19 @@ public class CombinedSequenceViewerExt extends JPanel implements DDSequenceViewe
    * @param showComposition pass true to show sequence composition viewer. false otherwise.
    */
   public CombinedSequenceViewerExt(boolean showComposition){
-    this(showComposition, true, true, true, true);
+    this(showComposition, true, true, true, true, true, true);
   }
 
   public CombinedSequenceViewerExt(boolean showComposition, boolean showHCA, boolean showSequence, 
       boolean showDefaultToolbar, boolean showPatternSearch){
+    this(showComposition, showHCA, showSequence, showDefaultToolbar, showPatternSearch, true, true);
+  }
+  public CombinedSequenceViewerExt(boolean showComposition, boolean showHCA, boolean showSequence, 
+      boolean showDefaultToolbar, boolean showPatternSearch, boolean showSeqHeader,
+      boolean showCartoHeader){
     super();
-    buildGUI(showComposition, showHCA, showSequence, showDefaultToolbar, showPatternSearch);
+    buildGUI(showComposition, showHCA, showSequence, 
+        showDefaultToolbar, showPatternSearch, showSeqHeader, showCartoHeader);
   }
   /**
    * Figures out whether or not the viewer has to show a drawing grid. 
@@ -96,11 +102,13 @@ public class CombinedSequenceViewerExt extends JPanel implements DDSequenceViewe
   }
 
   private void buildGUI(boolean showComposition, boolean showHCA, boolean showSequence, 
-      boolean showDefaultToolbar, boolean showPatternSearch){
+      boolean showDefaultToolbar, boolean showPatternSearch, boolean showSeqHeader,
+      boolean showCartoHeader){
     JTabbedPane jtp;
     JComponent  compo;
 
-    _seqViewer = new CombinedSequenceViewer(showHCA, showSequence, showDefaultToolbar, showPatternSearch);
+    _seqViewer = new CombinedSequenceViewer(showHCA, showSequence, 
+        showDefaultToolbar, showPatternSearch, showSeqHeader, showCartoHeader);
 
     if(showComposition){
       _alphViewer = new AlphabetCounterDualViewer();

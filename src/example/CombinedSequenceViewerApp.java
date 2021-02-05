@@ -79,7 +79,8 @@ public class CombinedSequenceViewerApp {
               "VATAILSGITSSLTGNSLGRNDLADGVNSGQGLGIEIIGTLQLVLCVLATTDR"+
               "RRRDLGGSAPLAIGLSVALGHLLAIDYTGCGINPARSFGSAVITHNFSNHWIFW"+
               "VGPFIGGALAVLIYDFILAPRSSDLTDRVKVWTSGQVEEYDLDADDINSRVEMKPK";
-      seq = CoreSystemConfigurator.getSequenceFactory().getSequence(new StringReader(prot), DAlphabetUtils.getIUPAC_Protein_Alphabet());
+      seq = CoreSystemConfigurator.getSequenceFactory().getSequence(
+          new StringReader(prot), DAlphabetUtils.getIUPAC_Protein_Alphabet());
 
       //use the following to display a DNA sequence sample
       @SuppressWarnings("unused")

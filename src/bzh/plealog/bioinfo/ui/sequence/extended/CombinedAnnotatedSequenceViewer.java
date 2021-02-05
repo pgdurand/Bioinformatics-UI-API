@@ -18,6 +18,7 @@ package bzh.plealog.bioinfo.ui.sequence.extended;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,23 +82,32 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
       FeatureViewerFactory.TYPE type){
     this(confPath, showComposition, true, true, true, true, false, type);
   }
-  
+  public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition, boolean showHCA, 
+      boolean showSequence, boolean showDefaultToolbar, boolean showPatternSearch, 
+      boolean showSimpleFeatureTable, FeatureViewerFactory.TYPE type){
+    this(confPath, null, showComposition, showHCA, showSequence, showDefaultToolbar, 
+        showPatternSearch, showSimpleFeatureTable, true, true, type);
+  }
   /**
    * Constructor.
    * 
    * @param confPath absolute path to the configuration path of the software. Can be null.
    * If not null, confPath will be used to locate there a file named featureWebLink.config.
+   * @param confStream stream to a featureWebLink.config. Can be null. If both confPath and
+   * confStream are defined, latter gets the priority.
    * @param showComposition figures out whether or not the Composition panel has to be shown.
    */
-  public CombinedAnnotatedSequenceViewer(String confPath, boolean showComposition, boolean showHCA, 
+  public CombinedAnnotatedSequenceViewer(String confPath, InputStream confStream, boolean showComposition, boolean showHCA, 
       boolean showSequence, boolean showDefaultToolbar, boolean showPatternSearch, 
-      boolean showSimpleFeatureTable, FeatureViewerFactory.TYPE type){
+      boolean showSimpleFeatureTable, boolean showSeqHeader, 
+      boolean showCartoHeader, FeatureViewerFactory.TYPE type){
     super();
 
     JPanel      seqPanel, tBarPnl;
     JToolBar    tBar;
 
-    _seqViewer = new CombinedSequenceViewerExt(showComposition, showHCA, showSequence, showDefaultToolbar, showPatternSearch);
+    _seqViewer = new CombinedSequenceViewerExt(showComposition, showHCA, showSequence, 
+        showDefaultToolbar, showPatternSearch, showSeqHeader, showCartoHeader);
     _lSupport = new DSelectionListenerSupport();
     _seqViewer.registerSelectionListenerSupport(_lSupport);
 
@@ -110,10 +120,12 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
     tBarPnl.add(tBar, BorderLayout.EAST);
     _seqViewer.setCommandPanel(tBarPnl);
 
-    _jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, seqPanel, getFeatureInfoPanel(confPath, showSimpleFeatureTable, type));
+    _jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, seqPanel, 
+        getFeatureInfoPanel(confPath, confStream, showSimpleFeatureTable, type));
     _jsp.setResizeWeight(1.0);
     _jsp.setOneTouchExpandable(true);
-
+    _jsp.setDividerLocation(0.5);
+    
     this.setLayout(new BorderLayout());
     this.add(_jsp, BorderLayout.CENTER);
     enableToolbar(false);
@@ -154,13 +166,17 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
   /**
    * Utility method to create the Feature panel.
    */
-  private JComponent getFeatureInfoPanel(String confPath, boolean showSimpleFeatureTable, FeatureViewerFactory.TYPE type){
+  private JComponent getFeatureInfoPanel(String confPath, 
+      InputStream confStream, boolean showSimpleFeatureTable, FeatureViewerFactory.TYPE type){
     JPanel      featP, siP;
 
     JTabbedPane jtp2 = new JTabbedPane();
     jtp2.setFocusable(false);
 
-    if(confPath!=null){
+    if(confStream!=null){
+      _featViewer = FeatureViewerFactory.getInstance(type, new FeatureWebLinker(confStream), true);
+    }
+    else if(confPath!=null){
       _featViewer = FeatureViewerFactory.getInstance(type, new FeatureWebLinker(confPath), true);
     }
     else{
@@ -250,7 +266,7 @@ public class CombinedAnnotatedSequenceViewer extends JPanel {
       if (_featTabbedPane!=null) {
         _featTabbedPane.setVisible(false);
       }
-      _jsp.setDividerLocation(1.0);
+      _jsp.setDividerLocation(0.5);
     }
 
    }

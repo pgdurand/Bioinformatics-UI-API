@@ -57,6 +57,7 @@ import bzh.plealog.bioinfo.api.data.feature.utils.FeatureSelectionListener;
 import bzh.plealog.bioinfo.api.data.sequence.DAlphabet;
 import bzh.plealog.bioinfo.api.data.sequence.DLocation;
 import bzh.plealog.bioinfo.api.data.sequence.DSequence;
+import bzh.plealog.bioinfo.data.sequence.EmptySequence;
 import bzh.plealog.bioinfo.ui.carto.core.CartoViewerControlPanel;
 import bzh.plealog.bioinfo.ui.carto.core.CartoViewerPanel;
 import bzh.plealog.bioinfo.ui.carto.data.BasicFeatureOrganizer;
@@ -122,9 +123,15 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
    * Default constructor.
    */
   public CombinedSequenceViewer(){
-    this(true, true, true, true);
+    this(true, true, true, true, true, true);
   }
-  public CombinedSequenceViewer(boolean showHCA, boolean showSequence, boolean showDefaultToolbar, boolean showPatternSearch){
+  public CombinedSequenceViewer(boolean showHCA, boolean showSequence, 
+      boolean showDefaultToolbar, boolean showPatternSearch){
+    this(showHCA, showSequence, showDefaultToolbar, showPatternSearch, true, true);
+  }
+  public CombinedSequenceViewer(boolean showHCA, boolean showSequence, 
+      boolean showDefaultToolbar, boolean showPatternSearch, boolean showSeqHeader,
+      boolean showCartoHeader){
     super();
     JPanel      seqPnl, patternPnl;
 
@@ -160,15 +167,18 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
       _headerPnl.add(patternPnl, BorderLayout.WEST);
 
     this.setLayout(new BorderLayout());
-    this.add(getHeaderpanel(), BorderLayout.NORTH);
+    JPanel seqHeadPnl = getHeaderpanel();
+    if(showSeqHeader) {
+      this.add(seqHeadPnl, BorderLayout.NORTH);
+    }
     if (!showHCA && !showSequence){
-      this.add(prepareCartoViewer(showDefaultToolbar), BorderLayout.CENTER);
+      this.add(prepareCartoViewer(showDefaultToolbar, showCartoHeader), BorderLayout.CENTER);
     }
     else{
       _jtp = new JTabbedPane();
       _jtp.setFocusable(false);
       _jtp.setTabPlacement(JTabbedPane.LEFT);
-      _jtp.add("Graphic", prepareCartoViewer(showDefaultToolbar));
+      _jtp.add("Graphic", prepareCartoViewer(showDefaultToolbar, showCartoHeader));
       _jtp.add("Sequence", _mainScroller);
       _jtp.add("HCA", new JScrollPane(_hcaViewer));
       this.add(_jtp, BorderLayout.CENTER);
@@ -180,7 +190,7 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
   /**
    * Setup a Carto Viewer.
    */
-  private JPanel prepareCartoViewer(boolean showDefaultToolbar){
+  private JPanel prepareCartoViewer(boolean showDefaultToolbar, boolean showHeader){
     JScrollPane scroller;
     JPanel      pnl;
 
@@ -189,7 +199,9 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
     scroller = new JScrollPane(_cartoViewer);
     scroller.getHorizontalScrollBar().addAdjustmentListener(new MyAdjustmentListener(_cartoViewer));
     _cartoViewerLaneHeader = _cartoViewer.getLaneHeader(100);
-    scroller.setRowHeaderView(_cartoViewerLaneHeader);
+    if (showHeader) {
+      scroller.setRowHeaderView(_cartoViewerLaneHeader);
+    }
     _cartoScroller = scroller;
 
     _cartoCtrlPanel = new CartoViewerControlPanel(_cartoViewer);
@@ -297,7 +309,7 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
    */
   public void setFeaturesForCartoView(FeatureTable fTable){
     RulerDrawingLane    rdl;
-    SequenceDrawingLane sdl;
+    SequenceDrawingLane sdl=null;
     AxisDrawingLane     adl;
     Dimension           dim;
     DSequence           sequence;
@@ -309,26 +321,41 @@ public class CombinedSequenceViewer extends JPanel implements DDSequenceViewerCo
       return;
 
     _cartoViewer.setReferenceSequence(sequence);
-    //adds the sequence
-    sdl = new SequenceDrawingLane(sequence);
-    _cartoViewer.addDrawingLane(sdl);
 
-    //adds the axis
     labelLength = String.valueOf(sequence.getRulerModel().getSeqPos(sequence.size()-1)).length();
-    sdl.setReferenceLabelSize(labelLength);
+    //adds the sequence
+    if (! (sequence instanceof EmptySequence)) {
+      sdl = new SequenceDrawingLane(sequence);
+      _cartoViewer.addDrawingLane(sdl);
+      sdl.setReferenceLabelSize(labelLength);
 
-
-    adl = new AxisDrawingLane(sequence, AxisDrawingLane.TICK_TYPE.BOTH);
-    dim = adl.getPreferredSize();
-    adl.setTickType(AxisDrawingLane.TICK_TYPE.DOWN);
-    dim.height = 10;
-    adl.setPreferredSize(dim);
-    adl.setReferenceLabelSize(labelLength);
-    _cartoViewer.addDrawingLane(adl);
-    //adds the ruler
-    rdl = new RulerDrawingLane(sequence);
-    rdl.setReferenceLabelSize(labelLength);
-    _cartoViewer.addDrawingLane(rdl);
+      //adds the axis
+      adl = new AxisDrawingLane(sequence, AxisDrawingLane.TICK_TYPE.BOTH);
+      dim = adl.getPreferredSize();
+      adl.setTickType(AxisDrawingLane.TICK_TYPE.DOWN);
+      dim.height = 10;
+      adl.setPreferredSize(dim);
+      adl.setReferenceLabelSize(labelLength);
+      _cartoViewer.addDrawingLane(adl);
+      //adds the ruler
+      rdl = new RulerDrawingLane(sequence);
+      rdl.setReferenceLabelSize(labelLength);
+      _cartoViewer.addDrawingLane(rdl);
+    }
+    else {
+      //adds the ruler
+      rdl = new RulerDrawingLane(sequence);
+      rdl.setReferenceLabelSize(labelLength);
+      _cartoViewer.addDrawingLane(rdl);
+      //adds the axis
+      adl = new AxisDrawingLane(sequence, AxisDrawingLane.TICK_TYPE.BOTH);
+      dim = adl.getPreferredSize();
+      adl.setTickType(AxisDrawingLane.TICK_TYPE.DOWN);
+      dim.height = 10;
+      adl.setPreferredSize(dim);
+      adl.setReferenceLabelSize(labelLength);
+      _cartoViewer.addDrawingLane(adl);
+    }
 
     //adds the features if any
     if (fTable!=null){
