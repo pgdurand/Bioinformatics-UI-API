@@ -114,6 +114,7 @@ public class SummaryTableModel extends JKTableModel {
   public static final int RES_ORIGIN_JOB = 33;
   public static final int RES_HITCLASSIFICATION = 34;
   public static final int RES_QUERYCLASSIFICATION = 35;
+  public static final int RES_QUERY_DEFINITION = 36;
   
   public static enum VIEW_TYPE {
     ALL, // all queries
@@ -122,6 +123,7 @@ public class SummaryTableModel extends JKTableModel {
   };
 
   private static final int[] QUERY_ORDERED_HEADER_IDS = new int[] { RES_FILE_NUM_HEADER, RES_SEQ_NAME_HEADER,
+      RES_QUERY_DEFINITION,
       RES_QUERY_LENGTH, RES_STATUS_HEADER, RES_QUERY_FROM, RES_QUERY_TO, RES_QUERY_FRAME, RES_QUERY_GAPS, RES_COVERAGE,
       RES_LCA, RES_RANK_LCA, RES_QUERYCLASSIFICATION };
 
@@ -149,7 +151,7 @@ public class SummaryTableModel extends JKTableModel {
       /* 20 */RES_QUERY_GAPS, /* 21 */RES_BESTHIT_FROM, /* 22 */RES_BESTHIT_TO, /* 23 */RES_BESTHIT_FRAME,
       /* 24 */RES_BESTHIT_GAPS, /* 25 */RES_ALIGN_LENGTH, /* 26 */RES_NB_HITS, /* 27 */RES_NB_HSPS, /* 28 */RES_T_GAPS,
       /* 29 */RES_P_GAPS, /* 30 */RES_MISMATCHES, /* 31 */RES_LCA, /* 32 */RES_RANK_LCA, /* 33 */RES_ORIGIN_JOB,
-      /* 34 */RES_HITCLASSIFICATION, /* 35 */ RES_QUERYCLASSIFICATION};
+      /* 34 */RES_HITCLASSIFICATION, /* 35 */ RES_QUERYCLASSIFICATION, /* 36 */ RES_QUERY_DEFINITION};
 
   public static final String[] RES_HEADERS = { 
       SVMessages.getString("ResultTableModel.tableHeader.1"),
@@ -187,7 +189,9 @@ public class SummaryTableModel extends JKTableModel {
       SVMessages.getString("ResultTableModel.tableHeader.33"),
       SVMessages.getString("ResultTableModel.tableHeader.34"),
       SVMessages.getString("ResultTableModel.tableHeader.35"),
-      SVMessages.getString("ResultTableModel.tableHeader.36")};
+      SVMessages.getString("ResultTableModel.tableHeader.36"),
+      SVMessages.getString("ResultTableModel.tableHeader.37")
+      };
 
   // set query header for background table headers
   static {
@@ -479,6 +483,11 @@ public class SummaryTableModel extends JKTableModel {
     case RES_SEQ_NAME_HEADER:
       if (summary != null) {
         val = summary.getQueryId();
+      }
+      break;
+    case RES_QUERY_DEFINITION:
+      if (summary != null) {
+        val = summary.getQueryDescription();
       }
       break;
     case RES_SUMMARY_BEST_HIT_ACC:
