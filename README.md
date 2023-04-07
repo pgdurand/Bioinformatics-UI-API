@@ -1,6 +1,6 @@
 # Bioinformatics UI API
 
-[![License AGPL](https://img.shields.io/badge/license-Affero%20GPL%203.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.txt) [![Build Status](https://travis-ci.org/pgdurand/Bioinformatics-UI-API.svg?branch=master)](https://travis-ci.org/pgdurand/Bioinformatics-UI-API) [![](https://tokei.rs/b1/github/pgdurand/Bioinformatics-UI-API?category=code)](https://github.com/pgdurand/Bioinformatics-UI-API) [![](https://img.shields.io/badge/platform-Java--1.8+-yellow.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) [![](https://img.shields.io/badge/run_on-Linux--Mac_OSX--Windows-yellowgreen.svg)]()
+[![License AGPL](https://img.shields.io/badge/license-Affero%20GPL%203.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.txt) [![](https://img.shields.io/badge/platform-Java--1.8+-yellow.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) [![](https://img.shields.io/badge/run_on-Linux--Mac_OSX--Windows-yellowgreen.svg)]()
 
 
 
@@ -87,4 +87,4 @@ So, during my holidays on Summer 2004, I started a wonderful story: the creation
 Korilog ceased its activities on June 2015, therefore I decided to release these UI components to the open source community. 
 
 --
-(c) 2004-2020 - Patrick G. Durand
+(c) 2004-2023 - Patrick G. Durand
